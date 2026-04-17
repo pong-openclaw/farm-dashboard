@@ -231,7 +231,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 10:19</p>
+    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 10:22</p>
   </div>
 </header>
 <div class="container">
@@ -274,7 +274,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 10:19</p>
+    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 10:22</p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -322,7 +322,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>สร้างเมื่อ: 17/04/2026 10:19 | ห้องทั้งหมด 4 ห้อง</p>
+    <p>สร้างเมื่อ: 17/04/2026 10:22 | ห้องทั้งหมด 4 ห้อง</p>
   </div>
 </header>
 <div class="container">
@@ -374,7 +374,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 10:19</p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 10:22</p>
   </div>
 </header>
 <div class="container">
@@ -425,9 +425,14 @@ async function checkPw(){
         <canvas id="sk-costDoughnut" style="max-height:280px"></canvas>
       </div>
       <div class="chart-card" style="padding:16px">
-        <h3 style="font-size:.95rem;margin-bottom:8px">📉 ต้นทุน vs กำไร (เพื่อหาว่าควรลดอะไร)</h3>
-        <canvas id="sk-marginChart" style="max-height:280px"></canvas>
+        <h3 style="font-size:.95rem;margin-bottom:8px">💰 ยอดขาย vs ต้นทุน (฿)</h3>
+        <canvas id="sk-revCostChart" style="max-height:280px"></canvas>
       </div>
+    </div>
+    <div class="chart-card" style="padding:16px;margin-top:16px">
+      <h3 style="font-size:.95rem;margin-bottom:8px">📈 %กำไรแต่ละสินค้า — สินค้าไหนคุ้มค่าที่สุด?</h3>
+      <p style="font-size:.82em;color:#666;margin:-4px 0 8px">เขียว = กำไร | แดง = ขาดทุน (ยังขายไม่หมด/ลงทุนเพิ่ม)</p>
+      <canvas id="sk-marginChart" style="max-height:220px"></canvas>
     </div>
     <div class="chart-card" style="padding:16px;margin-top:16px">
       <h3 style="font-size:.95rem;margin-bottom:8px">📊 รายการที่แพงที่สุด (ต้นทุนแต่ละรายการ)</h3>
@@ -996,29 +1001,48 @@ function initSongkran() {
     }}
   });
 
-  // 2) Grouped bar — ต้นทุน vs กำไร per product (เพื่อดูว่าลดอะไรได้)
-  const mgLabels = skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>s.product);
-  const mgCosts  = skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>s.cost);
-  const mgProfits= skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>s.profit);
-  const mgPcts   = skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>
-    s.revenue>0 ? +((s.profit/s.revenue)*100).toFixed(1) : 0
-  );
-  new Chart(document.getElementById('sk-marginChart'), {
+  // 2) Grouped bar — ยอดขาย vs ต้นทุน (เข้าใจง่าย ไม่มี dual axis)
+  const rcFilter = skSummaries.filter(s=>s.cost>0||s.revenue>0);
+  new Chart(document.getElementById('sk-revCostChart'), {
     type:'bar',
-    data:{labels:mgLabels,datasets:[
-      {label:'ต้นทุน (฿)',data:mgCosts,backgroundColor:'rgba(244,67,54,.7)',yAxisID:'y'},
-      {label:'กำไร (฿)',data:mgProfits,backgroundColor:mgProfits.map(v=>v>=0?'rgba(76,175,80,.7)':'rgba(255,152,0,.7)'),yAxisID:'y'},
-      {label:'%กำไร',data:mgPcts,type:'line',borderColor:'#9c27b0',backgroundColor:'transparent',
-        pointBackgroundColor:'#9c27b0',borderWidth:2,yAxisID:'y2'}
+    data:{labels:rcFilter.map(s=>s.product),datasets:[
+      {label:'ยอดขาย (฿)', data:rcFilter.map(s=>s.revenue), backgroundColor:'rgba(76,175,80,.75)', borderRadius:4},
+      {label:'ต้นทุน (฿)', data:rcFilter.map(s=>s.cost),    backgroundColor:'rgba(244,67,54,.75)', borderRadius:4}
     ]},
     options:{responsive:true,interaction:{mode:'index'},
-      plugins:{legend:{position:'top'},tooltip:{callbacks:{
-        label:ctx=>ctx.dataset.label+(ctx.dataset.yAxisID==='y2'?' '+ctx.parsed.y+'%':' '+ctx.parsed.y.toLocaleString('th-TH')+' ฿')
-      }}},
+      plugins:{legend:{position:'top'},
+        tooltip:{callbacks:{label:ctx=>ctx.dataset.label+' '+ctx.parsed.y.toLocaleString('th-TH')+' ฿'}}
+      },
+      scales:{y:{ticks:{callback:v=>v.toLocaleString('th-TH')}}}
+    }
+  });
+
+  // 3) Horizontal bar — %กำไรแต่ละสินค้า (อ่านง่าย เขียว=กำไร แดง=ขาดทุน)
+  const mgFilter = [...skSummaries].filter(s=>s.cost>0||s.revenue>0)
+    .sort((a,b)=>((b.profit/Math.max(b.revenue,1))-(a.profit/Math.max(a.revenue,1))));
+  const mgPcts = mgFilter.map(s=> s.revenue>0 ? +((s.profit/s.revenue)*100).toFixed(1) : (s.profit<0?-100:0));
+  new Chart(document.getElementById('sk-marginChart'), {
+    type:'bar',
+    data:{labels:mgFilter.map(s=>s.product),datasets:[{
+      label:'%กำไร',
+      data:mgPcts,
+      backgroundColor:mgPcts.map(v=>v>=0?'rgba(76,175,80,.8)':'rgba(244,67,54,.8)'),
+      borderRadius:4
+    }]},
+    options:{indexAxis:'y',responsive:true,
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{
+          label:ctx=>{
+            const s=mgFilter[ctx.dataIndex];
+            return ` ${ctx.parsed.x}% | กำไร ${s.profit.toLocaleString('th-TH')} ฿`;
+          }
+        }}
+      },
       scales:{
-        y:{ticks:{callback:v=>v.toLocaleString('th-TH')}},
-        y2:{position:'right',grid:{drawOnChartArea:false},
-          ticks:{callback:v=>v+'%'},min:0,max:100}
+        x:{ticks:{callback:v=>v+'%'},
+          grid:{color:ctx=>ctx.tick.value===0?'#333':'rgba(0,0,0,.08)'},
+          border:{dash:[4,4]}
+        }
       }
     }
   });
