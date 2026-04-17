@@ -231,7 +231,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 09:46</p>
+    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 09:51</p>
   </div>
 </header>
 <div class="container">
@@ -274,7 +274,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:46</p>
+    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:51</p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -322,7 +322,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>สร้างเมื่อ: 17/04/2026 09:46 | ห้องทั้งหมด 4 ห้อง</p>
+    <p>สร้างเมื่อ: 17/04/2026 09:51 | ห้องทั้งหมด 4 ห้อง</p>
   </div>
 </header>
 <div class="container">
@@ -374,7 +374,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:46</p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:51</p>
   </div>
 </header>
 <div class="container">
@@ -835,15 +835,18 @@ function reRenderFiltered() {
   const count = filtered.length;
 
   // ── KPI ──
-  const byRoom = {};
-  filtered.forEach(i=>{ byRoom[i.room]=(byRoom[i.room]||0)+i.amount; });
-  const topRoom = Object.entries(byRoom).sort((a,b)=>b[1]-a[1])[0];
   const yearLabel = yearVal==='all' ? 'ทั้งหมด' : `ปี ${+yearVal+543} (${yearVal})`;
+  const filteredRooms = roomVal==='all' ? reRooms : reRooms.filter(r=>r.name===roomVal);
+  const displayRent    = filteredRooms.reduce((s,r)=>s+r.rent, 0);
+  const displayDeposit = filteredRooms.reduce((s,r)=>s+r.deposit, 0);
+  const displayOccupied = filteredRooms.filter(r=>r.status==='เช่าอยู่').length;
+  const rentLabel    = roomVal==='all' ? 'รายรับ/เดือน (เต็ม)' : `ค่าเช่า ${roomVal}`;
+  const depositLabel = roomVal==='all' ? 'มัดจำรวมทุกห้อง' : `มัดจำ ${roomVal}`;
 
   document.getElementById('re-kpiGrid').innerHTML=`
-    <div class="kpi" style="border-color:#4CAF50"><div class="num" style="color:#2e7d32">22,500 ฿</div><div class="label">รายรับ/เดือน (เต็ม)</div></div>
-    <div class="kpi blue"><div class="num">4/4</div><div class="label">ห้องที่มีผู้เช่า</div></div>
-    <div class="kpi purple"><div class="num">31,500 ฿</div><div class="label">มัดจำรวม</div></div>
+    <div class="kpi" style="border-color:#4CAF50"><div class="num" style="color:#2e7d32">${fmt(displayRent)} ฿</div><div class="label">${rentLabel}</div></div>
+    <div class="kpi blue"><div class="num">${displayOccupied}/${filteredRooms.length}</div><div class="label">ห้องที่มีผู้เช่า</div></div>
+    <div class="kpi purple"><div class="num">${fmt(displayDeposit)} ฿</div><div class="label">${depositLabel}</div></div>
     <div class="kpi orange"><div class="num">${fmt(total)} ฿</div><div class="label">รายรับ ${yearLabel}</div></div>
     <div class="kpi blue"><div class="num">${count}</div><div class="label">จำนวนรายการ ${yearLabel}</div></div>
     <div class="kpi ${reExpiring.length?'red':''}"><div class="num">0</div><div class="label">สัญญาใกล้หมด (60 วัน)</div></div>
