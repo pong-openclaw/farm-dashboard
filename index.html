@@ -231,7 +231,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 09:57</p>
+    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 10:05</p>
   </div>
 </header>
 <div class="container">
@@ -274,7 +274,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:57</p>
+    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 10:05</p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -322,7 +322,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>สร้างเมื่อ: 17/04/2026 09:57 | ห้องทั้งหมด 4 ห้อง</p>
+    <p>สร้างเมื่อ: 17/04/2026 10:05 | ห้องทั้งหมด 4 ห้อง</p>
   </div>
 </header>
 <div class="container">
@@ -374,7 +374,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:57</p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 10:05</p>
   </div>
 </header>
 <div class="container">
@@ -410,20 +410,38 @@ async function checkPw(){
   <div class="section">
     <h3>📦 สินค้าคงเหลือ (ยกไปปีหน้า)</h3>
     <div style="overflow-x:auto"><table>
-      <thead><tr><th>สินค้า</th><th>ต้นทุนซื้อมา (฿)</th><th>ขายได้ (฿)</th><th>มูลค่าสต็อกเหลือ (฿)</th><th>สถานะ</th><th>หมายเหตุ</th></tr></thead>
+      <thead><tr><th>สินค้า</th><th>ต้นทุนซื้อมา (฿)</th><th>ขายได้ (฿)</th><th>มูลค่าสต็อกเหลือ (฿)</th><th>สถานะ</th><th>รายการที่เหลือ</th></tr></thead>
       <tbody id="sk-stockBody"></tbody>
       <tfoot id="sk-stockFoot" class="sk-foot"></tfoot>
     </table></div>
+    <div id="sk-stockDetail" style="margin-top:12px"></div>
   </div>
 
-  <!-- รายละเอียดต้นทุนทั้งหมด -->
+  <!-- รายละเอียดต้นทุน — กราฟ -->
   <div class="section">
-    <h3>🛒 รายละเอียดต้นทุน / สิ่งที่ซื้อมา</h3>
-    <div style="overflow-x:auto"><table>
-      <thead><tr><th>สินค้า</th><th>รายการ</th><th>จำนวน</th><th>หน่วย</th><th>ต้นทุน (฿)</th></tr></thead>
-      <tbody id="sk-costBody"></tbody>
-      <tfoot id="sk-costFoot" class="sk-foot"></tfoot>
-    </table></div>
+    <h3>🛒 วิเคราะห์ต้นทุน</h3>
+    <div class="charts-grid" style="grid-template-columns:1fr 1fr;gap:16px">
+      <div class="chart-card" style="padding:16px">
+        <h3 style="font-size:.95rem;margin-bottom:8px">🥧 สัดส่วนต้นทุนแต่ละสินค้า</h3>
+        <canvas id="sk-costDoughnut" style="max-height:280px"></canvas>
+      </div>
+      <div class="chart-card" style="padding:16px">
+        <h3 style="font-size:.95rem;margin-bottom:8px">📉 ต้นทุน vs กำไร (เพื่อหาว่าควรลดอะไร)</h3>
+        <canvas id="sk-marginChart" style="max-height:280px"></canvas>
+      </div>
+    </div>
+    <div class="chart-card" style="padding:16px;margin-top:16px">
+      <h3 style="font-size:.95rem;margin-bottom:8px">📊 รายการที่แพงที่สุด (ต้นทุนแต่ละรายการ)</h3>
+      <canvas id="sk-costItemBar" style="max-height:320px"></canvas>
+    </div>
+    <details style="margin-top:16px">
+      <summary style="cursor:pointer;font-weight:bold;padding:8px 0;color:#880E4F">▶ ดูตารางรายละเอียดต้นทุน</summary>
+      <div style="overflow-x:auto;margin-top:8px"><table>
+        <thead><tr><th>สินค้า</th><th>รายการ</th><th>จำนวน</th><th>หน่วย</th><th>ต้นทุน (฿)</th></tr></thead>
+        <tbody id="sk-costBody"></tbody>
+        <tfoot id="sk-costFoot" class="sk-foot"></tfoot>
+      </table></div>
+    </details>
   </div>
 
   <div class="section">
@@ -950,21 +968,40 @@ function initSongkran() {
   const stockBody = document.getElementById('sk-stockBody');
   const stockFoot = document.getElementById('sk-stockFoot');
   const stockItems = skSummaries.filter(s => s.stock > 0 || s.cost > 0);
+  // build cost items per product for detail lookup
+  const costItemsByProduct = {};
+  skCosts.forEach(c => {
+    if(!costItemsByProduct[c.product]) costItemsByProduct[c.product]=[];
+    costItemsByProduct[c.product].push(c);
+  });
   let totCost=0, totSale2=0, totStock=0;
   stockItems.forEach(s => {
     totCost  += s.cost;
     totSale2 += s.revenue;
     totStock += s.stock;
     const hasStock = s.stock > 0;
-    const statusCls = hasStock ? 'stock-badge' : '';
-    const statusTxt = hasStock ? `เหลือ ${fmt(s.stock)} ฿` : 'หมดแล้ว';
+    // build item detail from cost list or note field
+    const items = costItemsByProduct[s.product] || [];
+    let detailHtml = '';
+    if (s.note && s.note.trim()) {
+      detailHtml = `<div style="font-size:.85em;color:#e65100;font-weight:bold">${s.note}</div>`;
+    }
+    if (items.length > 0) {
+      const itemList = items.filter(c=>c.item).map(c=>
+        `<span style="display:inline-block;background:#fff3e0;border:1px solid #ffcc80;border-radius:4px;padding:1px 6px;margin:2px;font-size:.8em">
+          ${c.item}${c.qty?' <b>'+c.qty+'</b>':''}${c.unit?' '+c.unit:''}
+        </span>`
+      ).join('');
+      if(itemList) detailHtml += `<div style="margin-top:3px">${itemList}</div>`;
+    }
+    if(!detailHtml) detailHtml = '<span style="color:#aaa;font-size:.82em">-</span>';
     stockBody.innerHTML += `<tr>
       <td><b>${s.product}</b></td>
       <td>${fmt(s.cost)}</td>
       <td>${s.revenue>0?fmt(s.revenue):'-'}</td>
       <td>${hasStock?'<b style="color:#e65100">'+fmt(s.stock)+'</b>':'<span style="color:#aaa">0</span>'}</td>
-      <td>${hasStock?'<span class="stock-badge">'+statusTxt+'</span>':'<span style="color:#aaa;font-size:.85em">หมดแล้ว</span>'}</td>
-      <td style="font-size:.82em;color:#666">${s.note||''}</td>
+      <td>${hasStock?'<span class="stock-badge">เหลือ '+fmt(s.stock)+' ฿</span>':'<span style="color:#aaa;font-size:.85em">หมดแล้ว</span>'}</td>
+      <td>${detailHtml}</td>
     </tr>`;
   });
   stockFoot.innerHTML = `<tr>
@@ -972,17 +1009,81 @@ function initSongkran() {
     <td><b style="color:#e65100">${fmt(totStock)}</b></td><td colspan="2"></td>
   </tr>`;
 
-  // ── รายละเอียดต้นทุนทั้งหมด ──
+  // ── กราฟต้นทุน ──
+  // 1) Doughnut — สัดส่วนต้นทุนแต่ละสินค้า
+  const costByProd = {};
+  skCosts.forEach(c => { if(c.cost>0) costByProd[c.product]=(costByProd[c.product]||0)+c.cost; });
+  const dpColors = ['#e91e63','#9c27b0','#3f51b5','#2196f3','#00bcd4','#009688','#ff9800','#795548'];
+  new Chart(document.getElementById('sk-costDoughnut'), {
+    type:'doughnut',
+    data:{labels:Object.keys(costByProd),datasets:[{
+      data:Object.values(costByProd),
+      backgroundColor:dpColors.slice(0,Object.keys(costByProd).length),
+      borderWidth:2
+    }]},
+    options:{responsive:true,plugins:{
+      legend:{position:'right',labels:{font:{size:11}}},
+      tooltip:{callbacks:{label:ctx=>' '+ctx.label+': '+ctx.parsed.toLocaleString('th-TH')+' ฿'}}
+    }}
+  });
+
+  // 2) Grouped bar — ต้นทุน vs กำไร per product (เพื่อดูว่าลดอะไรได้)
+  const mgLabels = skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>s.product);
+  const mgCosts  = skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>s.cost);
+  const mgProfits= skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>s.profit);
+  const mgPcts   = skSummaries.filter(s=>s.cost>0||s.revenue>0).map(s=>
+    s.revenue>0 ? +((s.profit/s.revenue)*100).toFixed(1) : 0
+  );
+  new Chart(document.getElementById('sk-marginChart'), {
+    type:'bar',
+    data:{labels:mgLabels,datasets:[
+      {label:'ต้นทุน (฿)',data:mgCosts,backgroundColor:'rgba(244,67,54,.7)',yAxisID:'y'},
+      {label:'กำไร (฿)',data:mgProfits,backgroundColor:mgProfits.map(v=>v>=0?'rgba(76,175,80,.7)':'rgba(255,152,0,.7)'),yAxisID:'y'},
+      {label:'%กำไร',data:mgPcts,type:'line',borderColor:'#9c27b0',backgroundColor:'transparent',
+        pointBackgroundColor:'#9c27b0',borderWidth:2,yAxisID:'y2'}
+    ]},
+    options:{responsive:true,interaction:{mode:'index'},
+      plugins:{legend:{position:'top'},tooltip:{callbacks:{
+        label:ctx=>ctx.dataset.label+(ctx.dataset.yAxisID==='y2'?' '+ctx.parsed.y+'%':' '+ctx.parsed.y.toLocaleString('th-TH')+' ฿')
+      }}},
+      scales:{
+        y:{ticks:{callback:v=>v.toLocaleString('th-TH')}},
+        y2:{position:'right',grid:{drawOnChartArea:false},
+          ticks:{callback:v=>v+'%'},min:0,max:100}
+      }
+    }
+  });
+
+  // 3) Horizontal bar — รายการที่แพงที่สุด (top items)
+  const sortedItems = [...skCosts].filter(c=>c.cost>0)
+    .sort((a,b)=>b.cost-a.cost).slice(0,15);
+  const ciLabels = sortedItems.map(c=>(c.item||c.product)+(c.product!==c.item?` (${c.product})`:''));
+  const ciVals   = sortedItems.map(c=>c.cost);
+  const ciColors = sortedItems.map(c=>
+    c.cost>=3000?'rgba(244,67,54,.8)':c.cost>=1000?'rgba(255,152,0,.8)':'rgba(76,175,80,.8)'
+  );
+  new Chart(document.getElementById('sk-costItemBar'), {
+    type:'bar',
+    data:{labels:ciLabels,datasets:[{
+      label:'ต้นทุน (฿)',data:ciVals,backgroundColor:ciColors,borderRadius:4
+    }]},
+    options:{indexAxis:'y',responsive:true,
+      plugins:{legend:{display:false},
+        tooltip:{callbacks:{label:ctx=>ctx.parsed.x.toLocaleString('th-TH')+' ฿'}}
+      },
+      scales:{x:{ticks:{callback:v=>v.toLocaleString('th-TH')}}}
+    }
+  });
+
+  // ── รายละเอียดต้นทุนทั้งหมด (ตาราง) ──
   const costBody = document.getElementById('sk-costBody');
   const costFoot = document.getElementById('sk-costFoot');
-  // Group by product
   const costByProduct = {};
   skCosts.forEach(c => {
     if(!costByProduct[c.product]) costByProduct[c.product]=[];
     costByProduct[c.product].push(c);
   });
   let grandCost = 0;
-  let firstInGroup = true;
   Object.entries(costByProduct).forEach(([product, items]) => {
     const productTotal = items.reduce((s,c)=>s+c.cost,0);
     grandCost += productTotal;
@@ -995,7 +1096,6 @@ function initSongkran() {
         <td>${c.cost>0?fmt(c.cost):'-'}</td>
       </tr>`;
     });
-    // product subtotal
     costBody.innerHTML += `<tr style="background:#fce4ec">
       <td colspan="4" style="text-align:right;font-size:.85em;color:#880E4F">รวม ${product}</td>
       <td><b style="color:#880E4F">${fmt(productTotal)}</b></td>
