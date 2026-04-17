@@ -61,9 +61,32 @@ body{font-family:'Leelawadee UI','Leelawadee','Tahoma','Myanmar Text',sans-serif
 .tab-btn{padding:14px 24px;border:none;cursor:pointer;font-family:inherit;font-size:.95em;font-weight:bold;color:rgba(255,255,255,.5);background:transparent;border-bottom:3px solid transparent;transition:all .2s;white-space:nowrap;flex-shrink:0}
 .tab-btn:hover{color:white;background:rgba(255,255,255,.05)}
 .tab-btn.active{color:white;border-bottom-color:white}
+.tab-btn.t-overview.active{border-bottom-color:#ffd54f;color:#ffd54f}
 .tab-btn.t-rubber.active{border-bottom-color:#66bb6a;color:#a5d6a7}
 .tab-btn.t-rental.active{border-bottom-color:#64b5f6;color:#90caf9}
 .tab-btn.t-songkran.active{border-bottom-color:#f48fb1;color:#f48fb1}
+
+/* ── Overview ── */
+#tab-overview header{background:linear-gradient(135deg,#1a1a2e,#37474f);color:white;padding:20px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px}
+.biz-group{background:white;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.08);margin-bottom:20px}
+.biz-group h3{font-size:1em;font-weight:bold;margin-bottom:14px;padding-bottom:8px;border-bottom:3px solid #f0f2f5;display:flex;align-items:center;gap:8px}
+.biz-group.rubber h3{border-color:#4CAF50;color:#2e7d32}
+.biz-group.rental h3{border-color:#1976D2;color:#1565C0}
+.biz-group.songkran h3{border-color:#E91E63;color:#880E4F}
+.biz-kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.biz-kpi{border-radius:10px;padding:14px;text-align:center}
+.biz-kpi .bk-num{font-size:1.3em;font-weight:bold;margin-bottom:4px}
+.biz-kpi .bk-label{font-size:.75em;color:#888}
+.biz-kpi.green{background:#f1f8e9}.biz-kpi.green .bk-num{color:#2e7d32}
+.biz-kpi.blue{background:#e3f2fd}.biz-kpi.blue .bk-num{color:#1565C0}
+.biz-kpi.orange{background:#fff3e0}.biz-kpi.orange .bk-num{color:#e65100}
+.biz-kpi.purple{background:#f3e5f5}.biz-kpi.purple .bk-num{color:#6a1b9a}
+.biz-kpi.pink{background:#fce4ec}.biz-kpi.pink .bk-num{color:#880E4F}
+.biz-kpi.red{background:#ffebee}.biz-kpi.red .bk-num{color:#b71c1c}
+.biz-kpi.gray{background:#f5f5f5}.biz-kpi.gray .bk-num{color:#555}
+.ov-summary-table th{background:#37474f;color:white;padding:10px 14px;text-align:center;white-space:nowrap}
+.ov-summary-table td{padding:10px 14px;border-bottom:1px solid #f0f2f5;text-align:center;font-size:.9em}
+.ov-summary-table tr:last-child td{background:#f5f5f5;font-weight:bold}
 
 /* ── Shared ── */
 .container{max-width:1300px;margin:0 auto;padding:20px}
@@ -195,10 +218,54 @@ async function checkPw(){
 
 <!-- Tab Nav -->
 <nav class="tab-nav">
-  <button id="btn-rubber"   class="tab-btn t-rubber active"   onclick="switchTab('rubber')">🌿 สวนยาง</button>
-  <button id="btn-rental"   class="tab-btn t-rental"          onclick="switchTab('rental')">🏠 ห้องเช่า</button>
-  <button id="btn-songkran" class="tab-btn t-songkran"        onclick="switchTab('songkran')">🎊 สงกราน</button>
+  <button id="btn-overview"  class="tab-btn t-overview active"  onclick="switchTab('overview')">📊 ภาพรวม</button>
+  <button id="btn-rubber"    class="tab-btn t-rubber"            onclick="switchTab('rubber')">🌿 สวนยาง</button>
+  <button id="btn-rental"    class="tab-btn t-rental"            onclick="switchTab('rental')">🏠 ห้องเช่า</button>
+  <button id="btn-songkran"  class="tab-btn t-songkran"          onclick="switchTab('songkran')">🎊 สงกราน</button>
 </nav>
+
+<!-- ════════════════════════════════════════════════════
+     TAB: ภาพรวม
+════════════════════════════════════════════════════ -->
+<div id="tab-overview">
+<header>
+  <div>
+    <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
+    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 09:46</p>
+  </div>
+</header>
+<div class="container">
+
+  <!-- กราฟเปรียบเทียบ -->
+  <div class="charts-grid" style="margin-bottom:20px">
+    <div class="chart-card wide"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart" height="70"></canvas></div>
+  </div>
+  <div class="charts-grid">
+    <div class="chart-card"><h3>🥧 สัดส่วนรายได้รวม แต่ละธุรกิจ</h3><canvas id="ov-pieChart"></canvas></div>
+    <div class="chart-card"><h3>📅 รายรับรวมทุกธุรกิจ รายเดือน (฿)</h3><canvas id="ov-monthChart"></canvas></div>
+  </div>
+
+  <!-- KPI ธุรกิจ -->
+  <div class="biz-group rubber">
+    <h3>🌿 สวนยางพารา</h3>
+    <div class="biz-kpi-row" id="ov-rubberKpi"></div>
+  </div>
+  <div class="biz-group rental">
+    <h3>🏠 ห้องเช่า</h3>
+    <div class="biz-kpi-row" id="ov-rentalKpi"></div>
+  </div>
+  <div class="biz-group songkran">
+    <h3>🎊 สงกราน</h3>
+    <div class="biz-kpi-row" id="ov-songkranKpi"></div>
+  </div>
+
+  <!-- ตารางสรุป -->
+  <div class="section">
+    <h3>📋 ตารางสรุปทุกธุรกิจ</h3>
+    <div style="overflow-x:auto"><table class="ov-summary-table" id="ov-table"></table></div>
+  </div>
+</div>
+</div>
 
 <!-- ════════════════════════════════════════════════════
      TAB: สวนยาง
@@ -207,7 +274,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:43</p>
+    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:46</p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -255,7 +322,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>สร้างเมื่อ: 17/04/2026 09:43 | ห้องทั้งหมด 4 ห้อง</p>
+    <p>สร้างเมื่อ: 17/04/2026 09:46 | ห้องทั้งหมด 4 ห้อง</p>
   </div>
 </header>
 <div class="container">
@@ -307,7 +374,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:43</p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:46</p>
   </div>
 </header>
 <div class="container">
@@ -367,19 +434,161 @@ const fmtD = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximu
 const fmtP = n => (+n||0).toFixed(2);
 
 // ═══════════════════════════════════════════════════════
+// OVERVIEW
+// ═══════════════════════════════════════════════════════
+function initOverview() {
+  const thisYear = new Date().getFullYear();       // 2026
+  const lastYear = thisYear - 1;                   // 2025
+
+  // ── สวนยาง ──
+  const rubberAll  = rAllData.reduce((s,d)=>s+d.owner,0);
+  const rubberThis = rAllData.filter(d=>d.year===thisYear).reduce((s,d)=>s+d.owner,0);
+  const rubberLast = rAllData.filter(d=>d.year===lastYear).reduce((s,d)=>s+d.owner,0);
+  const rubberAvgPrice = rAllData.length ? rAllData.reduce((s,d)=>s+d.price,0)/rAllData.length : 0;
+
+  document.getElementById('ov-rubberKpi').innerHTML = `
+    <div class="biz-kpi green"><div class="bk-num">${fmt(rubberAll)} ฿</div><div class="bk-label">รายได้สะสมทั้งหมด</div></div>
+    <div class="biz-kpi green"><div class="bk-num">${fmt(rubberThis)} ฿</div><div class="bk-label">ปีนี้ (${thisYear+543})</div></div>
+    <div class="biz-kpi gray"><div class="bk-num">${fmt(rubberLast)} ฿</div><div class="bk-label">ปีที่แล้ว (${lastYear+543})</div></div>
+    <div class="biz-kpi orange"><div class="bk-num">${rAllData.length} รอบ</div><div class="bk-label">จำนวนรอบทั้งหมด</div></div>
+    <div class="biz-kpi orange"><div class="bk-num">${rubberAvgPrice.toFixed(2)} ฿/กก.</div><div class="bk-label">ราคาเฉลี่ยตลอดกาล</div></div>
+  `;
+
+  // ── ห้องเช่า ──
+  const rentalAll  = reIncomes.reduce((s,i)=>s+i.amount,0);
+  const rentalThis = reIncomes.filter(i=>i.date.startsWith(String(thisYear))).reduce((s,i)=>s+i.amount,0);
+  const rentalLast = reIncomes.filter(i=>i.date.startsWith(String(lastYear))).reduce((s,i)=>s+i.amount,0);
+  const monthlyRent= reRooms.reduce((s,r)=>s+r.rent,0);
+  const occupied   = reRooms.filter(r=>r.status==='เช่าอยู่').length;
+
+  document.getElementById('ov-rentalKpi').innerHTML = `
+    <div class="biz-kpi blue"><div class="bk-num">${fmt(rentalAll)} ฿</div><div class="bk-label">รายรับสะสมทั้งหมด</div></div>
+    <div class="biz-kpi blue"><div class="bk-num">${fmt(rentalThis)} ฿</div><div class="bk-label">ปีนี้ (${thisYear+543})</div></div>
+    <div class="biz-kpi gray"><div class="bk-num">${fmt(rentalLast)} ฿</div><div class="bk-label">ปีที่แล้ว (${lastYear+543})</div></div>
+    <div class="biz-kpi purple"><div class="bk-num">${fmt(monthlyRent)} ฿/เดือน</div><div class="bk-label">รายรับเต็มที่/เดือน</div></div>
+    <div class="biz-kpi blue"><div class="bk-num">${occupied}/${reRooms.length}</div><div class="bk-label">ห้องที่เช่าอยู่</div></div>
+  `;
+
+  // ── สงกราน ──
+  const skRev    = skSummaries.reduce((s,d)=>s+d.revenue,0);
+  const skCost   = skSummaries.reduce((s,d)=>s+d.cost,0);
+  const skProfit = skSummaries.reduce((s,d)=>s+d.profit,0);
+  const skStock  = skSummaries.reduce((s,d)=>s+d.stock,0);
+  const skPct    = skRev>0 ? ((skProfit/skRev)*100).toFixed(1)+'%' : '-';
+
+  document.getElementById('ov-songkranKpi').innerHTML = `
+    <div class="biz-kpi pink"><div class="bk-num">${fmt(skRev)} ฿</div><div class="bk-label">ยอดขายรวม (2569)</div></div>
+    <div class="biz-kpi pink"><div class="bk-num">${fmt(skCost)} ฿</div><div class="bk-label">ต้นทุนรวม</div></div>
+    <div class="biz-kpi ${skProfit>=0?'green':'red'}"><div class="bk-num">${fmt(skProfit)} ฿</div><div class="bk-label">กำไรสุทธิ</div></div>
+    <div class="biz-kpi orange"><div class="bk-num">${skPct}</div><div class="bk-label">%กำไร</div></div>
+    <div class="biz-kpi gray"><div class="bk-num">${fmt(skStock)} ฿</div><div class="bk-label">สต็อกยกปีหน้า</div></div>
+  `;
+
+  // ── กราฟเปรียบเทียบรายปี ──
+  const compareLabels = [`${lastYear+543} (${lastYear})`, `${thisYear+543} (${thisYear})`];
+  new Chart(document.getElementById('ov-compareChart'), {
+    type: 'bar',
+    data: {
+      labels: compareLabels,
+      datasets: [
+        { label:'🌿 สวนยาง (รายได้บอสอู๊ด)', data:[rubberLast,rubberThis], backgroundColor:'rgba(76,175,80,.8)', borderColor:'rgba(76,175,80,1)', borderWidth:1 },
+        { label:'🏠 ห้องเช่า (ค่าเช่า)', data:[rentalLast,rentalThis], backgroundColor:'rgba(21,101,192,.8)', borderColor:'rgba(21,101,192,1)', borderWidth:1 },
+        { label:'🎊 สงกราน (กำไร)', data:[0,skProfit], backgroundColor:'rgba(233,30,99,.7)', borderColor:'rgba(233,30,99,1)', borderWidth:1 },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position:'top' } },
+      scales: { y: { ticks: { callback: v => fmt(v) } } }
+    }
+  });
+
+  // ── กราฟ Pie รายได้รวมทุกธุรกิจ ──
+  new Chart(document.getElementById('ov-pieChart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['🌿 สวนยาง', '🏠 ห้องเช่า', '🎊 สงกราน (กำไร)'],
+      datasets: [{ data:[rubberAll, rentalAll, Math.max(skProfit,0)],
+        backgroundColor:['rgba(76,175,80,.85)','rgba(21,101,192,.85)','rgba(233,30,99,.85)'],borderWidth:2 }]
+    },
+    options:{ responsive:true, plugins:{ legend:{ position:'bottom' } } }
+  });
+
+  // ── กราฟรายเดือนรวมทุกธุรกิจ ──
+  const allMonthMap = {};
+  rAllData.forEach(d=>{ const m=d.date_raw.substring(0,7); allMonthMap[m]=(allMonthMap[m]||0)+d.owner; });
+  reIncomes.forEach(i=>{ const m=i.date.substring(0,7); if(m) allMonthMap[m]=(allMonthMap[m]||0)+i.amount; });
+  // สงกราน ไม่มีรายเดือน ข้ามได้
+  const mKeys = Object.keys(allMonthMap).sort();
+  new Chart(document.getElementById('ov-monthChart'), {
+    type: 'bar',
+    data: {
+      labels: mKeys,
+      datasets: [{ label:'รวมทุกธุรกิจ', data:mKeys.map(m=>allMonthMap[m]),
+        backgroundColor:'rgba(55,71,79,.7)', borderColor:'rgba(55,71,79,1)', borderWidth:1 }]
+    },
+    options:{ responsive:true, plugins:{ legend:{ display:false } },
+      scales:{ y:{ ticks:{ callback:v=>fmt(v) } } } }
+  });
+
+  // ── ตารางสรุป ──
+  const tbl = document.getElementById('ov-table');
+  tbl.innerHTML = `
+    <thead><tr>
+      <th>ธุรกิจ</th>
+      <th>รายได้/กำไรสะสม (฿)</th>
+      <th>ปีที่แล้ว (${lastYear+543}) (฿)</th>
+      <th>ปีนี้ (${thisYear+543}) (฿)</th>
+      <th>สถานะ</th>
+    </tr></thead>
+    <tbody>
+      <tr>
+        <td><b>🌿 สวนยาง</b></td>
+        <td>${fmt(rubberAll)}</td>
+        <td>${fmt(rubberLast)}</td>
+        <td>${fmt(rubberThis)}</td>
+        <td><span class="sbadge ok">Active</span></td>
+      </tr>
+      <tr>
+        <td><b>🏠 ห้องเช่า</b></td>
+        <td>${fmt(rentalAll)}</td>
+        <td>${fmt(rentalLast)}</td>
+        <td>${fmt(rentalThis)}</td>
+        <td><span class="sbadge ok">Active ${occupied}/${reRooms.length}</span></td>
+      </tr>
+      <tr>
+        <td><b>🎊 สงกราน</b></td>
+        <td>${fmt(skProfit)} (กำไร)</td>
+        <td>—</td>
+        <td>${fmt(skProfit)}</td>
+        <td><span class="sbadge ok">Seasonal</span></td>
+      </tr>
+    </tbody>
+    <tfoot><tr>
+      <td><b>รวมทั้งหมด</b></td>
+      <td><b>${fmt(rubberAll+rentalAll+Math.max(skProfit,0))}</b></td>
+      <td><b>${fmt(rubberLast+rentalLast)}</b></td>
+      <td><b>${fmt(rubberThis+rentalThis+Math.max(skProfit,0))}</b></td>
+      <td></td>
+    </tr></tfoot>
+  `;
+}
+
+// ═══════════════════════════════════════════════════════
 // TAB SWITCHING
 // ═══════════════════════════════════════════════════════
 const tabInited = {};
 function switchTab(name) {
-  ['rubber','rental','songkran'].forEach(t => {
+  ['overview','rubber','rental','songkran'].forEach(t => {
     document.getElementById('tab-'+t).style.display = t===name ? '' : 'none';
     document.getElementById('btn-'+t).classList.toggle('active', t===name);
   });
   if (!tabInited[name]) {
     tabInited[name] = true;
-    if (name==='rubber')   renderRubber();
-    else if (name==='rental')   initRental();
-    else if (name==='songkran') initSongkran();
+    if (name==='overview')  initOverview();
+    else if (name==='rubber')    renderRubber();
+    else if (name==='rental')    initRental();
+    else if (name==='songkran')  initSongkran();
   }
 }
 
@@ -725,8 +934,8 @@ function initSongkran() {
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
-tabInited['rubber'] = true;
-renderRubber();
+tabInited['overview'] = true;
+initOverview();
 </script>
 </body>
 </html>
