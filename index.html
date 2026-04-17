@@ -231,7 +231,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 09:51</p>
+    <p>สวนยาง · ห้องเช่า · สงกราน | สร้างเมื่อ: 17/04/2026 09:57</p>
   </div>
 </header>
 <div class="container">
@@ -274,7 +274,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:51</p>
+    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:57</p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -322,7 +322,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>สร้างเมื่อ: 17/04/2026 09:51 | ห้องทั้งหมด 4 ห้อง</p>
+    <p>สร้างเมื่อ: 17/04/2026 09:57 | ห้องทั้งหมด 4 ห้อง</p>
   </div>
 </header>
 <div class="container">
@@ -374,7 +374,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:51</p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:57</p>
   </div>
 </header>
 <div class="container">
@@ -406,6 +406,26 @@ async function checkPw(){
       <tbody id="sk-salesBody"></tbody>
     </table></div>
   </div>
+  <!-- สินค้าคงเหลือ -->
+  <div class="section">
+    <h3>📦 สินค้าคงเหลือ (ยกไปปีหน้า)</h3>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>สินค้า</th><th>ต้นทุนซื้อมา (฿)</th><th>ขายได้ (฿)</th><th>มูลค่าสต็อกเหลือ (฿)</th><th>สถานะ</th><th>หมายเหตุ</th></tr></thead>
+      <tbody id="sk-stockBody"></tbody>
+      <tfoot id="sk-stockFoot" class="sk-foot"></tfoot>
+    </table></div>
+  </div>
+
+  <!-- รายละเอียดต้นทุนทั้งหมด -->
+  <div class="section">
+    <h3>🛒 รายละเอียดต้นทุน / สิ่งที่ซื้อมา</h3>
+    <div style="overflow-x:auto"><table>
+      <thead><tr><th>สินค้า</th><th>รายการ</th><th>จำนวน</th><th>หน่วย</th><th>ต้นทุน (฿)</th></tr></thead>
+      <tbody id="sk-costBody"></tbody>
+      <tfoot id="sk-costFoot" class="sk-foot"></tfoot>
+    </table></div>
+  </div>
+
   <div class="section">
     <h3>💡 วิเคราะห์ & คำแนะนำปีหน้า</h3>
     <div id="sk-tipsBox"></div>
@@ -428,6 +448,7 @@ const reExpiring = [];
 const reAlerts   = [{"room": "คอนโด", "date": "2026-04-18", "days": 1, "amount": 10000.0}];
 const skSummaries= [{"year": "2569", "product": "ข้าวไข่เจียว", "revenue": 4210.0, "cost": 2813.0, "profit": 1397.0, "pct": "33%", "stock": 0.0, "note": ""}, {"year": "2569", "product": "น้ำทุกประเภท", "revenue": 2520.0, "cost": 2006.0, "profit": 514.0, "pct": "26%", "stock": 0.0, "note": "ของเหลือถือเป็นต้นทุนจม"}, {"year": "2569", "product": "กระเป๋า/แป้ง/แว่น", "revenue": 0, "cost": 3000.0, "profit": 0, "pct": "", "stock": 4449.0, "note": "สต็อกยกไปปีหน้า 4,449"}, {"year": "2569", "product": "ค่าใช้จ่ายอื่น", "revenue": 0, "cost": 1100.0, "profit": -1100.0, "pct": "", "stock": 0.0, "note": "เต้น+ถุง+ป้าย"}];
 const skSales    = [{"year": "2569", "date": "13/04/2569", "product": "ข้าวไข่เจียว", "qty": "33", "unit": "จาน", "revenue": 1160.0, "leftover": "กินเอง 5 จาน"}, {"year": "2569", "date": "14/04/2569", "product": "ข้าวไข่เจียว", "qty": "46", "unit": "จาน", "revenue": 1530.0, "leftover": ""}, {"year": "2569", "date": "15/04/2569", "product": "ข้าวไข่เจียว", "qty": "42", "unit": "จาน", "revenue": 1520.0, "leftover": ""}, {"year": "2569", "date": "13-15/04", "product": "น้ำเปล่า", "qty": "72", "unit": "ขวด", "revenue": 720.0, "leftover": "เหลือ 18 ขวด (ทิ้ง)"}, {"year": "2569", "date": "13-15/04", "product": "น้ำอัดลม", "qty": "10", "unit": "กป.", "revenue": 200.0, "leftover": "เหลือ 10 กป. (กินเอง 4)"}, {"year": "2569", "date": "13-15/04", "product": "เบียร์", "qty": "20", "unit": "กป.", "revenue": 1200.0, "leftover": "เหลือ 4 กป. (ทิ้ง)"}, {"year": "2569", "date": "13-15/04", "product": "ชาเขียว", "qty": "6", "unit": "ขวด", "revenue": 120.0, "leftover": "เหลือ 2 ขวด (ทิ้ง)"}];
+const skCosts    = [{"year": "2569", "product": "ข้าวไข่เจียว", "item": "ไข่", "cost": 280.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "หมู", "cost": 65.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ปูอัด", "cost": 99.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ไส้กรอก", "cost": 79.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "แหนม", "cost": 62.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ผัก", "cost": 40.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ซอส", "cost": 75.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ข้าว", "cost": 199.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ถ้วย+ช้อน+ถุง", "cost": 228.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "น้ำมัน", "cost": 48.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "แก๊ส", "cost": 165.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ไข่", "cost": 134.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "หมู", "cost": 106.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ปูอัด", "cost": 75.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ไส้กรอก", "cost": 125.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "แหนม", "cost": 76.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ผัก", "cost": 8.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ข้าว", "cost": 388.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "น้ำมัน", "cost": 49.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ไข่", "cost": 174.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "หมู", "cost": 67.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ไส้กรอก", "cost": 35.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ผัก", "cost": 15.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ซอส", "cost": 13.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ข้าว", "cost": 59.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "ถ้วย+ช้อน", "cost": 100.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ข้าวไข่เจียว", "item": "น้ำมัน", "cost": 49.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "น้ำ", "item": "น้ำเปล่า", "cost": 200.0, "unit": "บาท", "qty": "6 โหล (72 ขวด)"}, {"year": "2569", "product": "น้ำ", "item": "น้ำอัดลม", "cost": 340.0, "unit": "บาท", "qty": "24 กป."}, {"year": "2569", "product": "น้ำ", "item": "เบียร์", "cost": 1120.0, "unit": "บาท", "qty": "24 กป. (2 โหล x 560)"}, {"year": "2569", "product": "น้ำ", "item": "ชาเขียว", "cost": 96.0, "unit": "บาท", "qty": "8 ขวด"}, {"year": "2569", "product": "น้ำ", "item": "น้ำแข็ง", "cost": 250.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "กระเป๋า/แป้ง/แว่น", "item": "ยกมาจากปีก่อน", "cost": 2000.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "กระเป๋า/แป้ง/แว่น", "item": "ซื้อเพิ่มปีนี้", "cost": 1000.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ค่าใช้จ่ายอื่น", "item": "ค่าเช่าเต้น", "cost": 1000.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ค่าใช้จ่ายอื่น", "item": "ถุงขยะใหญ่", "cost": 60.0, "unit": "บาท", "qty": ""}, {"year": "2569", "product": "ค่าใช้จ่ายอื่น", "item": "ป้าย", "cost": 40.0, "unit": "บาท", "qty": ""}];
 
 const fmt  = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:0});
 const fmtD = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -925,6 +946,63 @@ function initSongkran() {
     ]},
     options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{ticks:{callback:v=>v.toLocaleString('th-TH')}}}}
   });
+  // ── สินค้าคงเหลือ ──
+  const stockBody = document.getElementById('sk-stockBody');
+  const stockFoot = document.getElementById('sk-stockFoot');
+  const stockItems = skSummaries.filter(s => s.stock > 0 || s.cost > 0);
+  let totCost=0, totSale2=0, totStock=0;
+  stockItems.forEach(s => {
+    totCost  += s.cost;
+    totSale2 += s.revenue;
+    totStock += s.stock;
+    const hasStock = s.stock > 0;
+    const statusCls = hasStock ? 'stock-badge' : '';
+    const statusTxt = hasStock ? `เหลือ ${fmt(s.stock)} ฿` : 'หมดแล้ว';
+    stockBody.innerHTML += `<tr>
+      <td><b>${s.product}</b></td>
+      <td>${fmt(s.cost)}</td>
+      <td>${s.revenue>0?fmt(s.revenue):'-'}</td>
+      <td>${hasStock?'<b style="color:#e65100">'+fmt(s.stock)+'</b>':'<span style="color:#aaa">0</span>'}</td>
+      <td>${hasStock?'<span class="stock-badge">'+statusTxt+'</span>':'<span style="color:#aaa;font-size:.85em">หมดแล้ว</span>'}</td>
+      <td style="font-size:.82em;color:#666">${s.note||''}</td>
+    </tr>`;
+  });
+  stockFoot.innerHTML = `<tr>
+    <td>รวม</td><td>${fmt(totCost)}</td><td>${fmt(totSale2)}</td>
+    <td><b style="color:#e65100">${fmt(totStock)}</b></td><td colspan="2"></td>
+  </tr>`;
+
+  // ── รายละเอียดต้นทุนทั้งหมด ──
+  const costBody = document.getElementById('sk-costBody');
+  const costFoot = document.getElementById('sk-costFoot');
+  // Group by product
+  const costByProduct = {};
+  skCosts.forEach(c => {
+    if(!costByProduct[c.product]) costByProduct[c.product]=[];
+    costByProduct[c.product].push(c);
+  });
+  let grandCost = 0;
+  let firstInGroup = true;
+  Object.entries(costByProduct).forEach(([product, items]) => {
+    const productTotal = items.reduce((s,c)=>s+c.cost,0);
+    grandCost += productTotal;
+    items.forEach((c,idx) => {
+      costBody.innerHTML += `<tr style="${idx===0?'border-top:2px solid #fce4ec':''}">
+        <td style="font-weight:${idx===0?'bold':'normal'};color:${idx===0?'#880E4F':'#666'}">${idx===0?c.product:''}</td>
+        <td style="text-align:left">${c.item||'-'}</td>
+        <td>${c.qty||'-'}</td>
+        <td>${c.unit||'-'}</td>
+        <td>${c.cost>0?fmt(c.cost):'-'}</td>
+      </tr>`;
+    });
+    // product subtotal
+    costBody.innerHTML += `<tr style="background:#fce4ec">
+      <td colspan="4" style="text-align:right;font-size:.85em;color:#880E4F">รวม ${product}</td>
+      <td><b style="color:#880E4F">${fmt(productTotal)}</b></td>
+    </tr>`;
+  });
+  costFoot.innerHTML = `<tr><td colspan="4">รวมต้นทุนทั้งหมด</td><td><b>${fmt(grandCost)}</b></td></tr>`;
+
   // Tips
   const tips=['🍳 <b>ข้าวไข่เจียว</b> กำไรดีที่สุด 33% ปีหน้าควรขยายจำนวนวันขาย',
     '💧 <b>น้ำเปล่า</b> กำไร% สูงสุดในกลุ่มน้ำ ควรเพิ่มจำนวน',
