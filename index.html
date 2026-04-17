@@ -207,7 +207,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:37</p>
+    <p>บอสอู๊ด | ข้อมูลล่าสุด: 15 เม.ย. 2569 | สร้างเมื่อ: 17/04/2026 09:43</p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -255,29 +255,35 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>สร้างเมื่อ: 17/04/2026 09:37 | ห้องทั้งหมด 4 ห้อง</p>
+    <p>สร้างเมื่อ: 17/04/2026 09:43 | ห้องทั้งหมด 4 ห้อง</p>
   </div>
 </header>
 <div class="container">
-  <div class="kpi-grid">
-    <div class="kpi" style="border-color:#4CAF50"><div class="num" style="color:#2e7d32">22,500 ฿</div><div class="label">รายรับค่าเช่า/เดือน (เต็ม)</div></div>
-    <div class="kpi blue"><div class="num">4/4</div><div class="label">ห้องที่มีผู้เช่า</div></div>
-    <div class="kpi purple"><div class="num">31,500 ฿</div><div class="label">มัดจำรวม</div></div>
-    <div class="kpi orange"><div class="num">230,000 ฿</div><div class="label">รายรับสะสม</div></div>
-    <div class="kpi "><div class="num">0</div><div class="label">สัญญาใกล้หมด (60 วัน)</div></div>
-    <div class="kpi red"><div class="num">1</div><div class="label">แจ้งเตือนเก็บเงิน (5 วัน)</div></div>
+  <!-- Filter Bar -->
+  <div class="filterbar" style="border-left:4px solid #1976D2">
+    <label>📅 ปี:</label>
+    <select id="re-yearFilter" onchange="reFilterYear()" style="border-color:#90caf9">
+      <option value="all">ทั้งหมด</option>
+    </select>
+    <label>🏠 ห้อง:</label>
+    <select id="re-roomFilter" onchange="reFilterYear()" style="border-color:#90caf9">
+      <option value="all">ทุกห้อง</option>
+    </select>
+    <span style="margin-left:auto;font-size:.78em;color:#999">🔄 Google Sheet</span>
   </div>
+  <!-- KPI (JS-driven) -->
+  <div class="kpi-grid" id="re-kpiGrid"></div>
   <div id="re-alertSection"></div>
   <div class="section">
     <h3>🏠 สถานะห้องทั้งหมด</h3>
     <div class="rooms-grid" id="re-roomsGrid"></div>
   </div>
   <div class="charts-grid">
-    <div class="chart-card"><h3>💰 รายรับรายเดือน (฿)</h3><canvas id="re-incomeChart"></canvas></div>
-    <div class="chart-card"><h3>🏠 สัดส่วนรายรับแต่ละห้อง</h3><canvas id="re-pieChart"></canvas></div>
+    <div class="chart-card"><h3 id="re-chartTitle">💰 รายรับรายเดือน (฿)</h3><canvas id="re-incomeChart"></canvas></div>
+    <div class="chart-card"><h3>🏠 สัดส่วนค่าเช่าแต่ละห้อง</h3><canvas id="re-pieChart"></canvas></div>
   </div>
   <div class="section">
-    <h3>📋 ประวัติรายรับ</h3>
+    <h3 id="re-tableTitle">📋 ประวัติรายรับ</h3>
     <div style="overflow-x:auto"><table>
       <thead><tr><th>วันที่</th><th>ห้อง</th><th>ประเภท</th><th>จำนวน (฿)</th><th>สถานะ</th><th>หมายเหตุ</th></tr></thead>
       <tbody id="re-incomeBody"></tbody>
@@ -301,7 +307,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:37</p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า | สร้างเมื่อ: 17/04/2026 09:43</p>
   </div>
 </header>
 <div class="container">
@@ -543,7 +549,22 @@ function exportExcel() {
 // ═══════════════════════════════════════════════════════
 // RENTAL
 // ═══════════════════════════════════════════════════════
+let reIncomeChart = null;
+
 function initRental() {
+  // Populate year filter
+  const years = [...new Set(reIncomes.map(i=>i.date.substring(0,4)).filter(Boolean))].sort();
+  const ySel = document.getElementById('re-yearFilter');
+  years.forEach(y => {
+    const be = (+y + 543);
+    ySel.innerHTML += `<option value="${y}">${be} (${y})</option>`;
+  });
+
+  // Populate room filter
+  const rooms = [...new Set(reIncomes.map(i=>i.room).filter(Boolean))].sort();
+  const rSel = document.getElementById('re-roomFilter');
+  rooms.forEach(r => rSel.innerHTML += `<option value="${r}">${r}</option>`);
+
   // Alerts
   const alertSec=document.getElementById('re-alertSection');
   if(reExpiring.length||reAlerts.length) {
@@ -552,7 +573,8 @@ function initRental() {
     reAlerts.forEach(a=>h+=`<div class="alert-box">📅 <b>${a.room}</b> — เก็บเงิน ${a.date} (อีก ${a.days} วัน) — <b>${fmt(a.amount)} ฿</b></div>`);
     alertSec.innerHTML=h+'</div>';
   }
-  // Rooms grid
+
+  // Rooms grid (static)
   const grid=document.getElementById('re-roomsGrid');
   reRooms.forEach(r=>{
     const isOcc=r.status==='เช่าอยู่';
@@ -564,46 +586,97 @@ function initRental() {
       <div class="detail">👤 ${r.tenant||'-'}<br>📅 เก็บเงิน: ${r.collect_day}<br>🔒 มัดจำ: ${fmt(r.deposit)} ฿<br>📄 ${r.contract}<br>${r.end_date&&r.end_date!=='-'?'🗓️ สิ้นสุด: '+r.end_date+'<br>':''}${r.note?'📝 '+r.note:''}</div>
     </div>`;
   });
-  // Income table
-  const tbody=document.getElementById('re-incomeBody');
-  const tfoot=document.getElementById('re-incomeFoot');
-  let total=0;
-  if(reIncomes.length) {
-    reIncomes.slice().reverse().forEach(i=>{
-      total+=i.amount;
-      tbody.innerHTML+=`<tr><td>${i.date}</td><td>${i.room}</td><td>${i.type}</td>
-        <td><b>${fmt(i.amount)}</b></td>
-        <td><span class="sbadge ${i.status==='รับแล้ว'?'ok':'warn'}">${i.status||'-'}</span></td>
-        <td>${i.note||'-'}</td></tr>`;
-    });
-    tfoot.innerHTML=`<tr><td colspan="3">รวม</td><td><b>${fmt(total)}</b></td><td colspan="2"></td></tr>`;
-  } else {
-    tbody.innerHTML='<tr><td colspan="6" class="no-data">ยังไม่มีข้อมูลรายรับ</td></tr>';
-  }
-  // Water table
-  const wb=document.getElementById('re-waterBody');
-  if(reWater.length) {
-    reWater.forEach(w=>wb.innerHTML+=`<tr><td>${w.month}</td><td>${fmtD(w.water_unit)}</td><td>${fmtD(w.water_cost)}</td><td>${fmtD(w.elec_unit)}</td><td>${fmtD(w.elec_cost)}</td><td><b>${fmtD(w.total)}</b></td></tr>`);
-  } else {
-    wb.innerHTML='<tr><td colspan="6" class="no-data">ยังไม่มีข้อมูล</td></tr>';
-  }
-  // Charts
-  const mMap={};
-  reIncomes.forEach(i=>{ const m=i.date.substring(0,7); if(m) mMap[m]=(mMap[m]||0)+i.amount; });
-  const mLabels=Object.keys(mMap).sort();
-  if(mLabels.length) {
-    new Chart(document.getElementById('re-incomeChart'),{
-      type:'bar',
-      data:{labels:mLabels,datasets:[{label:'รายรับ',data:mLabels.map(m=>mMap[m]),backgroundColor:'rgba(21,101,192,.75)',borderColor:'rgba(21,101,192,1)',borderWidth:1}]},
-      options:{responsive:true,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>v.toLocaleString('th-TH')}}}}
-    });
-  }
+
+  // Pie chart (static — สัดส่วนค่าเช่า)
   new Chart(document.getElementById('re-pieChart'),{
     type:'doughnut',
     data:{labels:reRooms.map(r=>r.name),datasets:[{data:reRooms.map(r=>r.rent),
       backgroundColor:['rgba(21,101,192,.8)','rgba(76,175,80,.8)','rgba(255,152,0,.8)','rgba(156,39,176,.8)'],borderWidth:2}]},
     options:{responsive:true,plugins:{legend:{position:'bottom'}}}
   });
+
+  // Water table (static)
+  const wtb=document.getElementById('re-waterBody');
+  if(reWater.length) {
+    reWater.forEach(w=>wtb.innerHTML+=`<tr><td>${w.month}</td><td>${fmtD(w.water_unit)}</td><td>${fmtD(w.water_cost)}</td><td>${fmtD(w.elec_unit)}</td><td>${fmtD(w.elec_cost)}</td><td><b>${fmtD(w.total)}</b></td></tr>`);
+  } else {
+    wtb.innerHTML='<tr><td colspan="6" class="no-data">ยังไม่มีข้อมูล</td></tr>';
+  }
+
+  // Render filtered view (default = ทั้งหมด)
+  reRenderFiltered();
+}
+
+function reFilterYear() {
+  reRenderFiltered();
+}
+
+function reRenderFiltered() {
+  const yearVal = document.getElementById('re-yearFilter').value;
+  const roomVal = document.getElementById('re-roomFilter').value;
+
+  // Filter
+  let filtered = reIncomes.filter(i => {
+    const yOk = yearVal === 'all' || i.date.startsWith(yearVal);
+    const rOk = roomVal === 'all' || i.room === roomVal;
+    return yOk && rOk;
+  });
+
+  const total = filtered.reduce((s,i)=>s+i.amount,0);
+  const count = filtered.length;
+
+  // ── KPI ──
+  const byRoom = {};
+  filtered.forEach(i=>{ byRoom[i.room]=(byRoom[i.room]||0)+i.amount; });
+  const topRoom = Object.entries(byRoom).sort((a,b)=>b[1]-a[1])[0];
+  const yearLabel = yearVal==='all' ? 'ทั้งหมด' : `ปี ${+yearVal+543} (${yearVal})`;
+
+  document.getElementById('re-kpiGrid').innerHTML=`
+    <div class="kpi" style="border-color:#4CAF50"><div class="num" style="color:#2e7d32">22,500 ฿</div><div class="label">รายรับ/เดือน (เต็ม)</div></div>
+    <div class="kpi blue"><div class="num">4/4</div><div class="label">ห้องที่มีผู้เช่า</div></div>
+    <div class="kpi purple"><div class="num">31,500 ฿</div><div class="label">มัดจำรวม</div></div>
+    <div class="kpi orange"><div class="num">${fmt(total)} ฿</div><div class="label">รายรับ ${yearLabel}</div></div>
+    <div class="kpi blue"><div class="num">${count}</div><div class="label">จำนวนรายการ ${yearLabel}</div></div>
+    <div class="kpi ${reExpiring.length?'red':''}"><div class="num">0</div><div class="label">สัญญาใกล้หมด (60 วัน)</div></div>
+  `;
+
+  // ── กราฟรายเดือน ──
+  const mMap = {};
+  filtered.forEach(i=>{ const m=i.date.substring(0,7); if(m) mMap[m]=(mMap[m]||0)+i.amount; });
+  const mLabels = Object.keys(mMap).sort();
+  const mVals   = mLabels.map(m=>mMap[m]);
+  const chartTitle = yearVal==='all' ? '💰 รายรับรายเดือน (฿)' : `💰 รายรับรายเดือน ปี ${+yearVal+543} (฿)`;
+  document.getElementById('re-chartTitle').textContent = chartTitle;
+  if(reIncomeChart) reIncomeChart.destroy();
+  if(mLabels.length) {
+    reIncomeChart = new Chart(document.getElementById('re-incomeChart'),{
+      type:'bar',
+      data:{labels:mLabels,datasets:[{
+        label:'รายรับ',data:mVals,
+        backgroundColor:'rgba(21,101,192,.75)',borderColor:'rgba(21,101,192,1)',borderWidth:1
+      }]},
+      options:{responsive:true,plugins:{legend:{display:false}},
+        scales:{y:{ticks:{callback:v=>v.toLocaleString('th-TH')}}}}
+    });
+  }
+
+  // ── ตารางรายรับ ──
+  const tbody=document.getElementById('re-incomeBody');
+  const tfoot=document.getElementById('re-incomeFoot');
+  const roomLabel = roomVal==='all' ? '' : ` — ${roomVal}`;
+  document.getElementById('re-tableTitle').textContent = `📋 ประวัติรายรับ ${yearLabel}${roomLabel} (${count} รายการ)`;
+  if(filtered.length) {
+    tbody.innerHTML = filtered.slice().reverse().map(i=>
+      `<tr><td>${i.date}</td><td>${i.room}</td><td>${i.type}</td>
+       <td><b>${fmt(i.amount)}</b></td>
+       <td><span class="sbadge ${i.status==='รับแล้ว'?'ok':'warn'}">${i.status||'-'}</span></td>
+       <td>${i.note||'-'}</td></tr>`
+    ).join('');
+    tfoot.innerHTML=`<tr><td colspan="3">รวม</td><td><b>${fmt(total)}</b></td><td colspan="2"></td></tr>`;
+  } else {
+    tbody.innerHTML='<tr><td colspan="6" class="no-data">ไม่มีข้อมูลในช่วงที่เลือก</td></tr>';
+    tfoot.innerHTML='';
+  }
 }
 
 // ═══════════════════════════════════════════════════════
