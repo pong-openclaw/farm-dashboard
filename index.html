@@ -242,7 +242,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:50</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:55</span></p>
   </div>
 </header>
 <div class="container">
@@ -257,21 +257,17 @@ async function checkPw(){
     </button>
   </div>
 
-  <!-- กราฟเปรียบเทียบ -->
+  <!-- กราฟเปรียบเทียบ + Year Selector (แถวเดียวกัน) -->
   <div class="charts-grid" style="margin-bottom:20px">
     <div class="chart-card"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart"></canvas></div>
-    <div class="chart-card" id="ov-compare-placeholder" style="background:linear-gradient(135deg,#f8f9fa,#e9ecef);display:flex;align-items:center;justify-content:center;color:#adb5bd;font-size:.9em">
-      📌 เลือกปีด้านล่างเพื่อดูรายละเอียดรายเดือน
+    <div class="chart-card" id="ov-year-section">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <h3 style="margin:0;font-size:.95em;color:#333">📅 รายได้รวม แยกตามปี</h3>
+        <div id="ov-year-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+      <div id="ov-year-kpi" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px"></div>
+      <canvas id="ov-yearMonthChart" style="max-height:220px"></canvas>
     </div>
-  </div>
-  <!-- 📅 Year Selector + รายได้รายปี -->
-  <div id="ov-year-section" style="background:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
-    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
-      <h3 style="margin:0;font-size:.95em;color:#333">📅 รายได้รวม แยกตามปี</h3>
-      <div id="ov-year-btns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-    </div>
-    <div id="ov-year-kpi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px"></div>
-    <canvas id="ov-yearMonthChart" style="max-height:280px"></canvas>
   </div>
 
   <div class="charts-grid">
@@ -347,7 +343,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:50</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:55</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -395,7 +391,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:50</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:55</span></p>
   </div>
 </header>
 <div class="container">
@@ -447,7 +443,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:50</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:55</span></p>
   </div>
 </header>
 <div class="container">
