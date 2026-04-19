@@ -1,0 +1,41 @@
+name: Rebuild Dashboard
+
+on:
+  schedule:
+    - cron: "0 0 * * *"   # ทุกวัน 07:00 น. เวลาไทย (UTC+7)
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "เหตุผลที่ rebuild (ไม่บังคับ)"
+        required: false
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install cryptography
+
+      - name: Build Dashboard
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+        run: python build_unified.py
+
+      - name: Commit and push updated dashboard
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add unified_index.html
+          git diff --cached --quiet || git commit -m "auto: rebuild dashboard $(date +'%Y-%m-%d %H:%M')"
+          git push
