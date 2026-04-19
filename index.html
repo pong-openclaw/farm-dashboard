@@ -222,6 +222,7 @@ async function checkPw(){
   <button id="btn-rubber"    class="tab-btn t-rubber"            onclick="switchTab('rubber')">🌿 สวนยาง</button>
   <button id="btn-rental"    class="tab-btn t-rental"            onclick="switchTab('rental')">🏠 ห้องเช่า</button>
   <button id="btn-songkran"  class="tab-btn t-songkran"          onclick="switchTab('songkran')">🎊 สงกราน</button>
+  
 </nav>
 
 <!-- ════════════════════════════════════════════════════
@@ -231,7 +232,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
   </div>
 </header>
 <div class="container">
@@ -270,6 +271,9 @@ async function checkPw(){
     <div class="biz-kpi-row" id="ov-songkranKpi"></div>
   </div>
 
+  <!-- Generic Businesses KPI (auto) -->
+  <div id="ov-genericKpiContainer"></div>
+
   <!-- ตารางสรุป -->
   <div class="section">
     <h3>📋 ตารางสรุปทุกธุรกิจ</h3>
@@ -285,7 +289,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -333,7 +337,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
   </div>
 </header>
 <div class="container">
@@ -385,7 +389,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
   </div>
 </header>
 <div class="container">
@@ -466,6 +470,9 @@ async function checkPw(){
 </div>
 </div>
 
+<!-- ════════ Generic Businesses (Auto-Generated) ════════ -->
+
+
 <script>
 // ═══════════════════════════════════════════════════════
 // DATA
@@ -487,6 +494,8 @@ const skTotalRevenue = 13870.0;
 const skTotalCost    = 8919.0;
 const skTotalProfit  = 4951.0;
 const skTotalStock   = 4449.0;
+const GENERIC_BIZ    = [];
+const GENERIC_KEYS   = [];
 
 const fmt  = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:0});
 const fmtD = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
@@ -724,6 +733,32 @@ function initOverview() {
       <td><b>${fmtAcc(sumIn-sumOut)}</b></td>
     </tr></tfoot>
   `;
+
+  // ══════════ 🆕 Generic Businesses → Overview KPIs ══════════
+  const genCont = document.getElementById('ov-genericKpiContainer');
+  if (GENERIC_BIZ.length > 0 && genCont) {
+    let genHtml = '';
+    GENERIC_BIZ.forEach(b => {
+      const rTot = b.revenues.reduce((s,r)=>s+r.amount,0);
+      const eTot = b.expenses.reduce((s,r)=>s+r.amount,0);
+      const profit = rTot - eTot;
+      const rThis = b.revenues.filter(r=>r.date.startsWith(String(thisYear))).reduce((s,r)=>s+r.amount,0);
+      const rLast = b.revenues.filter(r=>r.date.startsWith(String(lastYear))).reduce((s,r)=>s+r.amount,0);
+      const yoy = rLast>0 ? ((rThis-rLast)/rLast*100) : 0;
+      genHtml += `
+        <div class="biz-group" style="border-left:6px solid ${b.color};background:${b.color}0d">
+          <h3>${b.emoji} ${b.name}</h3>
+          <div class="biz-kpi-row">
+            <div class="biz-kpi" style="background:${b.color}1a;border-left:4px solid ${b.color}"><div class="bk-num">${fmt(rTot)} ฿</div><div class="bk-label">รายรับสะสม</div></div>
+            <div class="biz-kpi gray"><div class="bk-num">${fmt(eTot)} ฿</div><div class="bk-label">รายจ่ายสะสม</div></div>
+            <div class="biz-kpi ${profit>=0?'green':'red'}"><div class="bk-num">${fmt(profit)} ฿</div><div class="bk-label">กำไรสุทธิ</div></div>
+            <div class="biz-kpi" style="background:${b.color}1a;border-left:4px solid ${b.color}"><div class="bk-num">${fmt(rThis)} ฿</div><div class="bk-label">ปีนี้ (${thisYear+543})<br>${fmtDelta(yoy)} YoY</div></div>
+            <div class="biz-kpi gray"><div class="bk-num">${fmt(rLast)} ฿</div><div class="bk-label">ปีที่แล้ว (${lastYear+543})</div></div>
+          </div>
+        </div>`;
+    });
+    genCont.innerHTML = genHtml;
+  }
 }
 
 // ═══════════════════════════════════════════════════════
@@ -731,9 +766,12 @@ function initOverview() {
 // ═══════════════════════════════════════════════════════
 const tabInited = {};
 function switchTab(name) {
-  ['overview','rubber','rental','songkran'].forEach(t => {
-    document.getElementById('tab-'+t).style.display = t===name ? '' : 'none';
-    document.getElementById('btn-'+t).classList.toggle('active', t===name);
+  const allTabs = ['overview','rubber','rental','songkran'].concat(GENERIC_KEYS);
+  allTabs.forEach(t => {
+    const el = document.getElementById('tab-'+t);
+    const bt = document.getElementById('btn-'+t);
+    if (el) el.style.display = t===name ? '' : 'none';
+    if (bt) bt.classList.toggle('active', t===name);
   });
   if (!tabInited[name]) {
     tabInited[name] = true;
@@ -741,7 +779,108 @@ function switchTab(name) {
     else if (name==='rubber')    renderRubber();
     else if (name==='rental')    initRental();
     else if (name==='songkran')  initSongkran();
+    else {
+      const cfg = GENERIC_BIZ.find(b => b.key===name);
+      if (cfg) initGenericBiz(cfg);
+    }
   }
+}
+
+// ═══════════════════════════════════════════════════════
+// GENERIC BUSINESS RENDERER (รองรับธุรกิจใหม่ไม่จำกัด)
+// ═══════════════════════════════════════════════════════
+function initGenericBiz(cfg) {
+  const k = cfg.key;
+  const revs = cfg.revenues || [];
+  const exps = cfg.expenses || [];
+  const thisYear = new Date().getFullYear();
+  const lastYear = thisYear - 1;
+
+  const sumBy = (arr, yr) => arr.filter(r => r.date && r.date.startsWith(String(yr))).reduce((s,r)=>s+r.amount,0);
+  const totalRev  = revs.reduce((s,r)=>s+r.amount,0);
+  const totalExp  = exps.reduce((s,r)=>s+r.amount,0);
+  const profit    = totalRev - totalExp;
+  const revThis   = sumBy(revs, thisYear);
+  const revLast   = sumBy(revs, lastYear);
+  const expThis   = sumBy(exps, thisYear);
+  const expLast   = sumBy(exps, lastYear);
+  const profitThis= revThis - expThis;
+  const profitLast= revLast - expLast;
+  const yoyRev    = revLast>0 ? ((revThis-revLast)/revLast*100) : 0;
+  const yoyProfit = profitLast!==0 ? ((profitThis-profitLast)/Math.abs(profitLast)*100) : 0;
+
+  // KPIs
+  document.getElementById(`gb-${k}-kpi`).innerHTML = `
+    <div class="biz-kpi" style="background:${cfg.color}1a;border-left:4px solid ${cfg.color}">
+      <div class="bk-num">${fmt(totalRev)} ฿</div><div class="bk-label">รายรับสะสม</div></div>
+    <div class="biz-kpi gray">
+      <div class="bk-num">${fmt(totalExp)} ฿</div><div class="bk-label">รายจ่ายสะสม</div></div>
+    <div class="biz-kpi ${profit>=0?'green':'red'}">
+      <div class="bk-num">${fmt(profit)} ฿</div><div class="bk-label">กำไรสุทธิสะสม</div></div>
+    <div class="biz-kpi" style="background:${cfg.color}1a;border-left:4px solid ${cfg.color}">
+      <div class="bk-num">${fmt(revThis)} ฿</div><div class="bk-label">รายรับปีนี้ (${thisYear+543})<br>${fmtDelta(yoyRev)} YoY</div></div>
+    <div class="biz-kpi ${profitThis>=0?'green':'red'}">
+      <div class="bk-num">${fmt(profitThis)} ฿</div><div class="bk-label">กำไรปีนี้<br>${fmtDelta(yoyProfit)} YoY</div></div>
+  `;
+
+  // Monthly revenue vs expense
+  const mmap = {};
+  revs.forEach(r => { const m=r.date.substring(0,7); if(!mmap[m]) mmap[m]={r:0,e:0}; mmap[m].r+=r.amount; });
+  exps.forEach(r => { const m=r.date.substring(0,7); if(!mmap[m]) mmap[m]={r:0,e:0}; mmap[m].e+=r.amount; });
+  const months = Object.keys(mmap).sort();
+  new Chart(document.getElementById(`gb-${k}-monthChart`), {
+    type:'bar',
+    data:{labels:months,datasets:[
+      {label:'รายรับ',data:months.map(m=>mmap[m].r),backgroundColor:cfg.color+'cc'},
+      {label:'รายจ่าย',data:months.map(m=>mmap[m].e),backgroundColor:'rgba(220,38,38,.7)'}
+    ]},
+    options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{ticks:{callback:v=>fmt(v)}}}}
+  });
+
+  // Year compare
+  const yset = new Set([...revs.map(r=>r.date.substring(0,4)), ...exps.map(r=>r.date.substring(0,4))].filter(Boolean));
+  const years = [...yset].sort();
+  new Chart(document.getElementById(`gb-${k}-yearChart`), {
+    type:'bar',
+    data:{labels:years.map(y=>+y+543),datasets:[
+      {label:'รายรับ',data:years.map(y=>sumBy(revs,+y)),backgroundColor:cfg.color+'cc'},
+      {label:'รายจ่าย',data:years.map(y=>sumBy(exps,+y)),backgroundColor:'rgba(220,38,38,.7)'},
+      {label:'กำไร',data:years.map(y=>sumBy(revs,+y)-sumBy(exps,+y)),backgroundColor:'rgba(76,175,80,.7)'}
+    ]},
+    options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{ticks:{callback:v=>fmt(v)}}}}
+  });
+
+  // Expense pie by item
+  const expByItem = {};
+  exps.forEach(e => { const k2=e.item||'อื่น ๆ'; expByItem[k2]=(expByItem[k2]||0)+e.amount; });
+  const eLabels = Object.keys(expByItem).sort((a,b)=>expByItem[b]-expByItem[a]).slice(0,10);
+  const palette = ['#ef4444','#f97316','#f59e0b','#eab308','#84cc16','#22c55e','#14b8a6','#06b6d4','#3b82f6','#8b5cf6'];
+  new Chart(document.getElementById(`gb-${k}-expPie`), {
+    type:'doughnut',
+    data:{labels:eLabels,datasets:[{data:eLabels.map(l=>expByItem[l]),backgroundColor:palette}]},
+    options:{responsive:true,plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>` ${c.label}: ${fmt(c.parsed)} ฿`}}}}
+  });
+
+  // Transaction table — รายการล่าสุด 50 ตัว (รวม รายรับ+รายจ่าย)
+  const allTxn = revs.map(r=>({...r,type:'รายรับ'})).concat(exps.map(e=>({...e,type:'รายจ่าย'})));
+  allTxn.sort((a,b)=>b.date.localeCompare(a.date));
+  const recent = allTxn.slice(0,50);
+  let trows = '';
+  recent.forEach(t => {
+    const sign = t.type==='รายรับ' ? '+' : '-';
+    const color = t.type==='รายรับ' ? '#059669' : '#dc2626';
+    trows += `<tr>
+      <td>${t.date}</td>
+      <td><span style="color:${color};font-weight:600">${t.type}</span></td>
+      <td>${t.item}</td>
+      <td style="text-align:right;color:${color};font-weight:600">${sign} ${fmt(t.amount)}</td>
+      <td style="color:#666;font-size:.85em">${t.note||''}</td>
+    </tr>`;
+  });
+  document.getElementById(`gb-${k}-tbl`).innerHTML = `
+    <thead><tr><th>วันที่</th><th>ประเภท</th><th>รายการ</th><th style="text-align:right">จำนวน (฿)</th><th>หมายเหตุ</th></tr></thead>
+    <tbody>${trows}</tbody>
+  `;
 }
 
 // ═══════════════════════════════════════════════════════
