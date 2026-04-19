@@ -1130,9 +1130,18 @@ function initOverview() {{
   // ── กราฟรายเดือนรวมทุกธุรกิจ (Stacked) ──
   const stackRubberMap = {{}};
   const stackRentalMap = {{}};
+  const stackSkMap     = {{}};
   rAllData.forEach(d=>{{ const m=d.date_raw.substring(0,7); stackRubberMap[m]=(stackRubberMap[m]||0)+d.owner; }});
   reIncomes.forEach(i=>{{ const m=i.date.substring(0,7); if(m) stackRentalMap[m]=(stackRentalMap[m]||0)+i.amount; }});
-  const mKeys = [...new Set([...Object.keys(stackRubberMap),...Object.keys(stackRentalMap)])].sort();
+  // สงกราน → map ปีพุทธ → เมษา ของปี ค.ศ.
+  skSales.forEach(s=>{{
+    if(!s.year) return;
+    const yr = parseInt(s.year) - 543;
+    if(isNaN(yr)) return;
+    const m = yr + '-04';
+    stackSkMap[m] = (stackSkMap[m]||0) + (s.revenue||0);
+  }});
+  const mKeys = [...new Set([...Object.keys(stackRubberMap),...Object.keys(stackRentalMap),...Object.keys(stackSkMap)])].sort();
   new Chart(document.getElementById('ov-monthChart'), {{
     type: 'bar',
     data: {{
@@ -1142,6 +1151,8 @@ function initOverview() {{
           backgroundColor:'rgba(76,175,80,.85)', borderColor:'rgba(76,175,80,1)', borderWidth:1 }},
         {{ label:'🏠 ห้องเช่า', data:mKeys.map(m=>stackRentalMap[m]||0),
           backgroundColor:'rgba(21,101,192,.85)', borderColor:'rgba(21,101,192,1)', borderWidth:1 }},
+        {{ label:'🎊 สงกราน', data:mKeys.map(m=>stackSkMap[m]||0),
+          backgroundColor:'rgba(233,30,99,.8)', borderColor:'rgba(233,30,99,1)', borderWidth:1 }},
       ]
     }},
     options:{{ responsive:true,
