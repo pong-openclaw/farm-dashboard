@@ -714,17 +714,19 @@ async function checkPw(){{
     </button>
   </div>
 
-  <!-- กราฟเปรียบเทียบ + Year Selector (แถวเดียวกัน) -->
-  <div class="charts-grid" style="margin-bottom:20px">
-    <div class="chart-card"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart"></canvas></div>
-    <div class="chart-card" id="ov-year-section">
-      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
-        <h3 style="margin:0;font-size:.95em;color:#333">📅 รายได้รวม แยกตามปี</h3>
-        <div id="ov-year-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
-      </div>
-      <div id="ov-year-kpi" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"></div>
-      <canvas id="ov-yearMonthChart" style="max-height:220px"></canvas>
+  <!-- 💹 กราฟเปรียบเทียบรายปี (full width) -->
+  <div class="charts-grid" style="margin-bottom:16px">
+    <div class="chart-card wide"><h3 style="font-size:.88em">💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart" style="max-height:240px"></canvas></div>
+  </div>
+
+  <!-- 📅 Year Selector Section -->
+  <div id="ov-year-section" style="background:#fff;border-radius:14px;padding:16px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07)">
+    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
+      <span style="font-size:.82em;font-weight:600;color:#555">📅 รายได้รวม แยกตามปี</span>
+      <div id="ov-year-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
     </div>
+    <div id="ov-year-kpi" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"></div>
+    <canvas id="ov-yearMonthChart" style="max-height:220px"></canvas>
   </div>
 
   <div class="charts-grid">
@@ -1198,8 +1200,8 @@ function initOverview() {{
     ].map(k=>`<div style="flex:1;min-width:110px;background:#fff;border-radius:8px;padding:10px 12px;border-top:3px solid ${{
       {{green:'#4caf50',blue:'#1565c0',red:'#e91e63'}}[k.cls]||'#f59e0b'
     }};box-shadow:0 1px 4px rgba(0,0,0,.08)">
-      <div style="font-size:1.05em;font-weight:700;color:#1a1a2e">${{k.val}}</div>
-      <div style="font-size:.78em;color:#888;margin-top:2px">${{k.label}}${{k.yoy!=null?' <span style="color:'+( +k.yoy>=0?'#4caf50':'#e53935')+';font-weight:600">'+(+k.yoy>=0?'▲':'▼')+Math.abs(k.yoy)+'% YoY</span>':''}}</div>
+      <div style="font-size:.95em;font-weight:700;color:#1a1a2e">${{k.val}}</div>
+      <div style="font-size:.72em;color:#999;margin-top:1px">${{k.label}}${{k.yoy!=null?' <span style="color:'+( +k.yoy>=0?'#4caf50':'#e53935')+';font-weight:600">'+(+k.yoy>=0?'▲':'▼')+Math.abs(k.yoy)+'% YoY</span>':''}}</div>
     </div>`).join('');
     // กราฟเดือนของปีนั้น
     const months = Array.from({{length:12}},(_,i)=>yr+'-'+(i+1).toString().padStart(2,'0'));
