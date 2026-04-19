@@ -240,7 +240,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
   </div>
 </header>
 <div class="container">
@@ -317,7 +317,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -365,7 +365,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
   </div>
 </header>
 <div class="container">
@@ -417,7 +417,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
   </div>
 </header>
 <div class="container">
@@ -500,6 +500,29 @@ async function checkPw(){
 
 <!-- ════════ Generic Businesses (Auto-Generated) ════════ -->
 
+
+<!-- 🤖 AI Chat Bubble + Panel -->
+<button id="ai-bubble" onclick="aiToggle()" title="ถาม AI"
+  style="position:fixed;bottom:20px;right:20px;z-index:9000;width:60px;height:60px;border-radius:50%;border:none;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;font-size:1.8em;cursor:pointer;box-shadow:0 6px 20px rgba(99,102,241,.4);transition:.2s">
+  🤖
+</button>
+<div id="ai-panel" style="display:none;position:fixed;bottom:90px;right:20px;z-index:9001;width:380px;max-width:calc(100vw - 40px);height:520px;max-height:calc(100vh - 120px);background:white;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,.25);overflow:hidden;flex-direction:column;font-family:inherit">
+  <div style="background:linear-gradient(135deg,#6366f1,#8b5cf6);color:white;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div style="font-weight:700">🤖 AI Assistant</div>
+      <div style="font-size:.75em;opacity:.85">Gemini 2.5 Flash · ถามได้ทุกเรื่องในระบบ</div>
+    </div>
+    <button onclick="aiToggle()" style="background:rgba(255,255,255,.2);border:none;color:white;width:28px;height:28px;border-radius:50%;cursor:pointer;font-size:1em">✕</button>
+  </div>
+  <div id="ai-messages" style="flex:1;overflow-y:auto;padding:14px 16px;background:#f7f8fc;font-size:.9em;line-height:1.55"></div>
+  <div id="ai-quick" style="padding:8px 12px;background:#fff;border-top:1px solid #e5e7eb;display:flex;gap:6px;flex-wrap:wrap"></div>
+  <div style="padding:10px 12px;background:#fff;border-top:1px solid #e5e7eb;display:flex;gap:8px">
+    <input id="ai-input" type="text" placeholder="ถาม AI เช่น 'เดือนไหนยอดสูงสุด?'"
+      style="flex:1;padding:10px 12px;border:1.5px solid #e5e7eb;border-radius:8px;font-size:.9em;font-family:inherit;outline:none"
+      onkeydown="if(event.key==='Enter')aiAsk()">
+    <button onclick="aiAsk()" style="background:#6366f1;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:600">ส่ง</button>
+  </div>
+</div>
 
 <script>
 // ═══════════════════════════════════════════════════════
@@ -1820,6 +1843,202 @@ setTimeout(() => window.print(), 800);
   const w = window.open('', '_blank');
   w.document.write(html);
   w.document.close();
+}
+
+// ═══════════════════════════════════════════════════════
+// 🤖 AI Q&A ASSISTANT (Gemini 2.5 Flash)
+// ═══════════════════════════════════════════════════════
+const AI_KEY_STORE = 'bosshub_gemini_key';
+const AI_HISTORY_STORE = 'bosshub_ai_history';
+let aiHistory = JSON.parse(localStorage.getItem(AI_HISTORY_STORE) || '[]');
+
+function aiToggle() {
+  const p = document.getElementById('ai-panel');
+  const open = p.style.display === 'none';
+  p.style.display = open ? 'flex' : 'none';
+  if (open) {
+    if (aiHistory.length === 0) aiWelcome();
+    else aiRenderHistory();
+    aiRenderQuick();
+    setTimeout(() => document.getElementById('ai-input').focus(), 100);
+  }
+}
+
+function aiWelcome() {
+  const key = localStorage.getItem(AI_KEY_STORE);
+  if (!key) {
+    aiAddBubble('bot', `👋 สวัสดีครับ! ผมเป็น AI ช่วยวิเคราะห์ธุรกิจของปอง<br><br>
+      <b>ตั้งค่าครั้งแรก:</b> ใส่ Gemini API key (ฟรี 1,500 req/วัน):<br>
+      <ol style="margin:8px 0;padding-left:22px;font-size:.88em">
+        <li>เปิด <a href="https://aistudio.google.com/apikey" target="_blank" style="color:#6366f1">aistudio.google.com/apikey</a></li>
+        <li>กด "Create API key"</li>
+        <li>คัดลอก key (ขึ้นต้นด้วย <code>AIza...</code>)</li>
+        <li>กดปุ่มข้างล่าง วาง key</li>
+      </ol>
+      <button onclick="aiSetupKey()" style="background:#6366f1;color:white;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;font-weight:600;margin-top:6px">🔑 ใส่ API Key</button>`);
+  } else {
+    aiAddBubble('bot', `👋 สวัสดีครับ! ผมพร้อมตอบคำถามเรื่องธุรกิจของปองแล้ว<br><br>
+      <b>ลองถามเช่น:</b><br>
+      • "เดือนไหนยอดสูงสุด?"<br>
+      • "ปีนี้ธุรกิจไหนกำไรดีสุด?"<br>
+      • "ห้องเช่ามีปัญหาอะไรไหม?"<br>
+      • "แนะนำว่าควรปรับอะไรบ้าง?"`);
+  }
+}
+
+function aiSetupKey() {
+  const key = prompt('วาง Gemini API key (ขึ้นต้นด้วย AIza...):');
+  if (!key) return;
+  if (!key.startsWith('AIza')) { alert('API key ไม่ถูกต้อง — ต้องขึ้นต้น AIza'); return; }
+  localStorage.setItem(AI_KEY_STORE, key.trim());
+  aiHistory = [];
+  localStorage.setItem(AI_HISTORY_STORE, '[]');
+  document.getElementById('ai-messages').innerHTML = '';
+  aiAddBubble('bot', '✅ บันทึก key เรียบร้อย! ถามได้เลยครับ');
+}
+
+function aiClearKey() {
+  if (!confirm('ลบ API key และประวัติทั้งหมด?')) return;
+  localStorage.removeItem(AI_KEY_STORE);
+  localStorage.removeItem(AI_HISTORY_STORE);
+  aiHistory = [];
+  document.getElementById('ai-messages').innerHTML = '';
+  aiWelcome();
+}
+
+function aiAddBubble(role, html) {
+  const box = document.getElementById('ai-messages');
+  const isUser = role === 'user';
+  box.insertAdjacentHTML('beforeend', `
+    <div style="display:flex;justify-content:${isUser?'flex-end':'flex-start'};margin-bottom:10px">
+      <div style="background:${isUser?'#6366f1':'white'};color:${isUser?'white':'#1a1a2e'};padding:10px 14px;border-radius:14px;max-width:85%;box-shadow:0 1px 3px rgba(0,0,0,.06);font-size:.88em;line-height:1.55">
+        ${html}
+      </div>
+    </div>
+  `);
+  box.scrollTop = box.scrollHeight;
+}
+
+function aiRenderHistory() {
+  document.getElementById('ai-messages').innerHTML = '';
+  aiHistory.forEach(m => aiAddBubble(m.role, m.html));
+}
+
+function aiRenderQuick() {
+  const quicks = [
+    '📈 ปีนี้ธุรกิจไหนกำไรสูงสุด?',
+    '🌿 ราคายางเฉลี่ย?',
+    '🏠 ห้องไหนมีปัญหา?',
+    '💡 แนะนำการปรับปรุง',
+  ];
+  document.getElementById('ai-quick').innerHTML = quicks.map(q =>
+    `<button onclick="aiAsk('${q.replace(/'/g, "\\'")}')" style="background:#eef2ff;color:#4f46e5;border:none;padding:5px 10px;border-radius:14px;cursor:pointer;font-size:.78em">${q}</button>`
+  ).join('') + ` <button onclick="aiClearKey()" title="ลบ API key" style="background:transparent;color:#9ca3af;border:none;padding:5px;cursor:pointer;font-size:.85em">⚙️</button>`;
+}
+
+// สร้าง context สรุปข้อมูลธุรกิจ (compact)
+function aiBuildContext() {
+  const thisYear = new Date().getFullYear();
+  const lastYear = thisYear - 1;
+  const rubberThis = rAllData.filter(d=>d.year===thisYear).reduce((s,d)=>s+d.owner,0);
+  const rubberLast = rAllData.filter(d=>d.year===lastYear).reduce((s,d)=>s+d.owner,0);
+  const rubberAll  = rAllData.reduce((s,d)=>s+d.owner,0);
+  const rubberAvg  = rAllData.length ? rAllData.reduce((s,d)=>s+d.price,0)/rAllData.length : 0;
+  const rentalThis = reIncomes.filter(i=>i.date.startsWith(String(thisYear))).reduce((s,i)=>s+i.amount,0);
+  const rentalLast = reIncomes.filter(i=>i.date.startsWith(String(lastYear))).reduce((s,i)=>s+i.amount,0);
+  const occupied   = reRooms.filter(r=>r.status==='เช่าอยู่').length;
+  const monthlyRent= reRooms.reduce((s,r)=>s+r.rent,0);
+  const monthMap = {};
+  rAllData.forEach(d=>{const m=d.date_raw.substring(0,7); monthMap[m]=(monthMap[m]||0)+d.owner;});
+  reIncomes.forEach(i=>{const m=i.date.substring(0,7); monthMap[m]=(monthMap[m]||0)+i.amount;});
+  const monthSummary = Object.keys(monthMap).sort().slice(-12).map(m=>`${m}:${Math.round(monthMap[m])}`).join(', ');
+
+  const ctx = {
+    today: new Date().toISOString().slice(0,10),
+    thisYear, lastYear, beYear: thisYear+543,
+    rubber: {
+      total_revenue: rubberAll, this_year: rubberThis, last_year: rubberLast,
+      rounds_total: rAllData.length, avg_price_per_kg: +rubberAvg.toFixed(2),
+      latest_round: rAllData[rAllData.length-1] || null
+    },
+    rental: {
+      total_revenue: reIncomes.reduce((s,i)=>s+i.amount,0),
+      this_year: rentalThis, last_year: rentalLast,
+      rooms_total: reRooms.length, occupied,
+      max_monthly_rent: monthlyRent,
+      rooms: reRooms.map(r => ({
+        name:r.name, tenant:r.tenant, rent:r.rent, status:r.status, end:r.end_date
+      })),
+      expiring_60d: reExpiring
+    },
+    songkran: {
+      revenue: skTotalRevenue, cost: skTotalCost, profit: skTotalProfit,
+      stock_value: skTotalStock, products: skSummaries.filter(s=>s.product!=='รวมทั้งหมด').map(s=>({
+        name:s.product, revenue:s.revenue, cost:s.cost, profit:s.profit, pct:s.pct
+      }))
+    },
+    generic_businesses: GENERIC_BIZ.map(b => ({
+      name: b.name,
+      revenue_total: b.revenues.reduce((s,r)=>s+r.amount,0),
+      expense_total: b.expenses.reduce((s,r)=>s+r.amount,0)
+    })),
+    monthly_combined_last_12: monthSummary
+  };
+  return JSON.stringify(ctx, null, 0);
+}
+
+async function aiAsk(forceQ) {
+  const input = document.getElementById('ai-input');
+  const q = (forceQ || input.value).trim();
+  if (!q) return;
+  input.value = '';
+  const key = localStorage.getItem(AI_KEY_STORE);
+  if (!key) { aiSetupKey(); return; }
+
+  aiAddBubble('user', q);
+  aiHistory.push({role:'user', html:q});
+  aiAddBubble('bot', '<span style="opacity:.6">🤔 กำลังคิด...</span>');
+
+  const ctx = aiBuildContext();
+  const sysPrompt = `คุณเป็น AI ผู้ช่วยวิเคราะห์ธุรกิจของปอง (เจ้าของธุรกิจชื่อบอสอู๊ด)
+ตอบเป็นภาษาไทยเสมอ กระชับ ตรงประเด็น มีตัวเลขประกอบ
+ใช้ emoji ประกอบเล็กน้อย ใช้ <b>ตัวหนา</b> สำหรับตัวเลขสำคัญ
+ถ้าข้อมูลไม่พอตอบ ให้บอกตรง ๆ อย่าเดา
+หน่วยเงินคือบาท (฿) ปีไทย พ.ศ. = ปี ค.ศ. + 543
+
+ข้อมูลธุรกิจล่าสุด (JSON):
+${ctx}`;
+
+  try {
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+    const body = {
+      systemInstruction: { parts: [{ text: sysPrompt }] },
+      contents: [{ role:'user', parts: [{ text: q }] }],
+      generationConfig: { temperature: 0.4, maxOutputTokens: 800 }
+    };
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    const json = await res.json();
+    const msgs = document.getElementById('ai-messages');
+    msgs.lastElementChild.remove();  // ลบ "กำลังคิด..."
+
+    if (json.error) {
+      aiAddBubble('bot', `❌ ${json.error.message || 'API error'}`);
+      return;
+    }
+    const text = json.candidates?.[0]?.content?.parts?.[0]?.text || 'ไม่ได้รับคำตอบ';
+    const html = text.replace(/\n/g, '<br>');
+    aiAddBubble('bot', html);
+    aiHistory.push({role:'bot', html});
+    if (aiHistory.length > 20) aiHistory = aiHistory.slice(-20);
+    localStorage.setItem(AI_HISTORY_STORE, JSON.stringify(aiHistory));
+  } catch (e) {
+    document.getElementById('ai-messages').lastElementChild.remove();
+    aiAddBubble('bot', `❌ Error: ${e.message}`);
+  }
 }
 
 // 📱 PWA — register service worker
