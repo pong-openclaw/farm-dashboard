@@ -573,7 +573,7 @@ body{{font-family:'Leelawadee UI','Leelawadee','Tahoma','Myanmar Text',sans-seri
 .chart-card{{background:white;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.08);position:relative;min-height:240px}}
 .chart-card.wide{{grid-column:1/-1}}
 .chart-card canvas{{max-height:320px!important;width:100%!important}}
-.chart-card.wide canvas{{max-height:380px!important}}
+.chart-card.wide canvas{{height:340px!important;max-height:380px!important;width:100%!important}}
 .chart-card h3{{font-size:.9em;color:#555;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #f0f2f5}}
 table{{width:100%;border-collapse:collapse;font-size:.85em}}
 td{{padding:8px 12px;border-bottom:1px solid #f0f2f5;text-align:center}}
