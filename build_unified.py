@@ -1127,21 +1127,27 @@ function initOverview() {{
     options:{{ responsive:true, plugins:{{ legend:{{ position:'bottom' }} }} }}
   }});
 
-  // ── กราฟรายเดือนรวมทุกธุรกิจ ──
-  const allMonthMap = {{}};
-  rAllData.forEach(d=>{{ const m=d.date_raw.substring(0,7); allMonthMap[m]=(allMonthMap[m]||0)+d.owner; }});
-  reIncomes.forEach(i=>{{ const m=i.date.substring(0,7); if(m) allMonthMap[m]=(allMonthMap[m]||0)+i.amount; }});
-  // สงกราน ไม่มีรายเดือน ข้ามได้
-  const mKeys = Object.keys(allMonthMap).sort();
+  // ── กราฟรายเดือนรวมทุกธุรกิจ (Stacked) ──
+  const rubberMonthMap = {{}};
+  const rentalMonthMap = {{}};
+  rAllData.forEach(d=>{{ const m=d.date_raw.substring(0,7); rubberMonthMap[m]=(rubberMonthMap[m]||0)+d.owner; }});
+  reIncomes.forEach(i=>{{ const m=i.date.substring(0,7); if(m) rentalMonthMap[m]=(rentalMonthMap[m]||0)+i.amount; }});
+  const mKeys = [...new Set([...Object.keys(rubberMonthMap),...Object.keys(rentalMonthMap)])].sort();
   new Chart(document.getElementById('ov-monthChart'), {{
     type: 'bar',
     data: {{
       labels: mKeys,
-      datasets: [{{ label:'รวมทุกธุรกิจ', data:mKeys.map(m=>allMonthMap[m]),
-        backgroundColor:'rgba(55,71,79,.7)', borderColor:'rgba(55,71,79,1)', borderWidth:1 }}]
+      datasets: [
+        {{ label:'🌿 สวนยาง', data:mKeys.map(m=>rubberMonthMap[m]||0),
+          backgroundColor:'rgba(76,175,80,.85)', borderColor:'rgba(76,175,80,1)', borderWidth:1 }},
+        {{ label:'🏠 ห้องเช่า', data:mKeys.map(m=>rentalMonthMap[m]||0),
+          backgroundColor:'rgba(21,101,192,.85)', borderColor:'rgba(21,101,192,1)', borderWidth:1 }},
+      ]
     }},
-    options:{{ responsive:true, plugins:{{ legend:{{ display:false }} }},
-      scales:{{ y:{{ ticks:{{ callback:v=>fmt(v) }} }} }} }}
+    options:{{ responsive:true,
+      plugins:{{ legend:{{ position:'top' }} }},
+      scales:{{ x:{{ stacked:true }}, y:{{ stacked:true, ticks:{{ callback:v=>fmt(v) }} }} }}
+    }}
   }});
 
   // ── ตารางสรุป ──
