@@ -240,7 +240,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:14</span></p>
   </div>
 </header>
 <div class="container">
@@ -292,6 +292,21 @@ async function checkPw(){
   <!-- Generic Businesses KPI (auto) -->
   <div id="ov-genericKpiContainer"></div>
 
+  <!-- 🎯 Goals & Budget Tracking -->
+  <div class="section" style="margin-top:20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0">🎯 เป้าหมายรายได้ ปี <span id="ov-goalYear"></span></h3>
+      <button onclick="goalsSetup()" style="background:#6366f1;color:white;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;font-size:.85em;font-weight:600">⚙️ ตั้งเป้า</button>
+    </div>
+    <div id="ov-goals"></div>
+  </div>
+
+  <!-- 🧮 Thai Tax Estimator -->
+  <div class="section" style="margin-top:20px">
+    <h3>🧮 ประมาณการภาษีเงินได้บุคคลธรรมดา ปี <span id="ov-taxYear"></span></h3>
+    <div id="ov-taxCard"></div>
+  </div>
+
   <!-- 🏆 Business Health Score -->
   <div class="section" style="margin-top:20px">
     <h3>🏆 คะแนนสุขภาพธุรกิจ (Business Health Score)</h3>
@@ -317,7 +332,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:14</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -365,7 +380,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:14</span></p>
   </div>
 </header>
 <div class="container">
@@ -417,7 +432,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:08</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:14</span></p>
   </div>
 </header>
 <div class="container">
@@ -1019,6 +1034,120 @@ function initOverview() {
   if (gradeA.length > 0) {
     insights.push(`🌟 ธุรกิจแข็งแกร่ง (Grade A): <b>${gradeA.map(g=>g.name).join(', ')}</b>`);
   }
+
+  // ══════════ 🎯 Goals & Budget Tracking ══════════
+  document.getElementById('ov-goalYear').textContent = thisYear+543;
+  const goalsKey = `bosshub_goals_${thisYear}`;
+  const goals = JSON.parse(localStorage.getItem(goalsKey) || '{}');
+
+  // ค่าเริ่มต้น: ใช้ปีที่แล้ว × 1.1 ถ้ายังไม่ได้ตั้ง
+  const defaultGoal = (last) => last > 0 ? Math.round(last * 1.1 / 1000) * 1000 : 0;
+  const allBiz = [
+    {key:'rubber',  name:'🌿 สวนยาง',   actual: rubberThis, last: rubberLast, color:'#4caf50'},
+    {key:'rental',  name:'🏠 ห้องเช่า', actual: rentalThis, last: rentalLast, color:'#1565c0'},
+    {key:'songkran',name:'🎊 สงกราน',   actual: skProfit,   last: 0,          color:'#e91e63'},
+    ...GENERIC_BIZ.map(b => {
+      const a = b.revenues.filter(r=>r.date.startsWith(String(thisYear))).reduce((s,r)=>s+r.amount,0);
+      const l = b.revenues.filter(r=>r.date.startsWith(String(lastYear))).reduce((s,r)=>s+r.amount,0);
+      return {key:b.key, name:`${b.emoji} ${b.name}`, actual:a, last:l, color:b.color};
+    })
+  ];
+
+  const goalsHtml = allBiz.map(b => {
+    const goal = goals[b.key] || defaultGoal(b.last);
+    if (goal === 0) {
+      return `<div style="background:#f9fafb;border-radius:10px;padding:14px 16px;margin-bottom:8px">
+        <div style="display:flex;justify-content:space-between"><b>${b.name}</b><span style="color:#999;font-size:.85em">ยังไม่ได้ตั้งเป้า — กด ⚙️ ตั้งเป้า</span></div>
+      </div>`;
+    }
+    const pct = goal>0 ? (b.actual/goal*100) : 0;
+    const barColor = pct >= 100 ? '#059669' : (pct >= 90 ? '#3b82f6' : (pct >= 70 ? '#f59e0b' : '#dc2626'));
+    const status = pct >= 100 ? '🎉 ทะลุเป้า!' : (pct >= 90 ? '🟢 ใกล้เป้า' : (pct >= 70 ? '🟡 ตามแผน' : '🔴 ต่ำกว่าแผน'));
+    return `
+      <div style="background:white;border-radius:10px;padding:14px 16px;margin-bottom:10px;border-left:4px solid ${b.color};box-shadow:0 1px 3px rgba(0,0,0,.04)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+          <div><b>${b.name}</b> <span style="color:#666;font-size:.85em;margin-left:6px">${status}</span></div>
+          <div style="font-size:.95em"><b>${fmt(b.actual)}</b> / ${fmt(goal)} ฿ <span style="color:${barColor};font-weight:700;margin-left:6px">${pct.toFixed(1)}%</span></div>
+        </div>
+        <div style="background:#f1f5f9;height:10px;border-radius:5px;overflow:hidden">
+          <div style="width:${Math.min(pct,100)}%;height:100%;background:${barColor};transition:width .8s"></div>
+        </div>
+      </div>`;
+  }).join('');
+  document.getElementById('ov-goals').innerHTML = goalsHtml;
+  window._goalsBiz = allBiz; window._goalsKey = goalsKey;
+
+  // ══════════ 🧮 Thai Tax Estimator ══════════
+  document.getElementById('ov-taxYear').textContent = thisYear+543;
+  // รายได้สุทธิรวม (เงินได้พึงประเมินจากธุรกิจของปอง)
+  // หมายเหตุ: ใช้รายได้-รายจ่ายแบบประมาณการ ปองอาจปรับให้ตรงกับการยื่นจริง
+  const incomeRubber  = rubberThis;  // รายได้ส่วนเจ้าของจากยาง
+  const incomeRental  = rentalThis;  // รายได้จากห้องเช่า
+  const incomeSongkran= skProfit > 0 ? skProfit : 0;  // กำไรสุทธิ
+  const incomeGeneric = GENERIC_BIZ.reduce((s,b) => {
+    const r = b.revenues.filter(x=>x.date.startsWith(String(thisYear))).reduce((s,x)=>s+x.amount,0);
+    const e = b.expenses.filter(x=>x.date.startsWith(String(thisYear))).reduce((s,x)=>s+x.amount,0);
+    return s + Math.max(0, r-e);
+  }, 0);
+  const grossIncome = incomeRubber + incomeRental + incomeSongkran + incomeGeneric;
+
+  // หักค่าใช้จ่าย (เหมา 60% สำหรับการเกษตร, 30% ห้องเช่า — เป็นการประมาณ)
+  // เพื่อความง่าย ใช้หักเหมารวม 50% (ตัวเลขประมาณ)
+  // หักลดหย่อนส่วนตัว 60,000 (พื้นฐาน)
+  const expenseDeduction = grossIncome * 0.5;
+  const personalDeduction = 60000;
+  const netIncome = Math.max(0, grossIncome - expenseDeduction - personalDeduction);
+
+  // อัตราภาษีก้าวหน้าไทย 2568 (สำหรับเงินได้สุทธิ)
+  const brackets = [
+    {max:150000,    rate:0,    label:'0 - 150,000'},
+    {max:300000,    rate:0.05, label:'150,001 - 300,000'},
+    {max:500000,    rate:0.10, label:'300,001 - 500,000'},
+    {max:750000,    rate:0.15, label:'500,001 - 750,000'},
+    {max:1000000,   rate:0.20, label:'750,001 - 1,000,000'},
+    {max:2000000,   rate:0.25, label:'1,000,001 - 2,000,000'},
+    {max:5000000,   rate:0.30, label:'2,000,001 - 5,000,000'},
+    {max:Infinity,  rate:0.35, label:'> 5,000,000'},
+  ];
+  let tax = 0, prevMax = 0, breakdown = [];
+  for (const b of brackets) {
+    if (netIncome <= prevMax) break;
+    const taxable = Math.min(netIncome, b.max) - prevMax;
+    const t = taxable * b.rate;
+    if (taxable > 0) breakdown.push({label:b.label, taxable, rate:b.rate, tax:t});
+    tax += t;
+    prevMax = b.max;
+  }
+  const effectiveRate = grossIncome > 0 ? (tax/grossIncome*100) : 0;
+
+  document.getElementById('ov-taxCard').innerHTML = `
+    <div style="background:white;border-radius:12px;padding:18px 20px;border-left:5px solid #6366f1;box-shadow:0 1px 3px rgba(0,0,0,.04)">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:14px">
+        <div><div style="color:#666;font-size:.78em">รายได้รวมประมาณการ</div><div style="font-weight:700;font-size:1.1em">${fmt(grossIncome)} ฿</div></div>
+        <div><div style="color:#666;font-size:.78em">หักค่าใช้จ่าย (50% เหมา)</div><div style="font-weight:600;color:#dc2626">-${fmt(expenseDeduction)} ฿</div></div>
+        <div><div style="color:#666;font-size:.78em">หักลดหย่อนส่วนตัว</div><div style="font-weight:600;color:#dc2626">-${fmt(personalDeduction)} ฿</div></div>
+        <div><div style="color:#666;font-size:.78em">เงินได้สุทธิ</div><div style="font-weight:700;font-size:1.1em">${fmt(netIncome)} ฿</div></div>
+      </div>
+      ${breakdown.length > 0 ? `
+        <table style="width:100%;border-collapse:collapse;font-size:.85em;margin-bottom:10px">
+          <thead><tr style="background:#f7f8fc"><th style="padding:6px 10px;text-align:left">ช่วงเงินได้สุทธิ (฿)</th><th style="padding:6px 10px;text-align:right">อัตรา</th><th style="padding:6px 10px;text-align:right">เงินได้ในช่วง</th><th style="padding:6px 10px;text-align:right">ภาษี (฿)</th></tr></thead>
+          <tbody>
+            ${breakdown.map(b => `<tr><td style="padding:5px 10px;border-bottom:1px solid #f1f5f9">${b.label}</td><td style="padding:5px 10px;text-align:right;border-bottom:1px solid #f1f5f9">${(b.rate*100)}%</td><td style="padding:5px 10px;text-align:right;border-bottom:1px solid #f1f5f9">${fmt(b.taxable)}</td><td style="padding:5px 10px;text-align:right;border-bottom:1px solid #f1f5f9">${fmt(b.tax)}</td></tr>`).join('')}
+          </tbody>
+        </table>` : ''}
+      <div style="display:flex;justify-content:space-between;align-items:center;background:#eef2ff;padding:12px 16px;border-radius:8px;margin-top:10px">
+        <div>
+          <div style="font-size:.78em;color:#4f46e5">💰 ภาษีประมาณการที่ต้องชำระ</div>
+          <div style="font-size:.78em;color:#9ca3af;margin-top:2px">อัตราภาษีเฉลี่ย ${effectiveRate.toFixed(2)}% ของรายได้รวม</div>
+        </div>
+        <div style="font-size:1.6em;font-weight:800;color:#4f46e5">${fmt(tax)} ฿</div>
+      </div>
+      <p style="color:#999;font-size:.75em;margin:10px 0 0;line-height:1.5">
+        ⚠️ <b>ประมาณการเท่านั้น</b> — ใช้สูตรหักเหมา 50% + ลดหย่อนส่วนตัว 60,000 ฿<br>
+        การคำนวณจริงอาจหักได้มากกว่านี้ (เช่น ประกันชีวิต RMF/SSF บุพการี ฯลฯ) — ปรึกษาบัญชีเพื่อยื่นจริง
+      </p>
+    </div>
+  `;
 
   // Render Quick Insights
   const insBox = document.getElementById('ov-insights');
@@ -1668,6 +1797,63 @@ function initSongkran() {
 // ═══════════════════════════════════════════════════════
 tabInited['overview'] = true;
 initOverview();
+
+// ═══════════════════════════════════════════════════════
+// 🎯 GOALS SETUP — ตั้งเป้ารายได้รายธุรกิจ
+// ═══════════════════════════════════════════════════════
+function goalsSetup() {
+  const biz = window._goalsBiz || [];
+  const key = window._goalsKey;
+  if (!biz.length || !key) { alert('ยังโหลดข้อมูลไม่เสร็จ ลองใหม่อีกครั้ง'); return; }
+  const cur = JSON.parse(localStorage.getItem(key) || '{}');
+  const defGoal = (last) => last > 0 ? Math.round(last * 1.1 / 1000) * 1000 : 0;
+
+  const overlay = document.createElement('div');
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:9999;display:flex;align-items:center;justify-content:center;padding:20px';
+  const rows = biz.map(b => {
+    const v = cur[b.key] != null ? cur[b.key] : defGoal(b.last);
+    const hint = b.last > 0 ? `ปีที่แล้ว ${b.last.toLocaleString()} ฿ — แนะนำ ${defGoal(b.last).toLocaleString()} ฿ (+10%)` : 'ยังไม่มีข้อมูลปีที่แล้ว';
+    return `
+      <div style="margin-bottom:14px">
+        <label style="display:block;font-weight:600;margin-bottom:4px">${b.name}</label>
+        <input type="number" data-key="${b.key}" value="${v}" min="0" step="1000"
+               style="width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:1em">
+        <div style="font-size:.78em;color:#888;margin-top:3px">${hint}</div>
+      </div>`;
+  }).join('');
+  overlay.innerHTML = `
+    <div style="background:white;border-radius:14px;padding:22px;max-width:480px;width:100%;max-height:90vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)">
+      <h3 style="margin:0 0 14px;color:#1a1a2e">🎯 ตั้งเป้ารายได้รายปี</h3>
+      <p style="font-size:.85em;color:#666;margin:0 0 16px">บันทึกในเครื่องคุณเท่านั้น (localStorage) — เปลี่ยนเครื่องต้องตั้งใหม่</p>
+      <form id="gf">${rows}
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:16px">
+          <button type="button" id="gc" style="padding:9px 18px;background:#f3f4f6;border:none;border-radius:8px;cursor:pointer;font-weight:600">ยกเลิก</button>
+          <button type="button" id="gr" style="padding:9px 18px;background:#fef3c7;color:#92400e;border:none;border-radius:8px;cursor:pointer;font-weight:600">รีเซ็ต</button>
+          <button type="submit" style="padding:9px 18px;background:#6366f1;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600">💾 บันทึก</button>
+        </div>
+      </form>
+    </div>`;
+  document.body.appendChild(overlay);
+  overlay.querySelector('#gc').onclick = () => overlay.remove();
+  overlay.querySelector('#gr').onclick = () => {
+    if (confirm('ลบเป้าทั้งหมดของปีนี้?')) {
+      localStorage.removeItem(key);
+      overlay.remove();
+      initOverview();
+    }
+  };
+  overlay.querySelector('#gf').onsubmit = (e) => {
+    e.preventDefault();
+    const newGoals = {};
+    overlay.querySelectorAll('input[data-key]').forEach(inp => {
+      const v = parseInt(inp.value) || 0;
+      if (v > 0) newGoals[inp.dataset.key] = v;
+    });
+    localStorage.setItem(key, JSON.stringify(newGoals));
+    overlay.remove();
+    initOverview();
+  };
+}
 
 // ═══════════════════════════════════════════════════════
 // 📄 ANNUAL REPORT — เปิดหน้าใหม่พร้อม print-friendly layout
