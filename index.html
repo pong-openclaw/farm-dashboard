@@ -2,8 +2,16 @@
 <html lang="th">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Dashboard บอสอู๊ด — ธุรกิจทั้งหมด</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>Boss Business Hub — บอสอู๊ด</title>
+<!-- 📱 PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="BossHub">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
 <script>﻿/**
  * Skipped minification because the original files appears to be already minified.
  * Original file: /npm/chart.js@4.4.0/dist/chart.umd.js
@@ -232,7 +240,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
   </div>
 </header>
 <div class="container">
@@ -274,6 +282,16 @@ async function checkPw(){
   <!-- Generic Businesses KPI (auto) -->
   <div id="ov-genericKpiContainer"></div>
 
+  <!-- 🏆 Business Health Score -->
+  <div class="section" style="margin-top:20px">
+    <h3>🏆 คะแนนสุขภาพธุรกิจ (Business Health Score)</h3>
+    <p style="color:#666;font-size:.88em;margin-bottom:12px">
+      วัดจาก 4 มิติ: 📈 ความสามารถทำกำไร · 🚀 การเติบโต YoY · 🎯 ความสม่ำเสมอ · 💰 กระแสเงินสด —
+      เกรด <b style="color:#059669">A</b> ดีเยี่ยม · <b style="color:#0284c7">B</b> ดี · <b style="color:#ea580c">C</b> พอใช้ · <b style="color:#dc2626">D</b> ต้องปรับ
+    </p>
+    <div id="ov-healthCards" class="charts-grid" style="grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px"></div>
+  </div>
+
   <!-- ตารางสรุป -->
   <div class="section">
     <h3>📋 ตารางสรุปทุกธุรกิจ</h3>
@@ -289,7 +307,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -337,7 +355,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
   </div>
 </header>
 <div class="container">
@@ -389,7 +407,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:36</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
   </div>
 </header>
 <div class="container">
@@ -733,6 +751,130 @@ function initOverview() {
       <td><b>${fmtAcc(sumIn-sumOut)}</b></td>
     </tr></tfoot>
   `;
+
+  // ══════════ 🏆 Business Health Score ══════════
+  // ฟังก์ชันคำนวณคะแนน 4 มิติ (แต่ละมิติ 0-100)
+  const _clamp = (v, lo=0, hi=100) => Math.max(lo, Math.min(hi, v));
+  const _scoreYoY = pct => _clamp((pct + 20) / 40 * 100);  // -20%→0, +20%→100
+  const _scoreStability = (monthlyVals) => {
+    if (monthlyVals.length < 3) return 50;  // ข้อมูลน้อย: กลาง ๆ
+    const mean = monthlyVals.reduce((s,v)=>s+v,0) / monthlyVals.length;
+    if (mean === 0) return 0;
+    const variance = monthlyVals.reduce((s,v)=>s+(v-mean)**2, 0) / monthlyVals.length;
+    const cv = Math.sqrt(variance) / mean;  // coefficient of variation
+    return _clamp(100 - cv * 100);  // CV 0→100, CV 1→0
+  };
+  const _grade = score => {
+    if (score >= 85) return {letter:'A', label:'แข็งแกร่ง', color:'#059669', bg:'#d1fae5'};
+    if (score >= 70) return {letter:'B', label:'ดี',         color:'#0284c7', bg:'#dbeafe'};
+    if (score >= 55) return {letter:'C', label:'พอใช้',     color:'#ea580c', bg:'#fed7aa'};
+    return            {letter:'D', label:'ต้องปรับ',         color:'#dc2626', bg:'#fee2e2'};
+  };
+  const _rec = (g, biz) => {
+    if (g.letter==='A') return `🌟 <b>${biz}</b> อยู่ในเกณฑ์แข็งแกร่ง — รักษามาตรฐานปัจจุบัน`;
+    if (g.letter==='B') return `👍 <b>${biz}</b> ผลประกอบการดี — มองหาโอกาสขยายเพิ่ม`;
+    if (g.letter==='C') return `⚠️ <b>${biz}</b> พอใช้ — พิจารณาลดต้นทุนหรือเพิ่มยอดขาย`;
+    return `🚨 <b>${biz}</b> ต้องปรับด่วน — ทบทวน strategy ทั้งระบบ`;
+  };
+
+  // เก็บ score ของแต่ละธุรกิจ
+  const healthData = [];
+
+  // ─── สวนยาง ───
+  {
+    const profitability = rubberAll>0
+      ? _clamp((rAllData.reduce((s,d)=>s+d.owner,0) / rAllData.reduce((s,d)=>s+(d.sale||d.owner),0)) * 100 * 1.5)
+      : 50;
+    const growth = _scoreYoY(rubberYoY);
+    const monthlyVals = Object.values(rubberMonthMap);
+    const stability = _scoreStability(monthlyVals);
+    const cashflow = monthlyVals.length>0 ? _clamp(monthlyVals.filter(v=>v>0).length / monthlyVals.length * 100) : 50;
+    const total = (profitability + growth + stability + cashflow) / 4;
+    healthData.push({key:'rubber', name:'🌿 สวนยาง', color:'#4caf50',
+      profitability, growth, stability, cashflow, total});
+  }
+
+  // ─── ห้องเช่า ───
+  {
+    const totalPossible = monthlyRent * 12;
+    const profitability = totalPossible>0 ? _clamp(rentalThis / totalPossible * 100) : 50;
+    const growth = _scoreYoY(rentalYoY);
+    const monthlyVals = Object.values(rentalMonthMap);
+    const stability = _scoreStability(monthlyVals);
+    const occupancyRate = reRooms.length>0 ? (occupied/reRooms.length*100) : 0;
+    const cashflow = _clamp(occupancyRate);
+    const total = (profitability + growth + stability + cashflow) / 4;
+    healthData.push({key:'rental', name:'🏠 ห้องเช่า', color:'#1565c0',
+      profitability, growth, stability, cashflow, total});
+  }
+
+  // ─── สงกราน ───
+  {
+    const profitability = skRev>0 ? _clamp((skProfit/skRev)*100 * 2.5) : 50;  // 40%→100
+    const growth = 50;  // ปีเดียว ยังเทียบ YoY ไม่ได้
+    const stability = 50;  // seasonal — ไม่ใช้ monthly
+    const cashflow = skProfit>0 ? 100 : (skProfit===0 ? 50 : 0);
+    const total = (profitability + growth + stability + cashflow) / 4;
+    healthData.push({key:'songkran', name:'🎊 สงกราน', color:'#e91e63',
+      profitability, growth, stability, cashflow, total});
+  }
+
+  // ─── Generic businesses ───
+  GENERIC_BIZ.forEach(b => {
+    const rTot = b.revenues.reduce((s,r)=>s+r.amount,0);
+    const eTot = b.expenses.reduce((s,r)=>s+r.amount,0);
+    const profit = rTot - eTot;
+    const profitability = rTot>0 ? _clamp(profit/rTot*100 * 2) : 50;
+    const rThis = b.revenues.filter(r=>r.date.startsWith(String(thisYear))).reduce((s,r)=>s+r.amount,0);
+    const rLast = b.revenues.filter(r=>r.date.startsWith(String(lastYear))).reduce((s,r)=>s+r.amount,0);
+    const yoy = rLast>0 ? ((rThis-rLast)/rLast*100) : 0;
+    const growth = _scoreYoY(yoy);
+    const mmap2 = {};
+    b.revenues.forEach(r=>{const m=r.date.substring(0,7);mmap2[m]=(mmap2[m]||0)+r.amount;});
+    const monthlyVals = Object.values(mmap2);
+    const stability = _scoreStability(monthlyVals);
+    const posMonths = Object.keys(mmap2).filter(m => {
+      const e = b.expenses.filter(x=>x.date.startsWith(m)).reduce((s,x)=>s+x.amount,0);
+      return mmap2[m] - e > 0;
+    }).length;
+    const cashflow = monthlyVals.length>0 ? _clamp(posMonths/monthlyVals.length*100) : 50;
+    const total = (profitability + growth + stability + cashflow) / 4;
+    healthData.push({key:b.key, name:`${b.emoji} ${b.name}`, color:b.color,
+      profitability, growth, stability, cashflow, total});
+  });
+
+  // ─── Render Health Cards ───
+  const healthCont = document.getElementById('ov-healthCards');
+  let healthHtml = '';
+  healthData.forEach(h => {
+    const g = _grade(h.total);
+    const bar = (label, val, color) => `
+      <div style="margin-bottom:6px">
+        <div style="display:flex;justify-content:space-between;font-size:.78em;color:#555">
+          <span>${label}</span><span><b>${Math.round(val)}</b>/100</span>
+        </div>
+        <div style="background:#f1f5f9;height:6px;border-radius:3px;overflow:hidden">
+          <div style="width:${val}%;height:100%;background:${color};transition:width .6s"></div>
+        </div>
+      </div>`;
+    healthHtml += `
+      <div style="background:white;border-radius:12px;padding:18px;border:2px solid ${g.bg};box-shadow:0 2px 8px rgba(0,0,0,.04)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+          <div>
+            <div style="font-weight:700;font-size:1.05em;color:#1a1a2e">${h.name}</div>
+            <div style="font-size:.78em;color:#666;margin-top:2px">คะแนนรวม <b>${Math.round(h.total)}/100</b></div>
+          </div>
+          <div style="background:${g.bg};color:${g.color};width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.6em">${g.letter}</div>
+        </div>
+        <div style="text-align:center;color:${g.color};font-weight:600;font-size:.88em;margin-bottom:12px">${g.label}</div>
+        ${bar('📈 ความสามารถทำกำไร', h.profitability, h.color)}
+        ${bar('🚀 การเติบโต YoY', h.growth, h.color)}
+        ${bar('🎯 ความสม่ำเสมอ', h.stability, h.color)}
+        ${bar('💰 กระแสเงินสด', h.cashflow, h.color)}
+        <div style="margin-top:10px;padding:8px 10px;background:${g.bg}66;border-radius:8px;font-size:.78em;line-height:1.5">${_rec(g, h.name)}</div>
+      </div>`;
+  });
+  healthCont.innerHTML = healthHtml;
 
   // ══════════ 🆕 Generic Businesses → Overview KPIs ══════════
   const genCont = document.getElementById('ov-genericKpiContainer');
@@ -1366,6 +1508,13 @@ function initSongkran() {
 // ═══════════════════════════════════════════════════════
 tabInited['overview'] = true;
 initOverview();
+
+// 📱 PWA — register service worker
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('sw.js').catch(e => console.warn('SW reg failed:', e));
+  });
+}
 </script>
 </body>
 </html>
