@@ -725,7 +725,7 @@ async function checkPw(){{
       <div id="ov-year-btns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
     </div>
     <div id="ov-year-kpi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px"></div>
-    <canvas id="ov-yearMonthChart"></canvas>
+    <canvas id="ov-yearMonthChart" style="max-height:280px"></canvas>
   </div>
 
   <div class="charts-grid">
