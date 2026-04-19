@@ -714,21 +714,17 @@ async function checkPw(){{
     </button>
   </div>
 
-  <!-- กราฟเปรียบเทียบ -->
+  <!-- กราฟเปรียบเทียบ + Year Selector (แถวเดียวกัน) -->
   <div class="charts-grid" style="margin-bottom:20px">
     <div class="chart-card"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart"></canvas></div>
-    <div class="chart-card" id="ov-compare-placeholder" style="background:linear-gradient(135deg,#f8f9fa,#e9ecef);display:flex;align-items:center;justify-content:center;color:#adb5bd;font-size:.9em">
-      📌 เลือกปีด้านล่างเพื่อดูรายละเอียดรายเดือน
+    <div class="chart-card" id="ov-year-section">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px">
+        <h3 style="margin:0;font-size:.95em;color:#333">📅 รายได้รวม แยกตามปี</h3>
+        <div id="ov-year-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+      <div id="ov-year-kpi" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px"></div>
+      <canvas id="ov-yearMonthChart" style="max-height:220px"></canvas>
     </div>
-  </div>
-  <!-- 📅 Year Selector + รายได้รายปี -->
-  <div id="ov-year-section" style="background:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
-    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
-      <h3 style="margin:0;font-size:.95em;color:#333">📅 รายได้รวม แยกตามปี</h3>
-      <div id="ov-year-btns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
-    </div>
-    <div id="ov-year-kpi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px"></div>
-    <canvas id="ov-yearMonthChart" style="max-height:280px"></canvas>
   </div>
 
   <div class="charts-grid">
