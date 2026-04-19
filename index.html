@@ -240,10 +240,20 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
   </div>
 </header>
 <div class="container">
+
+  <!-- 🧠 Quick Insights -->
+  <div id="ov-insights" style="background:linear-gradient(135deg,#fffbeb,#fef3c7);border-left:5px solid #f59e0b;border-radius:12px;padding:18px 22px;margin-bottom:20px"></div>
+
+  <!-- 📄 Action buttons -->
+  <div style="text-align:right;margin-bottom:14px">
+    <button onclick="openAnnualReport()" style="background:#1a1a2e;color:white;border:none;padding:10px 20px;border-radius:8px;cursor:pointer;font-weight:600;font-size:.92em">
+      📄 พิมพ์รายงานประจำปี (PDF)
+    </button>
+  </div>
 
   <!-- กราฟเปรียบเทียบ -->
   <div class="charts-grid" style="margin-bottom:20px">
@@ -307,7 +317,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -355,7 +365,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
   </div>
 </header>
 <div class="container">
@@ -407,7 +417,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 12:05</span></p>
   </div>
 </header>
 <div class="container">
@@ -888,6 +898,62 @@ function initOverview() {
       profitability, growth, stability, cashflow, total});
   });
 
+  // ══════════ 🧠 Quick Insights (auto-generated) ══════════
+  const insights = [];
+  // 1) ธุรกิจไหนทำเงินเยอะสุดปีนี้
+  const earnersThis = [
+    {name:'🌿 สวนยาง',  v: rubberThis},
+    {name:'🏠 ห้องเช่า', v: rentalThis},
+    {name:'🎊 สงกราน',  v: skProfit},
+    ...GENERIC_BIZ.map(b => ({
+      name: `${b.emoji} ${b.name}`,
+      v: b.revenues.filter(r=>r.date.startsWith(String(thisYear))).reduce((s,r)=>s+r.amount,0)
+    }))
+  ].filter(e => e.v > 0).sort((a,b)=>b.v-a.v);
+  if (earnersThis.length > 0) {
+    insights.push(`💰 ปีนี้ <b>${earnersThis[0].name}</b> ทำเงินสูงสุด <b>${fmt(earnersThis[0].v)} ฿</b>`);
+  }
+
+  // 2) เดือน peak (รายได้รวมสูงสุด 12 เดือนล่าสุด)
+  if (months12.length === 12) {
+    let peakIdx = 0;
+    for (let i=1; i<12; i++) if (total12[i] > total12[peakIdx]) peakIdx = i;
+    if (total12[peakIdx] > 0) {
+      insights.push(`📈 เดือน Peak 12 เดือนล่าสุด: <b>${thMonthShort(months12[peakIdx])}</b> รายได้รวม <b>${fmt(total12[peakIdx])} ฿</b>`);
+    }
+  }
+
+  // 3) YoY ของแต่ละธุรกิจ
+  if (rubberLast > 0) {
+    const ydiff = rubberYoY;
+    const emoji = ydiff > 0 ? '🚀' : '📉';
+    insights.push(`${emoji} สวนยางปีนี้ <b>${ydiff>=0?'+':''}${ydiff.toFixed(1)}%</b> เทียบกับปีที่แล้ว (${fmt(rubberLast)} → ${fmt(rubberThis)} ฿)`);
+  }
+  if (rentalLast > 0) {
+    const ydiff = rentalYoY;
+    const emoji = ydiff > 0 ? '🚀' : '📉';
+    insights.push(`${emoji} ห้องเช่าปีนี้ <b>${ydiff>=0?'+':''}${ydiff.toFixed(1)}%</b> เทียบกับปีที่แล้ว (${fmt(rentalLast)} → ${fmt(rentalThis)} ฿)`);
+  }
+
+  // 4) ห้องที่ว่าง (ไม่มี tenant)
+  const vacantRooms = reRooms.filter(r => r.status !== 'เช่าอยู่');
+  if (vacantRooms.length > 0) {
+    insights.push(`🏚️ มีห้องว่าง <b>${vacantRooms.length} ห้อง</b>: ${vacantRooms.map(r=>r.name).join(', ')} — เสียโอกาสรายได้ <b>${fmt(vacantRooms.reduce((s,r)=>s+r.rent,0))} ฿/เดือน</b>`);
+  }
+
+  // 5) ห้องใกล้หมดสัญญา (60 วัน)
+  if (reExpiring.length > 0) {
+    insights.push(`⚠️ ห้องใกล้หมดสัญญา (60 วัน): <b>${reExpiring.map(e=>e.room+' ('+e.days+' วัน)').join(', ')}</b>`);
+  }
+
+  // 6) ธุรกิจ Health Grade D
+  // (จะ generate หลัง healthData ถูกสร้าง — render ทีหลัง)
+
+  // 7) ราคายางเฉลี่ย
+  if (rubberAvgPrice > 0) {
+    insights.push(`💵 ราคายางเฉลี่ยตลอดกาล <b>${rubberAvgPrice.toFixed(2)} ฿/กก.</b> (${rAllData.length} รอบ)`);
+  }
+
   // ─── Render Health Cards ───
   const healthCont = document.getElementById('ov-healthCards');
   let healthHtml = '';
@@ -920,6 +986,32 @@ function initOverview() {
       </div>`;
   });
   healthCont.innerHTML = healthHtml;
+
+  // เพิ่ม insight: ธุรกิจ Grade D (จาก healthData)
+  const gradeD = healthData.filter(h => h.total < 55);
+  if (gradeD.length > 0) {
+    insights.push(`🚨 ธุรกิจที่ต้องปรับด่วน (Grade D): <b>${gradeD.map(g=>g.name).join(', ')}</b>`);
+  }
+  const gradeA = healthData.filter(h => h.total >= 85);
+  if (gradeA.length > 0) {
+    insights.push(`🌟 ธุรกิจแข็งแกร่ง (Grade A): <b>${gradeA.map(g=>g.name).join(', ')}</b>`);
+  }
+
+  // Render Quick Insights
+  const insBox = document.getElementById('ov-insights');
+  if (insights.length > 0) {
+    insBox.innerHTML = `
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+        <span style="font-size:1.4em">🧠</span>
+        <h3 style="margin:0;color:#92400e;font-size:1.05em">Quick Insights — สิ่งที่น่ารู้วันนี้</h3>
+      </div>
+      <div style="display:grid;gap:6px;font-size:.92em;line-height:1.7;color:#451a03">
+        ${insights.map(i => `<div>• ${i}</div>`).join('')}
+      </div>
+    `;
+  } else {
+    insBox.style.display = 'none';
+  }
 
   // ══════════ 🆕 Generic Businesses → Overview KPIs ══════════
   const genCont = document.getElementById('ov-genericKpiContainer');
@@ -1553,6 +1645,182 @@ function initSongkran() {
 // ═══════════════════════════════════════════════════════
 tabInited['overview'] = true;
 initOverview();
+
+// ═══════════════════════════════════════════════════════
+// 📄 ANNUAL REPORT — เปิดหน้าใหม่พร้อม print-friendly layout
+// ═══════════════════════════════════════════════════════
+function openAnnualReport() {
+  const thisYear = new Date().getFullYear();
+  const lastYear = thisYear - 1;
+  const beYear = thisYear + 543;
+  const today = new Date().toLocaleDateString('th-TH', {year:'numeric',month:'long',day:'numeric'});
+
+  // คำนวณตัวเลขทุกธุรกิจ
+  const rubberThis = rAllData.filter(d=>d.year===thisYear).reduce((s,d)=>s+d.owner,0);
+  const rubberLast = rAllData.filter(d=>d.year===lastYear).reduce((s,d)=>s+d.owner,0);
+  const rubberAll  = rAllData.reduce((s,d)=>s+d.owner,0);
+  const rubberCnt  = rAllData.filter(d=>d.year===thisYear).length;
+  const rubberAvgPrice = rAllData.length ? rAllData.reduce((s,d)=>s+d.price,0)/rAllData.length : 0;
+
+  const rentalThis = reIncomes.filter(i=>i.date.startsWith(String(thisYear))).reduce((s,i)=>s+i.amount,0);
+  const rentalLast = reIncomes.filter(i=>i.date.startsWith(String(lastYear))).reduce((s,i)=>s+i.amount,0);
+  const rentalAll  = reIncomes.reduce((s,i)=>s+i.amount,0);
+  const occupied   = reRooms.filter(r=>r.status==='เช่าอยู่').length;
+  const monthlyRent = reRooms.reduce((s,r)=>s+r.rent,0);
+
+  const fmtR = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:0});
+  const yoyPct = (cur,prev) => prev>0 ? ((cur-prev)/prev*100).toFixed(1)+'%' : '—';
+
+  // Generic biz rows
+  const genRows = GENERIC_BIZ.map(b => {
+    const rTot = b.revenues.reduce((s,r)=>s+r.amount,0);
+    const eTot = b.expenses.reduce((s,r)=>s+r.amount,0);
+    const rThis = b.revenues.filter(r=>r.date.startsWith(String(thisYear))).reduce((s,r)=>s+r.amount,0);
+    const rLast = b.revenues.filter(r=>r.date.startsWith(String(lastYear))).reduce((s,r)=>s+r.amount,0);
+    return `<tr><td>${b.emoji} ${b.name}</td><td>${fmtR(rTot)}</td><td>${fmtR(eTot)}</td><td>${fmtR(rTot-eTot)}</td><td>${fmtR(rThis)}</td><td>${fmtR(rLast)}</td><td>${yoyPct(rThis,rLast)}</td></tr>`;
+  }).join('');
+
+  // Songkran items table
+  const skItems = skSummaries.filter(s => s.product !== 'รวมทั้งหมด').map(s =>
+    `<tr><td>${s.product}</td><td>${fmtR(s.revenue)}</td><td>${fmtR(s.cost)}</td><td>${fmtR(s.profit)}</td><td>${s.pct}</td></tr>`
+  ).join('');
+
+  // Stock items
+  const stockRows = skStockItems.map(s =>
+    `<tr><td>${s.item}</td><td>${s.qty} ${s.unit}</td><td>${fmtR(s.value)}</td></tr>`
+  ).join('');
+  const stockTotal = skStockItems.reduce((s,i)=>s+i.value,0);
+
+  // Rooms table
+  const roomsRows = reRooms.map(r =>
+    `<tr><td>${r.name}</td><td>${r.tenant}</td><td>${fmtR(r.rent)}</td><td>${r.status}</td><td>${r.end_date}</td></tr>`
+  ).join('');
+
+  // Build HTML
+  const html = `<!DOCTYPE html>
+<html lang="th"><head><meta charset="UTF-8">
+<title>Annual Report ${beYear} — Boss Business Hub</title>
+<style>
+@page { size: A4; margin: 1.2cm; }
+* { box-sizing: border-box; }
+body { font-family: 'Sarabun','Leelawadee UI','Tahoma',sans-serif; color:#1a1a2e; line-height:1.55; max-width:21cm; margin:0 auto; padding:18px; background:#f0f0f0; }
+.page { background:white; padding:36px 44px; margin-bottom:14px; box-shadow:0 2px 10px rgba(0,0,0,.08); page-break-after:always; min-height:27.5cm; }
+.page:last-child { page-break-after:auto; }
+h1 { font-size:1.8em; margin:0 0 6px; color:#1a1a2e; }
+h2 { font-size:1.25em; margin:24px 0 10px; padding-bottom:6px; border-bottom:2px solid #1a1a2e; }
+h3 { font-size:1.05em; margin:16px 0 8px; color:#37474f; }
+.cover { text-align:center; padding:80px 30px; }
+.cover .big { font-size:5em; margin:20px 0; }
+.cover h1 { font-size:2.4em; margin:14px 0; }
+.cover .sub { color:#666; font-size:1.1em; margin:8px 0; }
+.kpi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin:14px 0; }
+.kpi { background:#f7f8fc; border-radius:8px; padding:14px 16px; border-left:4px solid #1a1a2e; }
+.kpi .num { font-size:1.4em; font-weight:700; color:#1a1a2e; }
+.kpi .lbl { font-size:.78em; color:#666; margin-top:2px; }
+table { width:100%; border-collapse:collapse; margin:10px 0; font-size:.85em; }
+th, td { padding:7px 10px; border:1px solid #ddd; text-align:left; }
+th { background:#1a1a2e; color:white; font-weight:600; }
+tr:nth-child(even) td { background:#f9fafb; }
+.print-btn { position:fixed; top:14px; right:14px; background:#1a1a2e; color:white; border:none; padding:10px 22px; border-radius:8px; cursor:pointer; font-weight:600; font-size:.95em; box-shadow:0 4px 12px rgba(0,0,0,.2); }
+.tag { display:inline-block; background:#dbeafe; color:#1e40af; padding:2px 10px; border-radius:12px; font-size:.78em; margin-left:6px; }
+.green { color:#059669; font-weight:600; } .red { color:#dc2626; font-weight:600; }
+@media print { body{background:white;padding:0;} .page{box-shadow:none;margin:0;} .print-btn{display:none;} }
+</style>
+</head><body>
+
+<button class="print-btn" onclick="window.print()">🖨️ พิมพ์ / Save PDF</button>
+
+<!-- COVER -->
+<div class="page cover">
+  <div class="big">📊</div>
+  <h1>รายงานประจำปี ${beYear}</h1>
+  <div class="sub">Boss Business Hub — บอสอู๊ด</div>
+  <div class="sub" style="margin-top:36px">🌿 สวนยาง · 🏠 ห้องเช่า · 🎊 สงกราน${GENERIC_BIZ.map(b=>` · ${b.emoji} ${b.name}`).join('')}</div>
+  <div style="margin-top:80px;color:#999;font-size:.95em">จัดทำโดย ปอง · ${today}</div>
+</div>
+
+<!-- SUMMARY -->
+<div class="page">
+  <h1>📋 สรุปภาพรวม</h1>
+  <h2>💰 ภาพรวมรายได้ ปี ${beYear}</h2>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="num">${fmtR(rubberThis)} ฿</div><div class="lbl">🌿 สวนยาง — รายได้ปีนี้</div></div>
+    <div class="kpi"><div class="num">${fmtR(rentalThis)} ฿</div><div class="lbl">🏠 ห้องเช่า — รายรับปีนี้</div></div>
+    <div class="kpi"><div class="num">${fmtR(skTotalProfit)} ฿</div><div class="lbl">🎊 สงกราน — กำไรสุทธิ</div></div>
+  </div>
+
+  <h2>📊 ตารางสรุปทุกธุรกิจ</h2>
+  <table>
+    <thead><tr><th>ธุรกิจ</th><th>รายได้สะสม</th><th>รายจ่ายสะสม</th><th>กำไร</th><th>ปีนี้ (${beYear})</th><th>ปีก่อน (${lastYear+543})</th><th>YoY</th></tr></thead>
+    <tbody>
+      <tr><td>🌿 สวนยาง (เจ้าของสวน)</td><td>${fmtR(rubberAll)}</td><td>—</td><td>${fmtR(rubberAll)}</td><td>${fmtR(rubberThis)}</td><td>${fmtR(rubberLast)}</td><td>${yoyPct(rubberThis,rubberLast)}</td></tr>
+      <tr><td>🏠 ห้องเช่า</td><td>${fmtR(rentalAll)}</td><td>—</td><td>${fmtR(rentalAll)}</td><td>${fmtR(rentalThis)}</td><td>${fmtR(rentalLast)}</td><td>${yoyPct(rentalThis,rentalLast)}</td></tr>
+      <tr><td>🎊 สงกราน</td><td>${fmtR(skTotalRevenue)}</td><td>${fmtR(skTotalCost)}</td><td class="${skTotalProfit>=0?'green':'red'}">${fmtR(skTotalProfit)}</td><td>${fmtR(skTotalProfit)}</td><td>—</td><td>—</td></tr>
+      ${genRows}
+    </tbody>
+  </table>
+</div>
+
+<!-- RUBBER -->
+<div class="page">
+  <h1>🌿 รายงาน — สวนยางพารา</h1>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="num">${fmtR(rubberThis)} ฿</div><div class="lbl">รายได้ปีนี้</div></div>
+    <div class="kpi"><div class="num">${rubberCnt} รอบ</div><div class="lbl">จำนวนรอบกรีดปีนี้</div></div>
+    <div class="kpi"><div class="num">${rubberAvgPrice.toFixed(2)} ฿/กก.</div><div class="lbl">ราคาเฉลี่ยตลอดกาล</div></div>
+  </div>
+  <h3>📊 รายได้ย้อนหลัง 12 เดือน</h3>
+  <table>
+    <thead><tr><th>เดือน</th><th>เจ้าของสวน (฿)</th></tr></thead>
+    <tbody>${(()=>{ const map={}; rAllData.forEach(d=>{const m=d.date_raw.substring(0,7); map[m]=(map[m]||0)+d.owner;}); return Object.keys(map).sort().slice(-12).map(m=>`<tr><td>${m}</td><td>${fmtR(map[m])}</td></tr>`).join(''); })()}</tbody>
+  </table>
+</div>
+
+<!-- RENTAL -->
+<div class="page">
+  <h1>🏠 รายงาน — ห้องเช่า</h1>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="num">${fmtR(rentalThis)} ฿</div><div class="lbl">รายรับปีนี้</div></div>
+    <div class="kpi"><div class="num">${occupied}/${reRooms.length}</div><div class="lbl">ห้องที่เช่าอยู่</div></div>
+    <div class="kpi"><div class="num">${fmtR(monthlyRent)} ฿</div><div class="lbl">รายรับเต็มที่/เดือน</div></div>
+  </div>
+  <h3>🚪 รายละเอียดห้อง</h3>
+  <table>
+    <thead><tr><th>ห้อง</th><th>ผู้เช่า</th><th>ค่าเช่า (฿)</th><th>สถานะ</th><th>หมดสัญญา</th></tr></thead>
+    <tbody>${roomsRows}</tbody>
+  </table>
+</div>
+
+<!-- SONGKRAN -->
+<div class="page">
+  <h1>🎊 รายงาน — สงกราน ${beYear}</h1>
+  <div class="kpi-grid">
+    <div class="kpi"><div class="num">${fmtR(skTotalRevenue)} ฿</div><div class="lbl">ยอดขายรวม</div></div>
+    <div class="kpi"><div class="num">${fmtR(skTotalCost)} ฿</div><div class="lbl">ต้นทุนรวม</div></div>
+    <div class="kpi"><div class="num ${skTotalProfit>=0?'green':'red'}">${fmtR(skTotalProfit)} ฿</div><div class="lbl">กำไรสุทธิ</div></div>
+  </div>
+  <h3>📦 สรุปรายสินค้า</h3>
+  <table>
+    <thead><tr><th>สินค้า</th><th>ยอดขาย</th><th>ต้นทุน</th><th>กำไร</th><th>%</th></tr></thead>
+    <tbody>${skItems}</tbody>
+  </table>
+  <h3>🎒 สต็อกคงเหลือ (ยกปีหน้า)</h3>
+  <table>
+    <thead><tr><th>สินค้า</th><th>จำนวน</th><th>มูลค่า (฿)</th></tr></thead>
+    <tbody>${stockRows}<tr><td colspan="2"><b>รวม</b></td><td><b>${fmtR(stockTotal)}</b></td></tr></tbody>
+  </table>
+</div>
+
+<script>
+// auto open print dialog หลัง 1 วินาที (ให้ render เสร็จก่อน)
+setTimeout(() => window.print(), 800);
+</script>
+</body></html>`;
+
+  const w = window.open('', '_blank');
+  w.document.write(html);
+  w.document.close();
+}
 
 // 📱 PWA — register service worker
 if ('serviceWorker' in navigator) {
