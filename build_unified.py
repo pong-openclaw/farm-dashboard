@@ -714,19 +714,23 @@ async function checkPw(){{
     </button>
   </div>
 
-  <!-- 💹 กราฟเปรียบเทียบรายปี (full width) -->
-  <div class="charts-grid" style="margin-bottom:16px">
-    <div class="chart-card wide"><h3 style="font-size:.88em">💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart" style="max-height:240px"></canvas></div>
-  </div>
+  <!-- Hero KPIs -->
+  <div id="ov-hero-kpi" style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px"></div>
 
-  <!-- 📅 Year Selector Section -->
-  <div id="ov-year-section" style="background:#fff;border-radius:14px;padding:16px 20px;margin-bottom:16px;box-shadow:0 2px 8px rgba(0,0,0,.07)">
-    <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:12px">
-      <span style="font-size:.82em;font-weight:600;color:#555">📅 รายได้รวม แยกตามปี</span>
-      <div id="ov-year-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+  <!-- Row 2: Compare + Year Selector (fixed height) -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;align-items:stretch">
+    <div class="chart-card" style="height:380px;display:flex;flex-direction:column">
+      <h3 style="font-size:.85em;margin-bottom:10px">💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3>
+      <div style="flex:1;position:relative"><canvas id="ov-compareChart" style="position:absolute;top:0;left:0;width:100%;height:100%"></canvas></div>
     </div>
-    <div id="ov-year-kpi" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px"></div>
-    <canvas id="ov-yearMonthChart" style="max-height:220px"></canvas>
+    <div class="chart-card" id="ov-year-section" style="height:380px;display:flex;flex-direction:column">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <span style="font-size:.85em;font-weight:600;color:#555">📅 รายได้รวม แยกตามปี</span>
+        <div id="ov-year-btns" style="display:flex;gap:6px;flex-wrap:wrap"></div>
+      </div>
+      <div id="ov-year-kpi" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px"></div>
+      <div style="flex:1;position:relative"><canvas id="ov-yearMonthChart" style="position:absolute;top:0;left:0;width:100%;height:100%"></canvas></div>
+    </div>
   </div>
 
   <div class="charts-grid">
@@ -1120,7 +1124,7 @@ function initOverview() {{
       ]
     }},
     options: {{
-      responsive: true, aspectRatio: 3.5,
+      responsive: true, maintainAspectRatio: false,
       plugins: {{ legend: {{ position:'top' }} }},
       scales: {{ y: {{ beginAtZero:true, ticks: {{ callback: v => fmt(v) }} }} }},
       datasets: {{ bar: {{ maxBarThickness: 60 }} }}
@@ -1218,7 +1222,7 @@ function initOverview() {{
         {{label:'🏠 ห้องเช่า',data:usedMonths.map(m=>reM[m]||0),backgroundColor:'rgba(21,101,192,.85)',borderWidth:1}},
         {{label:'🎊 สงกราน', data:usedMonths.map(m=>skM[m]||0),backgroundColor:'rgba(233,30,99,.8)', borderWidth:1}},
       ]}},
-      options:{{responsive:true,aspectRatio:3.5,
+      options:{{responsive:true,maintainAspectRatio:false,
         plugins:{{legend:{{position:'top'}}}},
         datasets:{{bar:{{maxBarThickness:70}}}},
         scales:{{x:{{stacked:true}},y:{{stacked:true,ticks:{{callback:v=>fmt(v)}}}}}}}}
@@ -1240,6 +1244,20 @@ function initOverview() {{
     btnContainer.appendChild(btn);
     if(i===allYears.length-1) {{ btn.click(); }} // เลือกปีล่าสุดอัตโนมัติ
   }});
+
+  // ── Hero KPI ──
+  const totalThis = rubberThis + rentalThis + Math.max(skProfit,0);
+  const totalLast = rubberLast + rentalLast;
+  const totalYoY = totalLast>0 ? ((totalThis-totalLast)/totalLast*100).toFixed(1) : null;
+  document.getElementById('ov-hero-kpi').innerHTML = [
+    {{label:'รวมทั้งหมด', val:fmt(totalThis)+' ฿', yoy:totalYoY, color:'#f59e0b'}},
+    {{label:'🌿 สวนยาง',  val:fmt(rubberThis)+' ฿', color:'#4caf50'}},
+    {{label:'🏠 ห้องเช่า', val:fmt(rentalThis)+' ฿', color:'#1565c0'}},
+    {{label:'🎊 สงกราน',  val:fmt(Math.max(skProfit,0))+' ฿', color:'#e91e63'}},
+  ].map(k=>`<div style="flex:1;min-width:160px;background:#fff;border-radius:12px;padding:18px 20px;border-top:4px solid ${{k.color}};box-shadow:0 2px 8px rgba(0,0,0,.08)">
+    <div style="font-size:1.5em;font-weight:800;color:#1a1a2e;line-height:1.2">${{k.val}}</div>
+    <div style="font-size:.82em;color:#777;margin-top:4px">${{k.label}}${{k.yoy!=null?' <span style="color:'+( +k.yoy>=0?'#4caf50':'#e53935')+';font-weight:700">'+( +k.yoy>=0?'▲':'▼')+Math.abs(k.yoy)+'% YoY</span>':''}}</div>
+  </div>`).join('');
 
   // ── ตารางสรุป ──
   const tbl = document.getElementById('ov-table');
