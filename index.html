@@ -240,7 +240,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
   </div>
 </header>
 <div class="container">
@@ -256,7 +256,7 @@ async function checkPw(){
 
   <!-- 📈 Trend 12 เดือนล่าสุด -->
   <div class="charts-grid" style="margin-top:20px">
-    <div class="chart-card wide"><h3>📈 แนวโน้ม 12 เดือนล่าสุด (฿) — สวนยาง + ห้องเช่า</h3><canvas id="ov-trend12Chart" height="70"></canvas></div>
+    <div class="chart-card wide"><h3>📈 แนวโน้ม 12 เดือน + ทำนาย 3 เดือนข้างหน้า (เส้นประ) — สวนยาง + ห้องเช่า</h3><canvas id="ov-trend12Chart" height="70"></canvas></div>
   </div>
 
   <!-- 💰 Cash Flow Statement รายเดือน (12 เดือน) -->
@@ -307,7 +307,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -355,7 +355,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
   </div>
 </header>
 <div class="container">
@@ -407,7 +407,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:44</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 11:49</span></p>
   </div>
 </header>
 <div class="container">
@@ -699,16 +699,61 @@ function initOverview() {
   const rental12 = months12.map(m => rentalMonthMap[m]||0);
   const total12  = months12.map((_,i) => rubber12[i]+rental12[i]);
 
-  // กราฟ Trend 12 เดือน (line — เห็นแนวโน้มชัด)
+  // 📈 Linear Regression Forecasting — ทำนาย 3 เดือนข้างหน้า
+  // ใช้เฉพาะข้อมูลที่ไม่ใช่ 0 (เดือนที่ไม่มีข้อมูล exclude เพื่อไม่บิดเบือนเทรนด์)
+  const _linReg = (vals) => {
+    const pts = vals.map((y,i)=>({x:i,y})).filter(p=>p.y>0);
+    if (pts.length < 3) return null;  // ข้อมูลน้อย — ไม่ทำนาย
+    const n = pts.length;
+    const sx = pts.reduce((s,p)=>s+p.x,0), sy = pts.reduce((s,p)=>s+p.y,0);
+    const sxy = pts.reduce((s,p)=>s+p.x*p.y,0), sxx = pts.reduce((s,p)=>s+p.x*p.x,0);
+    const slope = (n*sxy - sx*sy) / (n*sxx - sx*sx);
+    const intercept = (sy - slope*sx) / n;
+    return x => Math.max(0, slope*x + intercept);
+  };
+  const _forecast = (vals, steps=3) => {
+    const fn = _linReg(vals);
+    if (!fn) return [];
+    const out = [];
+    for (let i=0; i<steps; i++) out.push(fn(vals.length + i));
+    return out;
+  };
+  // ทำนาย 3 เดือนข้างหน้า + label เดือน
+  const futureMonths = [];
+  for (let i=1; i<=3; i++) {
+    const d = new Date(now.getFullYear(), now.getMonth()+i, 1);
+    futureMonths.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+  }
+  const allLabels = months12.concat(futureMonths).map(thMonthShort);
+  const padNulls = (arr, head, tail) => Array(head).fill(null).concat(arr).concat(Array(tail).fill(null));
+  // Forecast ค่าจริงเดือนสุดท้ายเป็นจุดเริ่ม → ดูต่อเนื่อง
+  const rubberFc = _forecast(rubber12, 3);
+  const rentalFc = _forecast(rental12, 3);
+  const totalFc  = rubberFc.length===3 && rentalFc.length===3 ? rubberFc.map((v,i)=>v+rentalFc[i]) : [];
+  // dataset สำหรับ forecast: null 12 ตัวแรก + ค่าจริงเดือนสุดท้าย + ค่าทำนาย → ลากต่อเนื่อง
+  const fcDataset = (real, fc, color) => fc.length===0 ? null : {
+    label: 'ทำนาย', data: padNulls([real[real.length-1]].concat(fc), 11, 0),
+    borderColor: color, backgroundColor: 'transparent', borderDash: [8,5], pointStyle: 'triangle', pointRadius: 5, tension: .3, fill: false
+  };
+
+  // กราฟ Trend 12 เดือน + 3 เดือนทำนาย (เส้นประ)
+  const trendDatasets = [
+    { label:'🌿 สวนยาง', data:padNulls(rubber12,0,3), borderColor:'rgba(76,175,80,1)', backgroundColor:'rgba(76,175,80,.15)', fill:true, tension:.3 },
+    { label:'🏠 ห้องเช่า', data:padNulls(rental12,0,3), borderColor:'rgba(21,101,192,1)', backgroundColor:'rgba(21,101,192,.15)', fill:true, tension:.3 },
+    { label:'💰 รวม', data:padNulls(total12,0,3), borderColor:'rgba(55,71,79,1)', backgroundColor:'rgba(55,71,79,.05)', borderDash:[6,4], tension:.3, fill:false },
+  ];
+  const fcRubber = fcDataset(rubber12, rubberFc, 'rgba(76,175,80,.9)');
+  const fcRental = fcDataset(rental12, rentalFc, 'rgba(21,101,192,.9)');
+  const fcTotal  = fcDataset(total12, totalFc, 'rgba(55,71,79,.9)');
+  if (fcRubber) trendDatasets.push({...fcRubber, label:'🌿 ทำนาย'});
+  if (fcRental) trendDatasets.push({...fcRental, label:'🏠 ทำนาย'});
+  if (fcTotal)  trendDatasets.push({...fcTotal,  label:'💰 ทำนาย'});
+
   new Chart(document.getElementById('ov-trend12Chart'), {
     type: 'line',
     data: {
-      labels: months12.map(thMonthShort),
-      datasets: [
-        { label:'🌿 สวนยาง', data:rubber12, borderColor:'rgba(76,175,80,1)', backgroundColor:'rgba(76,175,80,.15)', fill:true, tension:.3 },
-        { label:'🏠 ห้องเช่า', data:rental12, borderColor:'rgba(21,101,192,1)', backgroundColor:'rgba(21,101,192,.15)', fill:true, tension:.3 },
-        { label:'💰 รวม', data:total12, borderColor:'rgba(55,71,79,1)', backgroundColor:'rgba(55,71,79,.05)', borderDash:[6,4], tension:.3, fill:false },
-      ]
+      labels: allLabels,
+      datasets: trendDatasets
     },
     options: {
       responsive: true,
