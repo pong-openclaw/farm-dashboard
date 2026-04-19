@@ -460,7 +460,7 @@ generic_tab_divs = "".join(
 <div class="container">
   <div class="biz-kpi-row" id="gb-{b["key"]}-kpi"></div>
   <div class="charts-grid" style="margin-top:20px">
-    <div class="chart-card wide"><h3>📈 รายรับ vs รายจ่าย รายเดือน (฿)</h3><canvas id="gb-{b["key"]}-monthChart" height="70"></canvas></div>
+    <div class="chart-card wide"><h3>📈 รายรับ vs รายจ่าย รายเดือน (฿)</h3><canvas id="gb-{b["key"]}-monthChart"></canvas></div>
   </div>
   <div class="charts-grid">
     <div class="chart-card"><h3>📊 เปรียบเทียบรายปี (฿)</h3><canvas id="gb-{b["key"]}-yearChart"></canvas></div>
@@ -725,7 +725,7 @@ async function checkPw(){{
 
   <!-- 📈 Trend 12 เดือนล่าสุด -->
   <div class="charts-grid" style="margin-top:20px">
-    <div class="chart-card wide"><h3>📈 แนวโน้ม 12 เดือน + ทำนาย 3 เดือนข้างหน้า (เส้นประ) — สวนยาง + ห้องเช่า</h3><canvas id="ov-trend12Chart" height="70"></canvas></div>
+    <div class="chart-card wide"><h3>📈 แนวโน้ม 12 เดือน + ทำนาย 3 เดือนข้างหน้า (เส้นประ) — สวนยาง + ห้องเช่า</h3><canvas id="ov-trend12Chart"></canvas></div>
   </div>
 
   <!-- 💰 Cash Flow Statement รายเดือน (12 เดือน) -->
@@ -1265,11 +1265,12 @@ function initOverview() {{
     }},
     options: {{
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {{
         legend: {{ position:'top' }},
         tooltip: {{ callbacks: {{ label: ctx => ` ${{ctx.dataset.label}}: ${{fmt(ctx.parsed.y)}} ฿` }} }}
       }},
-      scales: {{ y: {{ ticks: {{ callback: v => fmt(v) }} }} }}
+      scales: {{ y: {{ beginAtZero:true, ticks: {{ callback: v => fmt(v) }} }} }}
     }}
   }});
 
@@ -1725,7 +1726,7 @@ function initGenericBiz(cfg) {{
       {{label:'รายรับ',data:months.map(m=>mmap[m].r),backgroundColor:cfg.color+'cc'}},
       {{label:'รายจ่าย',data:months.map(m=>mmap[m].e),backgroundColor:'rgba(220,38,38,.7)'}}
     ]}},
-    options:{{responsive:true,plugins:{{legend:{{position:'top'}}}},scales:{{y:{{ticks:{{callback:v=>fmt(v)}}}}}}}}
+    options:{{responsive:true,maintainAspectRatio:false,plugins:{{legend:{{position:'top'}}}},scales:{{y:{{beginAtZero:true,ticks:{{callback:v=>fmt(v)}}}}}}}}
   }});
 
   // Year compare
