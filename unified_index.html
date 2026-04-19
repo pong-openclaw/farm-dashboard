@@ -116,7 +116,7 @@ body{font-family:'Leelawadee UI','Leelawadee','Tahoma','Myanmar Text',sans-serif
 .chart-card{background:white;border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.08);position:relative;min-height:240px}
 .chart-card.wide{grid-column:1/-1}
 .chart-card canvas{max-height:320px!important;width:100%!important}
-.chart-card.wide canvas{max-height:380px!important}
+.chart-card.wide canvas{max-height:380px!important;width:100%!important}
 .chart-card h3{font-size:.9em;color:#555;margin-bottom:12px;padding-bottom:8px;border-bottom:2px solid #f0f2f5}
 table{width:100%;border-collapse:collapse;font-size:.85em}
 td{padding:8px 12px;border-bottom:1px solid #f0f2f5;text-align:center}
@@ -242,7 +242,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:24</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:28</span></p>
   </div>
 </header>
 <div class="container">
@@ -334,7 +334,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:24</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:28</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -382,7 +382,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:24</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:28</span></p>
   </div>
 </header>
 <div class="container">
@@ -434,7 +434,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:24</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 14:28</span></p>
   </div>
 </header>
 <div class="container">
@@ -653,7 +653,7 @@ function initOverview() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
+      
       plugins: { legend: { position:'top' } },
       scales: { y: { beginAtZero:true, ticks: { callback: v => fmt(v) } } }
     }
@@ -814,7 +814,7 @@ function initOverview() {
     },
     options: {
       responsive: true,
-      maintainAspectRatio: false,
+      
       plugins: {
         legend: { position:'top' },
         tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)} ฿` } }
@@ -1275,7 +1275,7 @@ function initGenericBiz(cfg) {
       {label:'รายรับ',data:months.map(m=>mmap[m].r),backgroundColor:cfg.color+'cc'},
       {label:'รายจ่าย',data:months.map(m=>mmap[m].e),backgroundColor:'rgba(220,38,38,.7)'}
     ]},
-    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true,ticks:{callback:v=>fmt(v)}}}}
+    options:{responsive:true,plugins:{legend:{position:'top'}},scales:{y:{beginAtZero:true,ticks:{callback:v=>fmt(v)}}}}
   });
 
   // Year compare
@@ -1355,7 +1355,7 @@ function rBuildChart(id,type,labels,datasets,extraOpts={}) {
   const isWide = (document.getElementById(id)?.closest('.chart-card.wide')) != null;
   rCharts[id]=new Chart(document.getElementById(id),{
     type, data:{labels,datasets:ds},
-    options:Object.assign({responsive:true,maintainAspectRatio:!isWide,plugins:{legend:{position:'top'}}},{scales:Object.assign({x:{}},extraOpts)})
+    options:Object.assign({responsive:true,plugins:{legend:{position:'top'}}},{scales:Object.assign({x:{}},extraOpts)})
   });
 }
 
