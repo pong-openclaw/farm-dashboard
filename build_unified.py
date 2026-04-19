@@ -1128,19 +1128,19 @@ function initOverview() {{
   }});
 
   // ── กราฟรายเดือนรวมทุกธุรกิจ (Stacked) ──
-  const rubberMonthMap = {{}};
-  const rentalMonthMap = {{}};
-  rAllData.forEach(d=>{{ const m=d.date_raw.substring(0,7); rubberMonthMap[m]=(rubberMonthMap[m]||0)+d.owner; }});
-  reIncomes.forEach(i=>{{ const m=i.date.substring(0,7); if(m) rentalMonthMap[m]=(rentalMonthMap[m]||0)+i.amount; }});
-  const mKeys = [...new Set([...Object.keys(rubberMonthMap),...Object.keys(rentalMonthMap)])].sort();
+  const stackRubberMap = {{}};
+  const stackRentalMap = {{}};
+  rAllData.forEach(d=>{{ const m=d.date_raw.substring(0,7); stackRubberMap[m]=(stackRubberMap[m]||0)+d.owner; }});
+  reIncomes.forEach(i=>{{ const m=i.date.substring(0,7); if(m) stackRentalMap[m]=(stackRentalMap[m]||0)+i.amount; }});
+  const mKeys = [...new Set([...Object.keys(stackRubberMap),...Object.keys(stackRentalMap)])].sort();
   new Chart(document.getElementById('ov-monthChart'), {{
     type: 'bar',
     data: {{
       labels: mKeys,
       datasets: [
-        {{ label:'🌿 สวนยาง', data:mKeys.map(m=>rubberMonthMap[m]||0),
+        {{ label:'🌿 สวนยาง', data:mKeys.map(m=>stackRubberMap[m]||0),
           backgroundColor:'rgba(76,175,80,.85)', borderColor:'rgba(76,175,80,1)', borderWidth:1 }},
-        {{ label:'🏠 ห้องเช่า', data:mKeys.map(m=>rentalMonthMap[m]||0),
+        {{ label:'🏠 ห้องเช่า', data:mKeys.map(m=>stackRentalMap[m]||0),
           backgroundColor:'rgba(21,101,192,.85)', borderColor:'rgba(21,101,192,1)', borderWidth:1 }},
       ]
     }},
