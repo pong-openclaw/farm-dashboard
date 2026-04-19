@@ -718,6 +718,16 @@ async function checkPw(){{
   <div class="charts-grid" style="margin-bottom:20px">
     <div class="chart-card wide"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart"></canvas></div>
   </div>
+  <!-- 📅 Year Selector + รายได้รายปี -->
+  <div id="ov-year-section" style="background:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
+    <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+      <h3 style="margin:0;font-size:.95em;color:#333">📅 รายได้รวม แยกตามปี</h3>
+      <div id="ov-year-btns" style="display:flex;gap:8px;flex-wrap:wrap"></div>
+    </div>
+    <div id="ov-year-kpi" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:16px"></div>
+    <canvas id="ov-yearMonthChart"></canvas>
+  </div>
+
   <div class="charts-grid">
     <div class="chart-card"><h3>🥧 สัดส่วนรายได้รวม แต่ละธุรกิจ</h3><canvas id="ov-pieChart"></canvas></div>
     <div class="chart-card"><h3>📅 รายรับรวมทุกธุรกิจ รายเดือน (฿)</h3><canvas id="ov-monthChart"></canvas></div>
@@ -1159,6 +1169,73 @@ function initOverview() {{
       plugins:{{ legend:{{ position:'top' }} }},
       scales:{{ x:{{ stacked:true }}, y:{{ stacked:true, ticks:{{ callback:v=>fmt(v) }} }} }}
     }}
+  }});
+
+  // ── Year Selector ──
+  const allYears = [...new Set([
+    ...rAllData.map(d=>d.date_raw.substring(0,4)),
+    ...reIncomes.map(i=>i.date.substring(0,4)).filter(Boolean),
+    ...skSales.map(s=>s.year ? String(parseInt(s.year)-543) : '').filter(Boolean)
+  ])].filter(Boolean).sort();
+
+  let ovYearChart = null;
+  function renderYearView(yr) {{
+    // KPI
+    const rY  = rAllData.filter(d=>d.date_raw.startsWith(yr)).reduce((s,d)=>s+d.owner,0);
+    const reY = reIncomes.filter(i=>i.date.startsWith(yr)).reduce((s,i)=>s+i.amount,0);
+    const skY = skSales.filter(s=>s.year && String(parseInt(s.year)-543)===yr).reduce((s,i)=>s+i.revenue,0);
+    const total = rY + reY + skY;
+    const prevYr = String(parseInt(yr)-1);
+    const rP  = rAllData.filter(d=>d.date_raw.startsWith(prevYr)).reduce((s,d)=>s+d.owner,0);
+    const reP = reIncomes.filter(i=>i.date.startsWith(prevYr)).reduce((s,i)=>s+i.amount,0);
+    const skP = skSales.filter(s=>s.year && String(parseInt(s.year)-543)===prevYr).reduce((s,i)=>s+i.revenue,0);
+    const totalP = rP + reP + skP;
+    const yoy = totalP>0 ? ((total-totalP)/totalP*100).toFixed(1) : null;
+    document.getElementById('ov-year-kpi').innerHTML = [
+      {{label:'รวมทั้งหมด', val:fmt(total)+' ฿', cls:'', yoy}},
+      {{label:'🌿 สวนยาง',  val:fmt(rY)+' ฿',   cls:'green'}},
+      {{label:'🏠 ห้องเช่า', val:fmt(reY)+' ฿', cls:'blue'}},
+      {{label:'🎊 สงกราน',  val:fmt(skY)+' ฿',  cls:'red'}},
+    ].map(k=>`<div style="background:#f8f9fa;border-radius:10px;padding:14px 16px;border-left:4px solid ${{
+      {{green:'#4caf50',blue:'#1565c0',red:'#e91e63'}}[k.cls]||'#f59e0b'
+    }}">
+      <div style="font-size:1.25em;font-weight:700;color:#1a1a2e">${{k.val}}</div>
+      <div style="font-size:.82em;color:#666;margin-top:2px">${{k.label}}${{k.yoy!=null?' <span style="color:'+( +k.yoy>=0?'#4caf50':'#e53935')+';font-weight:600">'+(+k.yoy>=0?'▲':'▼')+Math.abs(k.yoy)+'% YoY</span>':''}}</div>
+    </div>`).join('');
+    // กราฟเดือนของปีนั้น
+    const months = Array.from({{length:12}},(_,i)=>yr+'-'+(i+1).toString().padStart(2,'0'));
+    const rM  = {{}}, reM = {{}}, skM = {{}};
+    rAllData.filter(d=>d.date_raw.startsWith(yr)).forEach(d=>{{ const m=d.date_raw.substring(0,7); rM[m]=(rM[m]||0)+d.owner; }});
+    reIncomes.filter(i=>i.date.startsWith(yr)).forEach(i=>{{ const m=i.date.substring(0,7); reM[m]=(reM[m]||0)+i.amount; }});
+    skSales.filter(s=>s.year && String(parseInt(s.year)-543)===yr).forEach(s=>{{ const m=yr+'-04'; skM[m]=(skM[m]||0)+s.revenue; }});
+    const usedMonths = months.filter(m=>( rM[m]||0)+(reM[m]||0)+(skM[m]||0)>0);
+    if(ovYearChart) ovYearChart.destroy();
+    ovYearChart = new Chart(document.getElementById('ov-yearMonthChart'),{{
+      type:'bar',
+      data:{{labels:usedMonths,datasets:[
+        {{label:'🌿 สวนยาง', data:usedMonths.map(m=>rM[m]||0), backgroundColor:'rgba(76,175,80,.85)', borderWidth:1}},
+        {{label:'🏠 ห้องเช่า',data:usedMonths.map(m=>reM[m]||0),backgroundColor:'rgba(21,101,192,.85)',borderWidth:1}},
+        {{label:'🎊 สงกราน', data:usedMonths.map(m=>skM[m]||0),backgroundColor:'rgba(233,30,99,.8)', borderWidth:1}},
+      ]}},
+      options:{{responsive:true,plugins:{{legend:{{position:'top'}}}},
+        scales:{{x:{{stacked:true}},y:{{stacked:true,ticks:{{callback:v=>fmt(v)}}}}}}}}
+    }});
+  }}
+
+  // สร้างปุ่มปี
+  const btnContainer = document.getElementById('ov-year-btns');
+  allYears.forEach((yr,i)=>{{
+    const btn = document.createElement('button');
+    const thaiYr = parseInt(yr)+543;
+    btn.textContent = thaiYr+' ('+yr+')';
+    btn.style.cssText = 'padding:6px 14px;border-radius:20px;border:2px solid #1565c0;cursor:pointer;font-weight:600;font-size:.85em;transition:all .2s';
+    btn.onclick = ()=>{{
+      btnContainer.querySelectorAll('button').forEach(b=>{{ b.style.background='white'; b.style.color='#1565c0'; }});
+      btn.style.background='#1565c0'; btn.style.color='white';
+      renderYearView(yr);
+    }};
+    btnContainer.appendChild(btn);
+    if(i===allYears.length-1) {{ btn.click(); }} // เลือกปีล่าสุดอัตโนมัติ
   }});
 
   // ── ตารางสรุป ──
