@@ -716,7 +716,10 @@ async function checkPw(){{
 
   <!-- กราฟเปรียบเทียบ -->
   <div class="charts-grid" style="margin-bottom:20px">
-    <div class="chart-card wide"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart"></canvas></div>
+    <div class="chart-card"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart"></canvas></div>
+    <div class="chart-card" id="ov-compare-placeholder" style="background:linear-gradient(135deg,#f8f9fa,#e9ecef);display:flex;align-items:center;justify-content:center;color:#adb5bd;font-size:.9em">
+      📌 เลือกปีด้านล่างเพื่อดูรายละเอียดรายเดือน
+    </div>
   </div>
   <!-- 📅 Year Selector + รายได้รายปี -->
   <div id="ov-year-section" style="background:#fff;border-radius:14px;padding:20px 24px;margin-bottom:20px;box-shadow:0 2px 8px rgba(0,0,0,.08)">
@@ -1120,9 +1123,9 @@ function initOverview() {{
     }},
     options: {{
       responsive: true,
-      
       plugins: {{ legend: {{ position:'top' }} }},
-      scales: {{ y: {{ beginAtZero:true, ticks: {{ callback: v => fmt(v) }} }} }}
+      scales: {{ y: {{ beginAtZero:true, ticks: {{ callback: v => fmt(v) }} }} }},
+      datasets: {{ bar: {{ maxBarThickness: 60 }} }}
     }}
   }});
 
