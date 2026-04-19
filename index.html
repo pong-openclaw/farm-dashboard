@@ -231,7 +231,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>📊 ภาพรวมธุรกิจทั้งหมด — บอสอู๊ด</h1>
-    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:16</span></p>
+    <p>สวนยาง · ห้องเช่า · สงกราน <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
   </div>
 </header>
 <div class="container">
@@ -243,6 +243,17 @@ async function checkPw(){
   <div class="charts-grid">
     <div class="chart-card"><h3>🥧 สัดส่วนรายได้รวม แต่ละธุรกิจ</h3><canvas id="ov-pieChart"></canvas></div>
     <div class="chart-card"><h3>📅 รายรับรวมทุกธุรกิจ รายเดือน (฿)</h3><canvas id="ov-monthChart"></canvas></div>
+  </div>
+
+  <!-- 📈 Trend 12 เดือนล่าสุด -->
+  <div class="charts-grid" style="margin-top:20px">
+    <div class="chart-card wide"><h3>📈 แนวโน้ม 12 เดือนล่าสุด (฿) — สวนยาง + ห้องเช่า</h3><canvas id="ov-trend12Chart" height="70"></canvas></div>
+  </div>
+
+  <!-- 💰 Cash Flow Statement รายเดือน (12 เดือน) -->
+  <div class="section" style="margin-top:20px">
+    <h3>💰 งบกระแสเงินสด (Cash Flow) — 12 เดือนล่าสุด</h3>
+    <div style="overflow-x:auto"><table class="ov-summary-table" id="ov-cashflow"></table></div>
   </div>
 
   <!-- KPI ธุรกิจ -->
@@ -274,7 +285,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🌿 สวนยางพารา <span style="font-size:.65em;opacity:.8;font-weight:normal">ရာဘာဥယျာဉ်</span></h1>
-    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:16</span></p>
+    <p>เจ้าของสวน (ဥယျာဉ်ပိုင်ရှင်) | ข้อมูลล่าสุด: 15/04/2569 <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
   </div>
   <div style="display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn btn-pdf" onclick="exportPDF()">🖨️ PDF</button>
@@ -322,7 +333,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🏠 ห้องเช่า — บอสอู๊ด</h1>
-    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:16</span></p>
+    <p>ห้องทั้งหมด 4 ห้อง <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
   </div>
 </header>
 <div class="container">
@@ -374,7 +385,7 @@ async function checkPw(){
 <header>
   <div>
     <h1>🎊 สงกราน — บอสอู๊ด</h1>
-    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:16</span></p>
+    <p>วิเคราะห์กำไร/ขาดทุน ทุกสินค้า <span style="display:inline-flex;align-items:center;gap:4px;background:rgba(255,255,255,.15);padding:2px 10px;border-radius:12px;font-size:.82em">🕒 อัปเดตโดย <b>ปอง</b> · 19/04/2026 07:38</span></p>
   </div>
 </header>
 <div class="container">
@@ -480,6 +491,23 @@ const skTotalStock   = 4449.0;
 const fmt  = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:0});
 const fmtD = n => (+n||0).toLocaleString('th-TH',{minimumFractionDigits:2,maximumFractionDigits:2});
 const fmtP = n => (+n||0).toFixed(2);
+// Professional Accounting Format — ติดลบแสดงเป็น (1,100) สีแดง, ศูนย์แสดง "-"
+const fmtAcc = (n, decimals=0) => {
+  const v = +n||0;
+  if (v === 0) return '<span style="color:#9ca3af">-</span>';
+  const abs = Math.abs(v).toLocaleString('th-TH',{minimumFractionDigits:decimals,maximumFractionDigits:decimals});
+  return v < 0
+    ? `<span style="color:#dc2626">(${abs})</span>`
+    : `<span style="color:#059669">${abs}</span>`;
+};
+// Colored delta (สำหรับ YoY %) — บวกเขียว ลบแดง พร้อมลูกศร
+const fmtDelta = (pct) => {
+  const v = +pct||0;
+  if (!isFinite(v) || v === 0) return '<span style="color:#9ca3af">—</span>';
+  const arrow = v > 0 ? '▲' : '▼';
+  const color = v > 0 ? '#059669' : '#dc2626';
+  return `<span style="color:${color};font-weight:600">${arrow} ${Math.abs(v).toFixed(1)}%</span>`;
+};
 
 // ═══════════════════════════════════════════════════════
 // OVERVIEW
@@ -494,9 +522,10 @@ function initOverview() {
   const rubberLast = rAllData.filter(d=>d.year===lastYear).reduce((s,d)=>s+d.owner,0);
   const rubberAvgPrice = rAllData.length ? rAllData.reduce((s,d)=>s+d.price,0)/rAllData.length : 0;
 
+  const rubberYoY = rubberLast>0 ? ((rubberThis-rubberLast)/rubberLast*100) : 0;
   document.getElementById('ov-rubberKpi').innerHTML = `
     <div class="biz-kpi green"><div class="bk-num">${fmt(rubberAll)} ฿</div><div class="bk-label">รายได้สะสมทั้งหมด</div></div>
-    <div class="biz-kpi green"><div class="bk-num">${fmt(rubberThis)} ฿</div><div class="bk-label">ปีนี้ (${thisYear+543})</div></div>
+    <div class="biz-kpi green"><div class="bk-num">${fmt(rubberThis)} ฿</div><div class="bk-label">ปีนี้ (${thisYear+543}) <br>${fmtDelta(rubberYoY)} YoY</div></div>
     <div class="biz-kpi gray"><div class="bk-num">${fmt(rubberLast)} ฿</div><div class="bk-label">ปีที่แล้ว (${lastYear+543})</div></div>
     <div class="biz-kpi orange"><div class="bk-num">${rAllData.length} รอบ</div><div class="bk-label">จำนวนรอบทั้งหมด</div></div>
     <div class="biz-kpi orange"><div class="bk-num">${rubberAvgPrice.toFixed(2)} ฿/กก.</div><div class="bk-label">ราคาเฉลี่ยตลอดกาล</div></div>
@@ -509,9 +538,10 @@ function initOverview() {
   const monthlyRent= reRooms.reduce((s,r)=>s+r.rent,0);
   const occupied   = reRooms.filter(r=>r.status==='เช่าอยู่').length;
 
+  const rentalYoY = rentalLast>0 ? ((rentalThis-rentalLast)/rentalLast*100) : 0;
   document.getElementById('ov-rentalKpi').innerHTML = `
     <div class="biz-kpi blue"><div class="bk-num">${fmt(rentalAll)} ฿</div><div class="bk-label">รายรับสะสมทั้งหมด</div></div>
-    <div class="biz-kpi blue"><div class="bk-num">${fmt(rentalThis)} ฿</div><div class="bk-label">ปีนี้ (${thisYear+543})</div></div>
+    <div class="biz-kpi blue"><div class="bk-num">${fmt(rentalThis)} ฿</div><div class="bk-label">ปีนี้ (${thisYear+543}) <br>${fmtDelta(rentalYoY)} YoY</div></div>
     <div class="biz-kpi gray"><div class="bk-num">${fmt(rentalLast)} ฿</div><div class="bk-label">ปีที่แล้ว (${lastYear+543})</div></div>
     <div class="biz-kpi purple"><div class="bk-num">${fmt(monthlyRent)} ฿/เดือน</div><div class="bk-label">รายรับเต็มที่/เดือน</div></div>
     <div class="biz-kpi blue"><div class="bk-num">${occupied}/${reRooms.length}</div><div class="bk-label">ห้องที่เช่าอยู่</div></div>
@@ -618,6 +648,80 @@ function initOverview() {
       <td><b>${fmt(rubberLast+rentalLast)}</b></td>
       <td><b>${fmt(rubberThis+rentalThis+Math.max(skProfit,0))}</b></td>
       <td></td>
+    </tr></tfoot>
+  `;
+
+  // ══════════ 📈 Trend 12 เดือนล่าสุด + 💰 Cash Flow ══════════
+  // สร้างรายการ 12 เดือนล่าสุด (YYYY-MM) ย้อนหลังจากเดือนปัจจุบัน
+  const now = new Date();
+  const months12 = [];
+  for (let i=11; i>=0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth()-i, 1);
+    months12.push(`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`);
+  }
+  const thMonthShort = (ym) => {
+    const [y,m] = ym.split('-');
+    const names = ['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+    return `${names[+m-1]} ${(+y+543)%100}`;
+  };
+  // รวม inflow รายเดือน
+  const rubberMonthMap = {}, rentalMonthMap = {};
+  rAllData.forEach(d=>{ const m=d.date_raw.substring(0,7); rubberMonthMap[m]=(rubberMonthMap[m]||0)+d.owner; });
+  reIncomes.forEach(i=>{ const m=i.date.substring(0,7); if(m) rentalMonthMap[m]=(rentalMonthMap[m]||0)+i.amount; });
+  const rubber12 = months12.map(m => rubberMonthMap[m]||0);
+  const rental12 = months12.map(m => rentalMonthMap[m]||0);
+  const total12  = months12.map((_,i) => rubber12[i]+rental12[i]);
+
+  // กราฟ Trend 12 เดือน (line — เห็นแนวโน้มชัด)
+  new Chart(document.getElementById('ov-trend12Chart'), {
+    type: 'line',
+    data: {
+      labels: months12.map(thMonthShort),
+      datasets: [
+        { label:'🌿 สวนยาง', data:rubber12, borderColor:'rgba(76,175,80,1)', backgroundColor:'rgba(76,175,80,.15)', fill:true, tension:.3 },
+        { label:'🏠 ห้องเช่า', data:rental12, borderColor:'rgba(21,101,192,1)', backgroundColor:'rgba(21,101,192,.15)', fill:true, tension:.3 },
+        { label:'💰 รวม', data:total12, borderColor:'rgba(55,71,79,1)', backgroundColor:'rgba(55,71,79,.05)', borderDash:[6,4], tension:.3, fill:false },
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position:'top' },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${fmt(ctx.parsed.y)} ฿` } }
+      },
+      scales: { y: { ticks: { callback: v => fmt(v) } } }
+    }
+  });
+
+  // ตาราง Cash Flow (รายเดือน 12 เดือน)
+  const cf = document.getElementById('ov-cashflow');
+  let cfRows = '';
+  let sumIn=0, sumOut=0;
+  months12.forEach((m,i) => {
+    const inflow = total12[i];           // เข้า (จริง ๆ ยังไม่มี outflow — reserve for future)
+    const outflow = 0;                    // TODO: เชื่อมต้นทุนจริงเมื่อมีข้อมูล
+    const net = inflow - outflow;
+    sumIn += inflow; sumOut += outflow;
+    cfRows += `<tr>
+      <td>${thMonthShort(m)}</td>
+      <td>${fmtAcc(inflow)}</td>
+      <td>${fmtAcc(-outflow)}</td>
+      <td><b>${fmtAcc(net)}</b></td>
+    </tr>`;
+  });
+  cf.innerHTML = `
+    <thead><tr>
+      <th>เดือน</th>
+      <th>กระแสเงินเข้า (฿)</th>
+      <th>กระแสเงินออก (฿)</th>
+      <th>สุทธิ (฿)</th>
+    </tr></thead>
+    <tbody>${cfRows}</tbody>
+    <tfoot><tr>
+      <td><b>รวม 12 เดือน</b></td>
+      <td><b>${fmtAcc(sumIn)}</b></td>
+      <td><b>${fmtAcc(-sumOut)}</b></td>
+      <td><b>${fmtAcc(sumIn-sumOut)}</b></td>
     </tr></tfoot>
   `;
 }
