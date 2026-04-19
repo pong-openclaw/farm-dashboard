@@ -716,7 +716,7 @@ async function checkPw(){{
 
   <!-- กราฟเปรียบเทียบ -->
   <div class="charts-grid" style="margin-bottom:20px">
-    <div class="chart-card wide"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart" height="70"></canvas></div>
+    <div class="chart-card wide"><h3>💹 รายได้/กำไรเปรียบเทียบ แต่ละธุรกิจ แต่ละปี (฿)</h3><canvas id="ov-compareChart"></canvas></div>
   </div>
   <div class="charts-grid">
     <div class="chart-card"><h3>🥧 สัดส่วนรายได้รวม แต่ละธุรกิจ</h3><canvas id="ov-pieChart"></canvas></div>
@@ -1110,8 +1110,9 @@ function initOverview() {{
     }},
     options: {{
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {{ legend: {{ position:'top' }} }},
-      scales: {{ y: {{ ticks: {{ callback: v => fmt(v) }} }} }}
+      scales: {{ y: {{ beginAtZero:true, ticks: {{ callback: v => fmt(v) }} }} }}
     }}
   }});
 
