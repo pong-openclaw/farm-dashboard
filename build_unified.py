@@ -815,7 +815,7 @@ async function checkPw(){{
   <div class="kpi-grid" id="r-kpiGrid"></div>
   <div class="insight" id="r-insightBox"></div>
   <div class="charts-grid">
-    <div class="chart-card wide"><h3 id="r-chart1Title">💰 เจ้าของสวน vs คนตัด (บาท) <span style="font-weight:normal;font-size:.8em;opacity:.7">ဥယျာဉ်ပိုင်ရှင် နှင့် ရာဘာဖြတ်သူ</span></h3><canvas id="r-moneyChart" height="80"></canvas></div>
+    <div class="chart-card wide"><h3 id="r-chart1Title">💰 เจ้าของสวน vs คนตัด (บาท) <span style="font-weight:normal;font-size:.8em;opacity:.7">ဥယျာဉ်ပိုင်ရှင် နှင့် ရာဘာဖြတ်သူ</span></h3><canvas id="r-moneyChart"></canvas></div>
     <div class="chart-card"><h3>📈 ราคายาง (บาท/กก.)</h3><canvas id="r-priceChart"></canvas></div>
     <div class="chart-card"><h3>⚖️ น้ำหนักสุทธิ (กก.)</h3><canvas id="r-weightChart"></canvas></div>
     <div class="chart-card"><h3>💧 ความชื้นเฉลี่ย (%)</h3><canvas id="r-moistureChart"></canvas></div>
@@ -1803,9 +1803,10 @@ function renderRubber() {{
 function rBuildChart(id,type,labels,datasets,extraOpts={{}}) {{
   if(rCharts[id]) rCharts[id].destroy();
   const ds=datasets.map(d=>Object.assign({{borderWidth:type==='bar'?1:2}},d));
+  const isWide = (document.getElementById(id)?.closest('.chart-card.wide')) != null;
   rCharts[id]=new Chart(document.getElementById(id),{{
     type, data:{{labels,datasets:ds}},
-    options:Object.assign({{responsive:true,plugins:{{legend:{{position:'top'}}}}}},{{scales:Object.assign({{x:{{}}}},extraOpts)}})
+    options:Object.assign({{responsive:true,maintainAspectRatio:!isWide,plugins:{{legend:{{position:'top'}}}}}},{{scales:Object.assign({{x:{{}}}},extraOpts)}})
   }});
 }}
 
