@@ -1120,7 +1120,7 @@ function initOverview() {{
       ]
     }},
     options: {{
-      responsive: true,
+      responsive: true, aspectRatio: 3.5,
       plugins: {{ legend: {{ position:'top' }} }},
       scales: {{ y: {{ beginAtZero:true, ticks: {{ callback: v => fmt(v) }} }} }},
       datasets: {{ bar: {{ maxBarThickness: 60 }} }}
@@ -1218,7 +1218,9 @@ function initOverview() {{
         {{label:'🏠 ห้องเช่า',data:usedMonths.map(m=>reM[m]||0),backgroundColor:'rgba(21,101,192,.85)',borderWidth:1}},
         {{label:'🎊 สงกราน', data:usedMonths.map(m=>skM[m]||0),backgroundColor:'rgba(233,30,99,.8)', borderWidth:1}},
       ]}},
-      options:{{responsive:true,plugins:{{legend:{{position:'top'}}}},
+      options:{{responsive:true,aspectRatio:3.5,
+        plugins:{{legend:{{position:'top'}}}},
+        datasets:{{bar:{{maxBarThickness:70}}}},
         scales:{{x:{{stacked:true}},y:{{stacked:true,ticks:{{callback:v=>fmt(v)}}}}}}}}
     }});
   }}
@@ -1359,8 +1361,7 @@ function initOverview() {{
       datasets: trendDatasets
     }},
     options: {{
-      responsive: true,
-      
+      responsive: true, aspectRatio: 3.5,
       plugins: {{
         legend: {{ position:'top' }},
         tooltip: {{ callbacks: {{ label: ctx => ` ${{ctx.dataset.label}}: ${{fmt(ctx.parsed.y)}} ฿` }} }}
