@@ -1,0 +1,680 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ใบแจ้งค่าใช้บริการน้ำ–ไฟ | บ้านเจริญสุข</title>
+<style>
+  :root{ --pea:#6a1b9a; --pea-dark:#4a136e; --text:#111827; --muted:#6b7280; --line:#e5e7eb; --bg:#f5f7fb; }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans Thai","Tahoma";color:var(--text);background:var(--bg)}
+  .container{max-width:1000px;margin:24px auto;padding:0 16px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 8px 30px rgba(17,24,39,.06)}
+  .pad{padding:18px 20px}
+  .band{background:linear-gradient(90deg,var(--pea),var(--pea-dark));color:#fff;padding:18px 20px;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .band.original{background:linear-gradient(90deg,#6a1b9a,#4a136e);color:#fff}
+  .band.draft{background:#f6c200;color:#111827}
+  .logo-wrap{display:flex;align-items:center;gap:12px}
+  .logo-mark{width:44px;height:44px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff,#c084fc);border:2px solid rgba(255,255,255,.7)}
+  .logo-text{display:flex;flex-direction:column}
+  .logo-title{font-size:20px;font-weight:900;letter-spacing:.2px}
+  .logo-sub{font-size:12px;opacity:.9}
+  .stamp{border:2px dashed rgba(255,255,255,.85);padding:6px 12px;border-radius:999px;font-weight:800}
+  h3{margin:16px 0 10px;font-size:16px}
+  label{display:block;font-size:12px;color:#374151;margin-bottom:6px}
+  input,select{width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;font:inherit;background:#fff}
+  input[readonly]{background:#f9fafb}
+  input[disabled]{background:#f3f4f6;color:#6b7280}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  table{width:100%;border-collapse:collapse;margin-top:10px}
+  th,td{padding:10px;border-bottom:1px solid var(--line);font-size:14px}
+  th{background:#fafafa;text-align:right}
+  th:first-child,td:first-child{text-align:left}
+  .right{text-align:right}
+  .note{color:#6b7280;font-size:12px}
+  .totals{display:flex;justify-content:flex-end;margin-top:8px}
+  .totals table{max-width:420px}
+  .badge{display:inline-block;background:#ede7f6;color:#4a136e;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800}
+  .signs{display:flex;gap:16px;margin-top:18px}
+  .sign{flex:1;text-align:center}
+  .sign-line{height:1px;background:var(--line);margin:24px 0 8px}
+  .btn{padding:10px 14px;border-radius:10px;border:1px solid var(--line);background:#fff;cursor:pointer;font:inherit}
+  .btn.primary{background:var(--pea);border-color:var(--pea);color:#fff}
+  .btn.success{background:#059669;border-color:#059669;color:#fff}
+  .btn.warn{background:#f59e0b;border-color:#f59e0b;color:#fff}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .section-title{font-weight:800;margin-bottom:6px}
+  .no-print{}
+  /* URL-param mode: แสดง banner แจ้งผู้ใช้ */
+  #url-banner{display:none;background:linear-gradient(90deg,#6a1b9a,#4a136e);color:#fff;padding:12px 20px;border-radius:12px;margin-bottom:16px;font-weight:700;font-size:14px}
+  @media print{
+    body{background:#fff}
+    .no-print{display:none !important}
+    .card{box-shadow:none;border:0}
+    @page{size:A4;margin:16mm}
+    .band{border-radius:0}
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="container">
+
+    <!-- URL-param mode banner -->
+    <div id="url-banner" class="no-print">
+      📋 ข้อมูลจากปอง — ตรวจสอบแล้วกด <strong>พิมพ์</strong>
+    </div>
+
+    <!-- ส่วนที่ 1: ใบแจ้ง (print area) -->
+    <div id="invoice" class="card">
+      <div class="band">
+        <div class="logo-wrap">
+          <div class="logo-mark" aria-hidden="true"></div>
+          <div class="logo-text">
+            <div class="logo-title">บ้านเจริญสุข</div>
+            <div class="logo-sub">ใบแจ้งค่าใช้บริการน้ำ–ไฟ</div>
+          </div>
+        </div>
+        <div class="stamp" id="stamp_text">สำเนา/ร่าง</div>
+      </div>
+      <div id="inv_usage_headline" style="padding:10px 20px;font-weight:900;font-size:18px;border-bottom:1px solid var(--line);">ยอดใช้บริการ —</div>
+      <div class="pad">
+        <div class="grid-2">
+          <div>
+            <label>บ้านเลขที่ / ที่อยู่ผู้ให้เช่า</label>
+            <input id="inv_addr" value="" readonly>
+          </div>
+          <div class="grid-2">
+            <div>
+              <label>ผู้เช่า</label>
+              <input id="inv_tenant" value="" readonly>
+            </div>
+            <div>
+              <label>วันที่ออกบิล</label>
+              <input id="inv_date_text" readonly>
+              <input id="inv_date" type="date" hidden>
+            </div>
+          </div>
+        </div>
+
+        <h3>รายละเอียดมิเตอร์</h3>
+        <table aria-label="รายละเอียดค่าบริการ">
+          <thead>
+            <tr>
+              <th>รายการ</th>
+              <th>มิเตอร์ก่อนหน้า</th>
+              <th>มิเตอร์ปัจจุบัน</th>
+              <th>หน่วยใช้จริง</th>
+              <th>อัตรา</th>
+              <th>VAT</th>
+              <th>Ft</th>
+              <th>รวม</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>ค่าน้ำ</td>
+              <td id="w_prev" class="right">-</td>
+              <td id="w_curr" class="right">-</td>
+              <td id="w_units" class="right">-</td>
+              <td id="w_rate" class="right">-</td>
+              <td id="w_vat" class="right">-</td>
+              <td class="right">—</td>
+              <td id="w_total" class="right">-</td>
+            </tr>
+            <tr>
+              <td>ค่าไฟ</td>
+              <td id="e_prev" class="right">-</td>
+              <td id="e_curr" class="right">-</td>
+              <td id="e_units" class="right">-</td>
+              <td id="e_rate" class="right">-</td>
+              <td id="e_vat" class="right">-</td>
+              <td id="e_ft" class="right">-</td>
+              <td id="e_total" class="right">-</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="totals">
+          <table>
+            <tr><td class="right">รวมค่าน้ำ</td><td id="sum_water" class="right">-</td></tr>
+            <tr><td class="right">รวมค่าไฟ</td><td id="sum_elec" class="right">-</td></tr>
+            <tr><td class="right"><span class="badge">รวมทั้งสิ้น</span></td><td id="sum_grand" class="right" style="font-weight:800;font-size:18px">-</td></tr>
+          </table>
+        </div>
+
+        <div class="signs">
+          <div class="sign">
+            <div class="sign-line"></div>
+            <div class="note">ผู้ให้เช่า/ผู้รับเงิน (ลงชื่อ)</div>
+            <div style="margin-top:2px">(<span id="landlord_name">พงษ์นรินทร์ เจริญสุข</span>)</div>
+          </div>
+          <div class="sign">
+            <div class="sign-line"></div>
+            <div class="note">ผู้เช่า/ผู้ชำระเงิน (ลงชื่อ)</div>
+            <div style="margin-top:2px" id="tenant_sign">(ผู้เช่า)</div>
+          </div>
+          <div class="sign">
+            <div class="sign-line"></div>
+            <div class="note">วันที่รับชำระ</div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:14px">
+          <div class="note">อัตราปัจจุบัน: น้ำ 19.30/หน่วย (+VAT 7%), ไฟ 3.85/หน่วย (+VAT 7% + Ft 25%)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-print" style="height:16px"></div>
+
+    <!-- ส่วนที่ 2: ฟอร์มผู้ให้เช่า -->
+    <div id="admin" class="card no-print">
+      <div class="pad">
+        <div class="section-title">ฟอร์มผู้ให้เช่า · กรอกหน่วยเพื่อคำนวณ/อัปเดตใบแจ้ง</div>
+
+        <div class="grid-3">
+          <div>
+            <label>สถานะเอกสาร</label>
+            <select id="f_status">
+              <option value="draft" selected>สำเนา/ร่าง</option>
+              <option value="original">ฉบับจริง</option>
+            </select>
+          </div>
+          <div>
+            <label>ผู้เช่า</label>
+            <input id="f_tenant" value="นาย สานิตย์ บัวสงค์">
+          </div>
+          <div>
+            <label>วันที่ออกบิล</label>
+            <input id="f_date" type="date">
+          </div>
+        </div>
+        <div class="grid-3" style="margin-top:12px">
+          <div>
+            <label>ช่วงเวลาการใช้ (ตั้งแต่)</label>
+            <input type="date" id="f_period_start">
+          </div>
+          <div>
+            <label>ช่วงเวลาการใช้ (ถึง)</label>
+            <input type="date" id="f_period_end">
+          </div>
+          <div></div>
+        </div>
+
+        <div class="grid-3" style="margin-top:12px">
+          <div>
+            <label>ที่อยู่ (บ้านเจริญสุข)</label>
+            <input id="f_addr" value="41/4  ม.6 ต.ทุ่งตะไคร อ.ทุ่งตะโก จ.ชุมพร 86220">
+          </div>
+          <div></div>
+          <div></div>
+        </div>
+
+        <h3>มิเตอร์น้ำ</h3>
+        <div class="grid-3">
+          <div><label>ก่อนหน้า (น้ำ)</label><input id="f_wPrev" inputmode="numeric" placeholder="เช่น 526"></div>
+          <div><label>ปัจจุบัน (น้ำ)</label><input id="f_wCurr" inputmode="numeric" placeholder="เช่น 543"></div>
+          <div><label>อัตราค่าน้ำ (บาท/หน่วย)</label><input id="f_wRate" inputmode="decimal" value="19.3"></div>
+        </div>
+
+        <h3>มิเตอร์ไฟ</h3>
+        <div class="grid-3">
+          <div><label>ก่อนหน้า (ไฟ)</label><input id="f_ePrev" inputmode="numeric" placeholder="เช่น 4334"></div>
+          <div><label>ปัจจุบัน (ไฟ)</label><input id="f_eCurr" inputmode="numeric" placeholder="เช่น 4483"></div>
+          <div class="grid-2">
+            <div><label>อัตราค่าไฟ (บาท/หน่วย)</label><input id="f_eRate" inputmode="decimal" value="3.85"></div>
+            <div><label>Ft (สัดส่วนต่อค่าไฟใช้ไป)</label><input id="f_ft" inputmode="decimal" value="0.25"></div>
+          </div>
+        </div>
+
+        <div class="row" style="margin-top:12px">
+          <button class="btn primary" onclick="applyFromForm()">คำนวณและอัปเดตใบแจ้ง</button>
+          <button class="btn success" onclick="window.print()">🖨️ พิมพ์ใบแจ้ง</button>
+          <span class="note">* ส่วนฟอร์มนี้จะไม่ถูกพิมพ์</span>
+          <button class="btn" style="margin-left:auto" id="btn_save">บันทึกลงประวัติ</button>
+          <button class="btn" id="btn_stats">ดูสถิติ</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-print" style="height:16px"></div>
+
+    <!-- ส่วนที่ 3: สถิติการใช้งาน -->
+    <div id="stats" class="card no-print" style="display:none">
+      <div class="pad">
+        <div class="section-title">สถิติการใช้งานน้ำ–ไฟ (รวมรายเดือน)</div>
+
+        <div id="overview_cards" style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:8px 0 16px">
+          <div class="card" style="padding:10px"><div class="note">หน่วยน้ำรวม</div><div id="ov_wUnits" style="font-weight:700">-</div></div>
+          <div class="card" style="padding:10px"><div class="note">หน่วยไฟรวม</div><div id="ov_eUnits" style="font-weight:700">-</div></div>
+          <div class="card" style="padding:10px"><div class="note">ค่าน้ำรวม</div><div id="ov_wCost" style="font-weight:700">-</div></div>
+          <div class="card" style="padding:10px"><div class="note">ค่าไฟรวม</div><div id="ov_eCost" style="font-weight:700">-</div></div>
+        </div>
+
+        <h3 style="margin:8px 0">เปรียบเทียบรายเดือน</h3>
+        <div class="row" style="gap:8px;align-items:flex-end">
+          <div style="min-width:160px"><label>ปี (สำหรับการเปรียบเทียบ/กราฟ)</label><select id="cmp_year"></select></div>
+          <div style="min-width:160px"><label>เลือกเดือน A</label><select id="cmp_m1"></select></div>
+          <div style="min-width:160px"><label>เลือกเดือน B</label><select id="cmp_m2"></select></div>
+          <button class="btn" id="btn_compare">เปรียบเทียบ</button>
+        </div>
+        <table style="margin-top:10px">
+          <thead>
+            <tr>
+              <th style="text-align:left">รายการ</th>
+              <th>A หน่วย</th><th>B หน่วย</th><th>± หน่วย</th>
+              <th>A ค่า (บาท)</th><th>B ค่า (บาท)</th><th>± ค่า (บาท)</th>
+            </tr>
+          </thead>
+          <tbody id="cmp_table"></tbody>
+        </table>
+
+        <div style="display:grid;grid-template-columns:1fr;gap:16px;margin-top:12px">
+          <div><canvas id="chartUnits" height="120" aria-label="กราฟหน่วยการใช้รายเดือน"></canvas></div>
+          <div><canvas id="chartCosts" height="120" aria-label="กราฟค่าใช้จ่ายรายเดือน"></canvas></div>
+        </div>
+
+        <h3 style="margin-top:16px">ประวัติการบันทึก</h3>
+        <div class="row" style="gap:8px;margin:8px 0">
+          <button class="btn" id="btn_export_xlsx">ส่งออก Excel (.xlsx)</button>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th style="text-align:left">วันที่ออกบิล</th>
+              <th style="text-align:left">ผู้เช่า</th>
+              <th>น้ำ (หน่วย)</th><th>ไฟ (หน่วย)</th>
+              <th>ค่าน้ำ (รวม)</th><th>ค่าไฟ (รวม)</th><th>รวมทั้งสิ้น</th>
+              <th>จัดการ</th>
+            </tr>
+          </thead>
+          <tbody id="stats_table"></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+  // ====== ค่าคงที่และยูทิล ======
+  const VAT_DEFAULT = 0.07;
+  const today = new Date().toISOString().slice(0,10);
+  const money = n => new Intl.NumberFormat('th-TH',{style:'currency',currency:'THB'}).format(+n||0);
+
+  function fmtThaiLongBE(iso){
+    if(!iso) return '';
+    const p = String(iso).split('-'); if(p.length<3) return iso;
+    const y=+p[0], m=+p[1], d=+p[2];
+    const dd = new Date(y, m-1, d);
+    try{
+      return new Intl.DateTimeFormat('th-TH-u-nu-latn',{day:'numeric',month:'long',year:'numeric'}).format(dd);
+    }catch(e){
+      const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+      return `${d} ${TH_MONTHS[m-1]} ${y+543}`;
+    }
+  }
+
+  function fmtThaiLongBERange(startIso, endIso){
+    if(!startIso || !endIso) return '';
+    const sp=String(startIso).split('-'), ep=String(endIso).split('-');
+    if(sp.length<3||ep.length<3) return '';
+    const sy=+sp[0],sm=+sp[1],sd=+sp[2];
+    const ey=+ep[0],em=+ep[1],ed=+ep[2];
+    const TH_MONTHS=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
+    if(sy===ey && sm===em) return `${sd}-${ed} ${TH_MONTHS[sm-1]} พศ ${sy+543}`;
+    return `${sd} ${TH_MONTHS[sm-1]} พศ ${sy+543} - ${ed} ${TH_MONTHS[em-1]} พศ ${ey+543}`;
+  }
+
+  function fmtDMY(iso){
+    if(!iso) return '';
+    const p=String(iso).split('-'); if(p.length<3) return iso;
+    return String(+p[2]).padStart(2,'0')+'/'+String(+p[1]).padStart(2,'0')+'/'+p[0];
+  }
+
+  // ====== คำนวณ ======
+  function computeWater(prev, curr, rate=19.3, vat=VAT_DEFAULT){
+    const units=Math.max((+curr||0)-(+prev||0),0);
+    const cost=units*(+rate||0);
+    const vatAmt=cost*(+vat||0);
+    return {units, cost, vat:vatAmt, total:cost+vatAmt};
+  }
+  function computeElectric(prev, curr, rate=3.85, vat=VAT_DEFAULT, ft=0.25){
+    const units=Math.max((+curr||0)-(+prev||0),0);
+    const cost=units*(+rate||0);
+    const vatAmt=cost*(+vat||0);
+    const ftAmt=cost*(+ft||0);
+    return {units, cost, vat:vatAmt, ft:ftAmt, total:cost+vatAmt+ftAmt};
+  }
+
+  // ====== URL Query Params (ปอง pre-fill) ======
+  function loadFromURL(){
+    const params = new URLSearchParams(window.location.search);
+    const map = {
+      wPrev:'f_wPrev', wCurr:'f_wCurr', wRate:'f_wRate',
+      ePrev:'f_ePrev', eCurr:'f_eCurr', eRate:'f_eRate', ft:'f_ft',
+      tenant:'f_tenant', date:'f_date', status:'f_status',
+      periodStart:'f_period_start', periodEnd:'f_period_end', addr:'f_addr'
+    };
+    let loaded = 0;
+    for(const [param, id] of Object.entries(map)){
+      if(params.has(param)){
+        const el = document.getElementById(id);
+        if(el){ el.value = decodeURIComponent(params.get(param)); loaded++; }
+      }
+    }
+    if(loaded > 0){
+      const banner = document.getElementById('url-banner');
+      if(banner) banner.style.display = 'block';
+    }
+    return loaded > 0;
+  }
+
+  // ====== ซิงก์ส่วน 1 จากส่วน 2 ======
+  function setStatus(val){
+    const isOriginal = (val==='original');
+    const band = document.querySelector('#invoice .band');
+    if(band){ band.classList.remove('original','draft'); band.classList.add(isOriginal?'original':'draft'); }
+    const stamp = document.getElementById('stamp_text');
+    if(stamp) stamp.textContent = isOriginal ? 'ฉบับจริง' : 'สำเนา/ร่าง';
+  }
+
+  function setDefaultUsagePeriod(){
+    try{
+      const fd = document.getElementById('f_date');
+      const base = (fd && fd.value) ? new Date(fd.value) : new Date();
+      const y=base.getFullYear(), m=base.getMonth();
+      const start=new Date(y,m,1), end=new Date(y,m+1,0);
+      const toISO = d => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+      const sEl=document.getElementById('f_period_start'), eEl=document.getElementById('f_period_end');
+      if(sEl && !sEl.value) sEl.value = toISO(start);
+      if(eEl && !eEl.value) eEl.value = toISO(end);
+    }catch(e){}
+  }
+
+  function updateUsageHeadline(){
+    try{
+      const s=document.getElementById('f_period_start')?.value;
+      const e=document.getElementById('f_period_end')?.value;
+      const el=document.getElementById('inv_usage_headline');
+      if(el) el.textContent = 'ยอดใช้บริการ '+((s&&e) ? fmtThaiLongBERange(s,e) : '—');
+    }catch(e){}
+  }
+
+  function setTenant(name){
+    const n=(name||'').trim();
+    document.getElementById('inv_tenant').value = n;
+    document.getElementById('tenant_sign').textContent = '('+(n||'ผู้เช่า')+')';
+  }
+
+  function applyFromForm(){
+    updateUsageHeadline();
+    try{
+      const status=document.getElementById('f_status').value;
+      const tenant=(document.getElementById('f_tenant').value||'').trim();
+      const date=document.getElementById('f_date').value||today;
+      const addr=(document.getElementById('f_addr').value||'').trim();
+      const wPrev=+document.getElementById('f_wPrev').value||0;
+      const wCurr=+document.getElementById('f_wCurr').value||0;
+      const wRate=+document.getElementById('f_wRate').value||19.3;
+      const ePrev=+document.getElementById('f_ePrev').value||0;
+      const eCurr=+document.getElementById('f_eCurr').value||0;
+      const eRate=+document.getElementById('f_eRate').value||3.85;
+      const ftRate=+document.getElementById('f_ft').value||0.25;
+
+      setStatus(status); setTenant(tenant);
+      document.getElementById('inv_date').value = date;
+      const invTxt=document.getElementById('inv_date_text');
+      if(invTxt) invTxt.value = fmtThaiLongBE(date);
+      document.getElementById('inv_addr').value = addr;
+
+      const w=computeWater(wPrev,wCurr,wRate,VAT_DEFAULT);
+      const e=computeElectric(ePrev,eCurr,eRate,VAT_DEFAULT,ftRate);
+
+      document.getElementById('w_prev').textContent=wPrev;
+      document.getElementById('w_curr').textContent=wCurr;
+      document.getElementById('w_units').textContent=w.units;
+      document.getElementById('w_rate').textContent=money(wRate);
+      document.getElementById('w_vat').textContent=money(w.vat);
+      document.getElementById('w_total').textContent=money(w.total);
+
+      document.getElementById('e_prev').textContent=ePrev;
+      document.getElementById('e_curr').textContent=eCurr;
+      document.getElementById('e_units').textContent=e.units;
+      document.getElementById('e_rate').textContent=money(eRate);
+      document.getElementById('e_vat').textContent=money(e.vat);
+      document.getElementById('e_ft').textContent=money(e.ft);
+      document.getElementById('e_total').textContent=money(e.total);
+
+      document.getElementById('sum_water').textContent=money(w.total);
+      document.getElementById('sum_elec').textContent=money(e.total);
+      document.getElementById('sum_grand').textContent=money(w.total+e.total);
+    }catch(err){ console.error('applyFromForm error',err); }
+  }
+
+  function initApp(){
+    const d=document.getElementById('f_date'); if(d) d.value=today;
+    loadFromURL();
+    setDefaultUsagePeriod();
+    ['f_status','f_tenant','f_date','f_addr','f_wPrev','f_wCurr','f_wRate','f_ePrev','f_eCurr','f_eRate','f_ft','f_period_start','f_period_end']
+      .forEach(id=>{ const el=document.getElementById(id); if(!el) return; el.addEventListener('input',applyFromForm); el.addEventListener('change',applyFromForm); });
+    document.getElementById('btn_save').addEventListener('click', saveRecord);
+    document.getElementById('btn_stats').addEventListener('click', openStats);
+    document.getElementById('btn_compare').addEventListener('click', compareMonths);
+    applyFromForm();
+    ['f_period_start','f_period_end'].forEach(id=>{ const el=document.getElementById(id); if(el) el.addEventListener('change',()=>applyFromForm()); });
+  }
+  if(document.readyState==='loading'){ document.addEventListener('DOMContentLoaded',initApp); } else { initApp(); }
+  window.addEventListener('load',applyFromForm);
+
+  // ====== ประวัติ & สถิติ ======
+  function getHistory(){ try{ return JSON.parse(localStorage.getItem('usageHistory')||'[]'); }catch(e){ return []; } }
+  function setHistory(arr){ localStorage.setItem('usageHistory',JSON.stringify(arr||[])); }
+
+  function saveRecord(){
+    applyFromForm();
+    const rec={
+      id:Date.now(),
+      date:document.getElementById('inv_date').value,
+      tenant:document.getElementById('inv_tenant').value,
+      addr:document.getElementById('inv_addr').value,
+      wPrev:document.getElementById('w_prev').textContent||'0',
+      wCurr:document.getElementById('w_curr').textContent||'0',
+      wUnits:document.getElementById('w_units').textContent||'0',
+      wTotal:document.getElementById('w_total').textContent||'0',
+      ePrev:document.getElementById('e_prev').textContent||'0',
+      eCurr:document.getElementById('e_curr').textContent||'0',
+      eUnits:document.getElementById('e_units').textContent||'0',
+      eTotal:document.getElementById('e_total').textContent||'0',
+      grand:document.getElementById('sum_grand').textContent||'0'
+    };
+    const h=getHistory(); h.push(rec); setHistory(h);
+    alert('บันทึกลงประวัติแล้ว');
+    renderStats();
+  }
+
+  function deleteRecord(id){
+    setHistory(getHistory().filter(x=>String(x.id)!==String(id)));
+    renderStats();
+    try{ alert('ลบรายการแล้ว'); }catch(e){}
+  }
+
+  function monthKey(iso){ if(!iso) return ''; const d=new Date(iso); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
+  function safeDestroy(chart){ try{ if(chart && typeof chart.destroy==='function') chart.destroy(); }catch(e){} }
+  window.chartUnits=null; window.chartCosts=null;
+
+  function renderStats(){
+    const data=getHistory();
+    const tbody=document.getElementById('stats_table');
+    if(tbody){
+      tbody.innerHTML=data.map(r=>`
+        <tr data-id="${r.id||''}">
+          <td style="text-align:left">${fmtDMY(r.date)||'-'}</td>
+          <td style="text-align:left">${r.tenant||'-'}</td>
+          <td>${r.wUnits}</td><td>${r.eUnits}</td>
+          <td>${r.wTotal}</td><td>${r.eTotal}</td><td>${r.grand}</td>
+          <td><button type="button" class="btn warn del-btn" data-id="${r.id}">ลบ</button></td>
+        </tr>
+      `).join('');
+      if(!tbody._bound){
+        tbody.addEventListener('click',(ev)=>{
+          const btn=ev.target.closest('.del-btn'); if(!btn) return;
+          const id=btn.getAttribute('data-id'); if(!id) return;
+          if(confirm('ลบรายการนี้หรือไม่?')) deleteRecord(id);
+        });
+        tbody._bound=true;
+      }
+    }
+
+    const agg={};
+    data.forEach(r=>{
+      const k=monthKey(r.date); if(!k) return;
+      if(!agg[k]) agg[k]={wUnits:0,eUnits:0,wCost:0,eCost:0};
+      agg[k].wUnits += +r.wUnits||0;
+      agg[k].eUnits += +r.eUnits||0;
+      const num=s=>+String(s||'0').replace(/[^0-9.\-]/g,'');
+      agg[k].wCost += num(r.wTotal);
+      agg[k].eCost += num(r.eTotal);
+    });
+
+    const labels=Object.keys(agg).sort();
+    const wUnits=labels.map(k=>agg[k].wUnits);
+    const eUnits=labels.map(k=>agg[k].eUnits);
+    const wCost=labels.map(k=>agg[k].wCost);
+    const eCost=labels.map(k=>agg[k].eCost);
+
+    const sum=arr=>arr.reduce((a,b)=>a+(+b||0),0);
+    const nf=new Intl.NumberFormat('th-TH');
+    if(document.getElementById('ov_wUnits')){
+      document.getElementById('ov_wUnits').textContent=nf.format(sum(wUnits));
+      document.getElementById('ov_eUnits').textContent=nf.format(sum(eUnits));
+      document.getElementById('ov_wCost').textContent=money(sum(wCost));
+      document.getElementById('ov_eCost').textContent=money(sum(eCost));
+    }
+
+    const ctx1=document.getElementById('chartUnits');
+    if(ctx1){ safeDestroy(window.chartUnits);
+      window.chartUnits=new Chart(ctx1,{type:'line',data:{labels,datasets:[{label:'หน่วยน้ำ',data:wUnits},{label:'หน่วยไฟ',data:eUnits}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+    }
+    const ctx2=document.getElementById('chartCosts');
+    if(ctx2){ safeDestroy(window.chartCosts);
+      window.chartCosts=new Chart(ctx2,{type:'bar',data:{labels,datasets:[{label:'ค่าน้ำ (บาท)',data:wCost},{label:'ค่าไฟ (บาท)',data:eCost}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+    }
+
+    window._aggMonthly=agg; window._labelsMonthly=labels;
+    const years=Array.from(new Set(labels.map(s=>s.slice(0,4)))).sort();
+    window._years=years;
+    if(!window._cmpYear) window._cmpYear=years[years.length-1]||new Date().getFullYear().toString();
+    populateYearAndMonths();
+    renderMonthlyChartsForYear(window._cmpYear);
+  }
+
+  const MONTHS=['01','02','03','04','05','06','07','08','09','10','11','12'];
+  const MONTH_LABELS_TH=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
+
+  function populateYearAndMonths(){
+    const selYear=document.getElementById('cmp_year');
+    const sel1=document.getElementById('cmp_m1');
+    const sel2=document.getElementById('cmp_m2');
+    if(!selYear||!sel1||!sel2) return;
+    const years=window._years||[];
+    selYear.innerHTML=years.map(y=>`<option value="${y}">${y}</option>`).join('');
+    if(window._cmpYear && years.includes(window._cmpYear)) selYear.value=window._cmpYear;
+    const opts=MONTHS.map((m,i)=>`<option value="${m}">${MONTH_LABELS_TH[i]}</option>`).join('');
+    sel1.innerHTML=opts; sel2.innerHTML=opts;
+    sel2.value=MONTHS[MONTHS.length-1];
+    sel1.value=MONTHS[MONTHS.length-2];
+    selYear.onchange=()=>{ window._cmpYear=selYear.value; renderMonthlyChartsForYear(window._cmpYear); compareMonths(); };
+  }
+
+  function valueForMonth(agg, year, m){ const key=`${year}-${m}`; return agg[key]||{wUnits:0,eUnits:0,wCost:0,eCost:0}; }
+
+  function renderMonthlyChartsForYear(year){
+    const agg=window._aggMonthly||{};
+    const wUnits=MONTHS.map(m=>valueForMonth(agg,year,m).wUnits);
+    const eUnits=MONTHS.map(m=>valueForMonth(agg,year,m).eUnits);
+    const wCost=MONTHS.map(m=>valueForMonth(agg,year,m).wCost);
+    const eCost=MONTHS.map(m=>valueForMonth(agg,year,m).eCost);
+    const ctx1=document.getElementById('chartUnits');
+    if(ctx1){ safeDestroy(window.chartUnits);
+      window.chartUnits=new Chart(ctx1,{type:'line',data:{labels:MONTH_LABELS_TH,datasets:[{label:'หน่วยน้ำ',data:wUnits},{label:'หน่วยไฟ',data:eUnits}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+    }
+    const ctx2=document.getElementById('chartCosts');
+    if(ctx2){ safeDestroy(window.chartCosts);
+      window.chartCosts=new Chart(ctx2,{type:'bar',data:{labels:MONTH_LABELS_TH,datasets:[{label:'ค่าน้ำ (บาท)',data:wCost},{label:'ค่าไฟ (บาท)',data:eCost}]},options:{responsive:true,maintainAspectRatio:false,scales:{y:{beginAtZero:true}}}});
+    }
+  }
+
+  function compareMonths(){
+    const year=window._cmpYear||(new Date().getFullYear().toString());
+    const m1=document.getElementById('cmp_m1').value;
+    const m2=document.getElementById('cmp_m2').value;
+    const agg=window._aggMonthly||{};
+    const a=valueForMonth(agg,year,m1);
+    const b=valueForMonth(agg,year,m2);
+    const fmtN=n=>new Intl.NumberFormat('th-TH').format(+n||0);
+    const rows=[
+      {name:'น้ำ',aUnits:a.wUnits,bUnits:b.wUnits,aCost:a.wCost,bCost:b.wCost},
+      {name:'ไฟ',aUnits:a.eUnits,bUnits:b.eUnits,aCost:a.eCost,bCost:b.eCost}
+    ].map(r=>{
+      const dUnits=(+r.bUnits||0)-(+r.aUnits||0);
+      const dCost=(+r.bCost||0)-(+r.aCost||0);
+      return `<tr><td style="text-align:left">${r.name}</td><td>${fmtN(r.aUnits)}</td><td>${fmtN(r.bUnits)}</td><td>${fmtN(dUnits)}</td><td>${money(r.aCost)}</td><td>${money(r.bCost)}</td><td>${money(dCost)}</td></tr>`;
+    }).join('');
+    const tb=document.getElementById('cmp_table');
+    if(tb) tb.innerHTML=rows||'<tr><td colspan="7">ไม่มีข้อมูล</td></tr>';
+  }
+
+  function openStats(){
+    document.getElementById('stats').style.display='block';
+    renderStats();
+    try{
+      const bx=document.getElementById('btn_export_xlsx');
+      if(bx && !bx._bound){ bx.addEventListener('click',exportHistoryAsXLSX); bx._bound=true; }
+    }catch(e){}
+    compareMonths();
+    document.getElementById('stats').scrollIntoView({behavior:'smooth'});
+  }
+
+  if(!window._globalDelBound){
+    document.addEventListener('click',(ev)=>{
+      const btn=ev.target&&ev.target.closest?ev.target.closest('.del-btn'):null;
+      if(!btn) return;
+      const id=btn.getAttribute('data-id'); if(!id) return;
+      if(confirm('ลบรายการนี้หรือไม่?')) deleteRecord(id);
+    },true);
+    window._globalDelBound=true;
+  }
+
+  function exportHistoryAsXLSX(){
+    try{
+      const data=getHistory();
+      const toNum=s=>+String(s||'0').replace(/[^0-9.\-]/g,'');
+      const rows=(data||[]).map(r=>({
+        'วันที่ออกบิล':r.date||'','ผู้เช่า':r.tenant||'',
+        'น้ำ (หน่วย)':+r.wUnits||0,'ไฟ (หน่วย)':+r.eUnits||0,
+        'ค่าน้ำ (รวม)':toNum(r.wTotal),'ค่าไฟ (รวม)':toNum(r.eTotal),
+        'รวมทั้งสิ้น':toNum(r.grand),'ที่อยู่':r.addr||''
+      }));
+      const ws=XLSX.utils.json_to_sheet(rows);
+      const wb=XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb,ws,'History');
+      XLSX.writeFile(wb,'usage_history.xlsx');
+    }catch(err){
+      console.error('Export XLSX error',err);
+      try{ alert('ไม่สามารถส่งออกได้'); }catch(e){}
+    }
+  }
+
+  (function runTests(){
+    try{
+      const w=computeWater(100,110,19.3,0.07); console.assert(w.units===10,'water units should be 10');
+      const e=computeElectric(200,220,3.85,0.07,0.25); console.assert(e.units===20,'electric units should be 20');
+    }catch(err){ console.error('Test failure:',err); }
+  })();
+</script>
+</body>
+</html>
