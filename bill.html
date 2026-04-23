@@ -28,10 +28,18 @@
   input[disabled]{background:#f3f4f6;color:#6b7280}
   .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
   .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+  .table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
   table{width:100%;border-collapse:collapse;margin-top:10px}
-  th,td{padding:10px;border-bottom:1px solid var(--line);font-size:14px}
+  th,td{padding:10px;border-bottom:1px solid var(--line);font-size:14px;white-space:nowrap}
   th{background:#fafafa;text-align:right}
   th:first-child,td:first-child{text-align:left}
+  @media(max-width:640px){
+    th,td{padding:7px 8px;font-size:12px}
+    .grid-2{grid-template-columns:1fr}
+    .grid-3{grid-template-columns:1fr}
+    .signs{flex-direction:column;gap:8px}
+    .info-grid{grid-template-columns:1fr 1fr !important}
+  }
   .right{text-align:right}
   .note{color:#6b7280;font-size:12px}
   .totals{display:flex;justify-content:flex-end;margin-top:8px}
@@ -82,25 +90,24 @@
       </div>
       <div id="inv_usage_headline" style="padding:10px 20px;font-weight:900;font-size:18px;border-bottom:1px solid var(--line);">ยอดใช้บริการ —</div>
       <div class="pad">
-        <div class="grid-2">
+        <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:12px;flex-wrap:wrap" class="info-grid">
           <div>
             <label>บ้านเลขที่ / ที่อยู่ผู้ให้เช่า</label>
             <input id="inv_addr" value="" readonly>
           </div>
-          <div class="grid-2">
-            <div>
-              <label>ผู้เช่า</label>
-              <input id="inv_tenant" value="" readonly>
-            </div>
-            <div>
-              <label>วันที่ออกบิล</label>
-              <input id="inv_date_text" readonly>
-              <input id="inv_date" type="date" hidden>
-            </div>
+          <div>
+            <label>ผู้เช่า</label>
+            <input id="inv_tenant" value="" readonly>
+          </div>
+          <div>
+            <label>วันที่ออกบิล</label>
+            <input id="inv_date_text" readonly>
+            <input id="inv_date" type="date" hidden>
           </div>
         </div>
 
         <h3>รายละเอียดมิเตอร์</h3>
+        <div class="table-wrap">
         <table aria-label="รายละเอียดค่าบริการ">
           <thead>
             <tr>
@@ -137,6 +144,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
 
         <div class="totals">
           <table>
