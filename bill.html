@@ -39,6 +39,7 @@
     .grid-3{grid-template-columns:1fr}
     .signs{flex-direction:column;gap:8px}
     .info-grid{grid-template-columns:1fr 1fr !important}
+    .col-hide{display:none}
   }
   .right{text-align:right}
   .note{color:#6b7280;font-size:12px}
@@ -115,9 +116,9 @@
               <th>มิเตอร์ก่อนหน้า</th>
               <th>มิเตอร์ปัจจุบัน</th>
               <th>หน่วยใช้จริง</th>
-              <th>อัตรา</th>
-              <th>VAT</th>
-              <th>Ft</th>
+              <th class="col-hide">อัตรา</th>
+              <th class="col-hide">VAT</th>
+              <th class="col-hide">Ft</th>
               <th>รวม</th>
             </tr>
           </thead>
@@ -127,9 +128,9 @@
               <td id="w_prev" class="right">-</td>
               <td id="w_curr" class="right">-</td>
               <td id="w_units" class="right">-</td>
-              <td id="w_rate" class="right">-</td>
-              <td id="w_vat" class="right">-</td>
-              <td class="right">—</td>
+              <td id="w_rate" class="right col-hide">-</td>
+              <td id="w_vat" class="right col-hide">-</td>
+              <td class="right col-hide">—</td>
               <td id="w_total" class="right">-</td>
             </tr>
             <tr>
@@ -137,9 +138,9 @@
               <td id="e_prev" class="right">-</td>
               <td id="e_curr" class="right">-</td>
               <td id="e_units" class="right">-</td>
-              <td id="e_rate" class="right">-</td>
-              <td id="e_vat" class="right">-</td>
-              <td id="e_ft" class="right">-</td>
+              <td id="e_rate" class="right col-hide">-</td>
+              <td id="e_vat" class="right col-hide">-</td>
+              <td id="e_ft" class="right col-hide">-</td>
               <td id="e_total" class="right">-</td>
             </tr>
           </tbody>
