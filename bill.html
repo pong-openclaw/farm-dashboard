@@ -33,6 +33,7 @@
   th,td{padding:10px;border-bottom:1px solid var(--line);font-size:14px;white-space:nowrap}
   th{background:#fafafa;text-align:right}
   th:first-child,td:first-child{text-align:left}
+  .col-short{display:none}
   @media(max-width:640px){
     th,td{padding:7px 8px;font-size:12px}
     .grid-2{grid-template-columns:1fr}
@@ -40,6 +41,8 @@
     .signs{flex-direction:column;gap:8px}
     .info-grid{grid-template-columns:1fr 1fr !important}
     .col-hide{display:none}
+    .col-short{display:inline}
+    .col-full{display:none}
   }
   .right{text-align:right}
   .note{color:#6b7280;font-size:12px}
@@ -113,9 +116,9 @@
           <thead>
             <tr>
               <th>รายการ</th>
-              <th>มิเตอร์ก่อนหน้า</th>
-              <th>มิเตอร์ปัจจุบัน</th>
-              <th>หน่วยใช้จริง</th>
+              <th><span class="col-full">มิเตอร์ก่อนหน้า</span><span class="col-short">เก่า</span></th>
+              <th><span class="col-full">มิเตอร์ปัจจุบัน</span><span class="col-short">ใหม่</span></th>
+              <th><span class="col-full">หน่วยใช้จริง</span><span class="col-short">หน่วย</span></th>
               <th class="col-hide">อัตรา</th>
               <th class="col-hide">VAT</th>
               <th class="col-hide">Ft</th>
