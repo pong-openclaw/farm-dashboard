@@ -1,5 +1,5 @@
 // Service Worker — Boss Business Hub
-const CACHE = 'bosshub-202604250153';
+const CACHE = 'bosshub-202604260206';
 const ASSETS = ['./', './index.html', './manifest.json', './icon.svg'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
